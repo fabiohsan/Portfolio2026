@@ -34,56 +34,54 @@ const Stats: React.FC = () => {
 
         <div className="max-w-7xl mx-auto px-4 md:px-6 relative z-10">
             {/* Stats Grid */}
-            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 mb-20 md:mb-32 rounded-2xl overflow-hidden shadow-2xl">
+            <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 mb-24 rounded-2xl overflow-hidden shadow-2xl">
                  <div className="bg-brand-black/90 backdrop-blur-sm p-6 md:p-10 flex flex-col items-center justify-center text-center group hover:bg-white/5 transition-colors duration-500">
                     <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors"><AnimatedCounter value={8} suffix="+" /></h3>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Anos de Jogo</p>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Anos de Jogo</p>
                  </div>
                  <div className="bg-brand-black/90 backdrop-blur-sm p-6 md:p-10 flex flex-col items-center justify-center text-center group hover:bg-white/5 transition-colors duration-500">
                     <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors"><AnimatedCounter value={120} suffix="+" /></h3>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Projetos</p>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Projetos</p>
                  </div>
                  <div className="bg-brand-black/90 backdrop-blur-sm p-6 md:p-10 flex flex-col items-center justify-center text-center group hover:bg-white/5 transition-colors duration-500">
                     <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors"><AnimatedCounter value={98} suffix="%" /></h3>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Retenção</p>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Retenção</p>
                  </div>
                  <div className="bg-brand-black/90 backdrop-blur-sm p-6 md:p-10 flex flex-col items-center justify-center text-center group hover:bg-white/5 transition-colors duration-500">
                     <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors">TOP</h3>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold">Performance</p>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Performance</p>
                  </div>
             </div>
 
-            {/* Marquee Section */}
-            <div className="flex flex-col items-center">
-                <motion.div 
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    className="mb-8 md:mb-12 text-center px-4"
-                >
-                    <span className="text-brand-red text-xs font-bold tracking-widest uppercase mb-2 block">Network</span>
-                    <h3 className="text-xl md:text-2xl lg:text-3xl font-display uppercase text-white">Empresas Impulsionadas</h3>
-                </motion.div>
+            {/* Premium Ticker Section */}
+            <div className="w-full relative">
+                <div className="flex items-center justify-center mb-10">
+                    <div className="h-px w-12 bg-gradient-to-r from-transparent to-brand-red/50"></div>
+                    <span className="mx-4 text-xs font-bold uppercase tracking-[0.3em] text-gray-500">Empresas Impulsionadas</span>
+                    <div className="h-px w-12 bg-gradient-to-l from-transparent to-brand-red/50"></div>
+                </div>
 
-                <div className="w-screen relative left-[50%] -translate-x-[50%] overflow-hidden bg-brand-black/30 border-y border-white/5 py-8 md:py-12">
-                     <div className="absolute left-0 top-0 bottom-0 w-12 md:w-32 bg-gradient-to-r from-brand-dark to-transparent z-10 pointer-events-none"></div>
-                     <div className="absolute right-0 top-0 bottom-0 w-12 md:w-32 bg-gradient-to-l from-brand-dark to-transparent z-10 pointer-events-none"></div>
+                <div className="w-screen relative left-[50%] -translate-x-[50%] border-y border-white/5 bg-white/[0.02] backdrop-blur-sm">
+                    {/* Gradient Masks for Fade Effect */}
+                    <div className="absolute top-0 left-0 h-full w-20 md:w-40 bg-gradient-to-r from-brand-dark to-transparent z-20 pointer-events-none"></div>
+                    <div className="absolute top-0 right-0 h-full w-20 md:w-40 bg-gradient-to-l from-brand-dark to-transparent z-20 pointer-events-none"></div>
                     
                     <motion.div 
-                        className="flex w-fit"
+                        className="flex py-6 md:py-8 items-center"
                         animate={{ x: ["0%", "-50%"] }}
-                        transition={{ repeat: Infinity, ease: "linear", duration: 30 }}
+                        transition={{ repeat: Infinity, ease: "linear", duration: 40 }}
                     >
-                        {/* Tripling the list to ensure seamless loop on large screens */}
-                        {[...partners, ...partners, ...partners].map((partner, i) => (
-                            <div key={i} className="flex items-center gap-4 px-8 md:px-16 group opacity-40 hover:opacity-100 transition-all duration-300 cursor-default grayscale hover:grayscale-0">
-                                <div className="w-12 h-12 md:w-16 md:h-16 rounded-full border border-white/20 flex items-center justify-center bg-white/5 group-hover:border-brand-red group-hover:bg-brand-red/10 transition-colors duration-300 shrink-0">
-                                    <span className="font-display text-xl md:text-2xl text-white group-hover:text-brand-red transition-colors duration-300">{partner.name.charAt(0)}</span>
-                                </div>
-                                <div>
-                                    <div className="text-base md:text-xl font-bold uppercase text-white whitespace-nowrap">{partner.name}</div>
-                                    <div className="text-[9px] md:text-[10px] uppercase tracking-wider text-gray-500 group-hover:text-brand-red/80 transition-colors duration-300">{partner.category}</div>
-                                </div>
+                        {/* Quadrupling the list for ultra-smooth loop */}
+                        {[...partners, ...partners, ...partners, ...partners].map((partner, i) => (
+                            <div key={i} className="flex items-center gap-4 px-12 md:px-16 group cursor-default shrink-0 opacity-30 hover:opacity-100 transition-all duration-500 filter grayscale hover:grayscale-0">
+                                <span className="text-3xl md:text-5xl font-display uppercase text-white tracking-tighter group-hover:text-white transition-colors">
+                                    {partner.name}
+                                </span>
+                                <span className="text-[9px] font-mono uppercase tracking-widest border border-white/20 px-2 py-1 rounded text-gray-400 group-hover:text-brand-red group-hover:border-brand-red transition-colors">
+                                    {partner.category}
+                                </span>
+                                {/* Separator */}
+                                <span className="ml-12 md:ml-16 w-1.5 h-1.5 bg-brand-red/50 rounded-full"></span>
                             </div>
                         ))}
                     </motion.div>
