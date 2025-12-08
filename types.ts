@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 export interface ExperienceItem {
@@ -24,6 +25,7 @@ export interface ProjectItem {
   title: string;
   category: string;
   image: string;
+  thumbnail: string;
   colSpan?: string; // Tailwind class for grid column span
   client?: string;
   year?: string;

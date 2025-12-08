@@ -1,3 +1,4 @@
+
 import React from 'react';
 import { motion } from 'framer-motion';
 import { ExperienceItem, EducationItem } from '../types';
@@ -5,21 +6,33 @@ import { ExperienceItem, EducationItem } from '../types';
 const experiences: ExperienceItem[] = [
   {
     company: "Luppa Consultoria Criativa",
-    role: "Head de Criação / Social Media",
-    period: "2022 - Presente",
-    description: "Responsável pela direção visual e estratégias de conteúdo que aumentaram o engajamento dos clientes em 40%."
+    role: "Gerente de Mídias Sociais",
+    period: "Jan 2022 - Presente",
+    description: "Gestão estratégica de branding e criação de conteúdo. Desenvolvimento de narrativas visuais alinhadas ao crescimento da consultoria."
   },
   {
     company: "Agência Kory",
     role: "Designer Gráfico Pleno",
-    period: "2024 - 2025",
-    description: "Liderança de squads criativos para campanhas de varejo e lançamentos digitais de alto tráfego."
+    period: "Jul 2024 - Mai 2025",
+    description: "Liderança criativa, desenvolvimento de peças gráficas e digitais com alto padrão de qualidade para diversos clientes."
+  },
+  {
+    company: "LV Network",
+    role: "Analista de Suporte Técnico",
+    period: "Ago 2017 - Ago 2021",
+    description: "Administração e suporte de rede para provedores, identificação e solução de problemas técnicos."
   },
   {
     company: "Autônomo",
-    role: "Motion Designer",
-    period: "2017 - 2021",
-    description: "Desenvolvimento de identidades visuais e vinhetas animadas para criadores de conteúdo e startups."
+    role: "Freelancer Motion Designer",
+    period: "Set 2017 - 2021",
+    description: "Projetos de Motion Graphics, animações 2D/3D e identidades visuais."
+  },
+  {
+    company: "Wimax Internet",
+    role: "Analista de Suporte Técnico",
+    period: "Out 2016 - Out 2017",
+    description: "Suporte técnico e atendimento ao cliente em telecomunicações."
   }
 ];
 
@@ -36,7 +49,7 @@ const education: EducationItem[] = [
   }
 ];
 
-const tools = ["After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Element 3D", "Figma", "UI/UX Strategy"];
+const tools = ["After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Element 3D", "Figma", "Marketing Strategy", "UI/UX"];
 
 const Trajectory: React.FC = () => {
   return (
@@ -109,7 +122,7 @@ const Trajectory: React.FC = () => {
             Stack <span className="text-gray-600">&</span> Tools
           </h2>
           <p className="text-gray-400 mb-8 max-w-md">
-            Domínio técnico não é apenas saber usar o software. É saber qual ferramenta entrega a solução visual mais impactante no menor tempo possível.
+            Domínio técnico aliado a inteligência de mercado. Ferramentas são apenas o meio para entregar resultados de alto impacto.
           </p>
 
           <div className="flex flex-wrap gap-3">

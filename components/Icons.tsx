@@ -52,6 +52,18 @@ export const IconChevronDown = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="6 9 12 15 18 9"></polyline></svg>
 );
 
+export const IconChevronLeft = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+);
+
+export const IconChevronRight = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><polyline points="9 18 15 12 9 6"></polyline></svg>
+);
+
+export const IconX = () => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+);
+
 export const IconQuote = () => (
   <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="currentColor" stroke="none"><path d="M11.571 5.001A8.93 8.93 0 0 0 7.39 6.046c-.95.534-1.777 1.258-2.427 2.126C3.967 9.544 3.253 11.458 3 13.784c.162-.124.33-.243.504-.356.914-.593 1.943-.89 3.011-.869 1.139.022 2.223.385 3.125 1.045 1.05.77 1.748 1.884 1.967 3.136.223 1.277-.005 2.593-.645 3.706a5.83 5.83 0 0 1-2.914 2.531c-1.25.534-2.658.601-3.956.188-1.233-.393-2.3-1.196-3.003-2.261C.224 19.467-.21 17.653.11 15.656c.38-2.372 1.54-4.596 3.284-6.326a10.87 10.87 0 0 1 4.793-2.924c.753-.257 1.52-.405 2.29-.405h1.094v-1h-1.094zm10 0a8.93 8.93 0 0 0-4.181 1.045c-.95.534-1.777 1.258-2.427 2.126-1.002 1.372-1.71 3.286-1.963 5.612.162-.124.33-.243.504-.356.914-.593 1.943-.89 3.011-.869 1.139.022 2.223.385 3.125 1.045 1.05.77 1.748 1.884 1.967 3.136.223 1.277-.005 2.593-.645 3.706a5.83 5.83 0 0 1-2.914 2.531c-1.25.534-2.658.601-3.956.188-1.233-.393-2.3-1.196-3.003-2.261-.865-1.437-1.299-3.251-.979-5.248.38-2.372 1.54-4.596 3.284-6.326a10.87 10.87 0 0 1 4.793-2.924c.753-.257 1.52-.405 2.29-.405h1.094v-1h-1.094z"></path></svg>
 );

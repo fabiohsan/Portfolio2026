@@ -1,3 +1,4 @@
+
 import React, { useRef, useEffect } from 'react';
 import { motion, useInView, useSpring, useMotionValue, useTransform } from 'framer-motion';
 
@@ -37,19 +38,19 @@ const Stats: React.FC = () => {
             <div className="grid grid-cols-2 lg:grid-cols-4 gap-px bg-white/10 border border-white/10 mb-24 rounded-2xl overflow-hidden shadow-2xl">
                  <div className="bg-brand-black/90 backdrop-blur-sm p-6 md:p-10 flex flex-col items-center justify-center text-center group hover:bg-white/5 transition-colors duration-500">
                     <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors"><AnimatedCounter value={8} suffix="+" /></h3>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Anos de Jogo</p>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Anos de Mercado</p>
                  </div>
                  <div className="bg-brand-black/90 backdrop-blur-sm p-6 md:p-10 flex flex-col items-center justify-center text-center group hover:bg-white/5 transition-colors duration-500">
                     <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors"><AnimatedCounter value={120} suffix="+" /></h3>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Projetos</p>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Projetos Entregues</p>
                  </div>
                  <div className="bg-brand-black/90 backdrop-blur-sm p-6 md:p-10 flex flex-col items-center justify-center text-center group hover:bg-white/5 transition-colors duration-500">
                     <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors"><AnimatedCounter value={98} suffix="%" /></h3>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Retenção</p>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Satisfação</p>
                  </div>
                  <div className="bg-brand-black/90 backdrop-blur-sm p-6 md:p-10 flex flex-col items-center justify-center text-center group hover:bg-white/5 transition-colors duration-500">
-                    <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors">TOP</h3>
-                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Performance</p>
+                    <h3 className="text-4xl md:text-5xl lg:text-6xl font-display text-white mb-2 group-hover:text-brand-red transition-colors">EXP</h3>
+                    <p className="text-[9px] md:text-[10px] uppercase tracking-[0.2em] text-gray-500 font-bold group-hover:text-white transition-colors">Senioridade Visual</p>
                  </div>
             </div>
 

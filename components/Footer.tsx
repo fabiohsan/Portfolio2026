@@ -1,3 +1,4 @@
+
 import React from 'react';
 
 const Footer: React.FC = () => {
@@ -11,16 +12,16 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
-          <a href="#" className="hover:text-white transition-colors flex items-center gap-2">
+          <a href="mailto:faabioo201415@gmail.com" className="hover:text-white transition-colors flex items-center gap-2">
              Email
           </a>
-          <a href="#" className="hover:text-white transition-colors flex items-center gap-2">
+          <a href="https://www.linkedin.com/in/fabiohsan/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
              LinkedIn
           </a>
-          <a href="#" className="hover:text-white transition-colors flex items-center gap-2">
-             Behance
+          <a href="https://www.instagram.com/fabiohsan.dsg/" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
+             Instagram
           </a>
-          <a href="#" className="hover:text-white transition-colors flex items-center gap-2">
+          <a href="https://wa.me/5537999353014" target="_blank" rel="noopener noreferrer" className="hover:text-white transition-colors flex items-center gap-2">
              WhatsApp
           </a>
         </div>
