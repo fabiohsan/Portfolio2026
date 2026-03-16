@@ -24,8 +24,8 @@ const About: React.FC = () => {
             transition={{ delay: 0.5 }}
             className="absolute bottom-6 left-6 md:bottom-10 md:left-10 bg-brand-black/90 backdrop-blur p-6 md:p-8 border-l-4 border-brand-red max-w-[200px] md:max-w-xs"
           >
-            <div className="text-3xl md:text-4xl font-display text-white mb-1">8+</div>
-            <div className="text-[9px] md:text-[10px] uppercase tracking-widest text-gray-400">Anos transformando<br />negócios em marcas</div>
+            <div className="text-3xl md:text-4xl font-display text-white mb-1">3D</div>
+            <div className="text-[9px] md:text-[10px] uppercase tracking-widest text-gray-400">Modelagem<br />e Desenho Técnico</div>
           </motion.div>
         </div>
 
@@ -41,31 +41,31 @@ const About: React.FC = () => {
             viewport={{ once: true }}
             className="text-4xl md:text-5xl lg:text-7xl font-display uppercase leading-[0.9] mb-8"
           >
-            Design <br />
-            <span className="text-white/20">Estratégico.</span>
+            Modelagem <br />
+            <span className="text-white/20">3D.</span>
           </motion.h2>
 
           <div className="space-y-6 text-gray-400 leading-relaxed text-base md:text-lg font-light">
             <p>
-              Sou Designer Gráfico Sênior e Especialista em Motion Design, focado em criar soluções visuais impactantes e alinhadas às estratégias de marca.
+              Sou profissional com formação em Design Gráfico e base técnica em Mecânica pelo SENAI, com destaque em áreas como CNC, desenho técnico e desenho técnico computadorizado.
             </p>
             <p>
-              Com um <strong>MBA em Marketing e Branding</strong>, minha atuação vai além da estética. Uno funcionalidade e estratégia para conectar marcas ao seu público. Minha paixão pelo Motion Design me permite transformar conceitos em narrativas visuais envolventes, utilizando animações avançadas que cativam e engajam.
+              Minha trajetória combina repertório visual, construção tridimensional e raciocínio técnico, permitindo atuar no desenvolvimento de modelos 3D com foco em forma, precisão e aplicabilidade. Trabalho com softwares voltados tanto para modelagem orgânica quanto para CAD, transitando entre estudos visuais, peças técnicas, escultura digital e prototipagem.
             </p>
             <p>
-              Atuo na criação de identidades visuais com propósito, campanhas digitais voltadas para resultados e produção de conteúdo visual de alta qualidade.
+              Tenho interesse em contextos que exigem desenvolvimento cuidadoso de modelos, refinamento contínuo e colaboração próxima com profissionais que utilizam a peça em ambiente real, técnico ou didático.
             </p>
           </div>
 
           <div className="mt-12 grid grid-cols-1 md:grid-cols-2 gap-8 border-t border-white/10 pt-8">
             <div>
               <h4 className="font-bold uppercase text-white mb-2 text-sm tracking-wider">Formação</h4>
-              <p className="text-xs text-gray-500 font-mono">MBA em Marketing e Branding (Descomplica)</p>
-              <p className="text-xs text-gray-500 font-mono">Design Gráfico (UNINTER)</p>
+              <p className="text-xs text-gray-500 font-mono">Técnico em Mecânica (SENAI Cláudio)</p>
+              <p className="text-xs text-gray-500 font-mono">Design Gráfico</p>
             </div>
             <div>
-              <h4 className="font-bold uppercase text-white mb-2 text-sm tracking-wider">Expertise</h4>
-              <p className="text-xs text-gray-500 font-mono">Motion Design, Branding & UI/UX</p>
+              <h4 className="font-bold uppercase text-white mb-2 text-sm tracking-wider">Base Técnica</h4>
+              <p className="text-xs text-gray-500 font-mono">CNC, Desenho Técnico Computadorizado</p>
             </div>
           </div>
         </div>

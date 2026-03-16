@@ -1,28 +1,28 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { IconPlay, IconMonitor, IconPalette, IconBox } from './Icons';
+import { IconMonitor, IconPalette, IconBox, IconTarget } from './Icons';
 import { ServiceItem } from '../types';
 
 const services: ServiceItem[] = [
   {
-    title: "Engenharia de Atenção",
-    description: "Motion Design estratégico focado em retenção. Transformo segundos em oportunidades de venda com narrativas visuais que o cérebro não consegue ignorar.",
-    icon: <IconPlay />
+    title: "Modelagem Hard Surface",
+    description: "Criação de modelos precisos para produtos, equipamentos e peças focadas em usinagem, corte e simulação física.",
+    icon: <IconBox />
   },
   {
-    title: "Posicionamento Premium",
-    description: "Identidade Visual não é deixar bonito. É codificar autoridade. Crio o sistema visual que faz seu cliente sentir que seu produto vale 3x mais antes mesmo de ver o preço.",
+    title: "Modelagem Orgânica",
+    description: "Desenvolvimento de formas complexas e topologia esculpida para personagens, elementos botânicos e anatomia didática.",
     icon: <IconPalette />
   },
   {
-    title: "Arquitetura de Conversão",
-    description: "Websites desenhados para performance. Uma fusão de estética 'high-end' com UX focado em guiar o usuário até o botão de compra sem atritos.",
-    icon: <IconMonitor />
+    title: "Prototipagem em CAD",
+    description: "Estruturação técnica voltada para impressão 3D (FDM e Resina), considerando tolerâncias, encaixes e métodos de fabricação.",
+    icon: <IconTarget />
   },
   {
-    title: "Venda Silenciosa",
-    description: "Packaging e materiais impressos que funcionam como vendedores 24h. Design tátil que gera desejo instantâneo e domina a prateleira.",
-    icon: <IconBox />
+    title: "Texturização e Render",
+    description: "Aplicação de materiais físicos (PBR), iluminação de estúdio e composição técnica para visualização realista de produtos.",
+    icon: <IconMonitor />
   }
 ];
 
@@ -43,7 +43,7 @@ const item = {
 
 const Services: React.FC = () => {
   return (
-    <section id="servicos" className="py-20 md:py-32 bg-brand-black">
+    <section id="competencias" className="py-20 md:py-32 bg-brand-black">
       <div className="max-w-7xl mx-auto px-4 md:px-6">
         <div className="flex flex-col md:flex-row justify-between items-start md:items-end mb-12 md:mb-20 gap-8">
             <motion.h2 
@@ -52,8 +52,8 @@ const Services: React.FC = () => {
               viewport={{ once: true }}
               className="text-4xl md:text-6xl lg:text-7xl font-display uppercase leading-[0.9]"
             >
-            Arsenal <br />
-            <span className="text-transparent stroke-white" style={{WebkitTextStroke: '1px rgba(255,255,255,0.3)'}}>Estratégico</span>
+            Áreas de <br />
+            <span className="text-transparent stroke-white" style={{WebkitTextStroke: '1px rgba(255,255,255,0.3)'}}>Atuação</span>
             </motion.h2>
             <motion.div 
                initial={{ opacity: 0 }}
@@ -63,10 +63,10 @@ const Services: React.FC = () => {
                className="max-w-sm"
             >
                <p className="text-gray-400 text-sm border-l border-brand-red pl-6 py-2 mb-4">
-                  Eu não vendo horas de design. Eu vendo a percepção de valor que escala o seu faturamento.
+                  Meu foco é traduzir conceitos em modelos tridimensionais íntegros e funcionais.
                </p>
                <a href="#contato" className="text-brand-red text-xs font-bold uppercase tracking-widest hover:text-white transition-colors">
-                  Consultar Disponibilidade →
+                  Entrar em contato →
                </a>
             </motion.div>
         </div>
@@ -98,13 +98,6 @@ const Services: React.FC = () => {
 
                    <h3 className="text-2xl md:text-3xl font-display uppercase mb-4 tracking-wide text-white">{service.title}</h3>
                    <p className="text-gray-400 leading-relaxed text-sm font-light">{service.description}</p>
-               </div>
-               
-               <div className="mt-8 opacity-0 group-hover:opacity-100 transition-opacity duration-300 translate-y-2 group-hover:translate-y-0 hidden md:block">
-                   <span className="text-white text-xs font-bold uppercase tracking-widest flex items-center gap-3">
-                       <span className="w-2 h-2 bg-brand-red rounded-full"></span>
-                       Como isso gera ROI
-                   </span>
                </div>
             </motion.div>
           ))}

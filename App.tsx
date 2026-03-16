@@ -10,10 +10,12 @@ import FAQ from './components/FAQ';
 import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
+import CustomCursor from './components/CustomCursor';
 
 function App() {
   return (
     <div className="bg-brand-black min-h-screen text-white font-sans selection:bg-brand-red selection:text-white overflow-x-hidden">
+      <CustomCursor />
       <div className="bg-noise"></div>
       <Navbar />
       <main>

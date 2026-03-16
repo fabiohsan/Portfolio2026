@@ -6,14 +6,14 @@ import { allProjects } from '../projectsData';
 import { ProjectItem } from '../types';
 
 // Component extracted to prevent re-renders
-const ProjectCard = ({ 
+const ProjectCard: React.FC<{ 
+  project: ProjectItem; 
+  onClick: (id: number) => void; 
+  setIsHoveringProject: (v: boolean) => void;
+}> = ({ 
   project, 
   onClick, 
   setIsHoveringProject 
-}: { 
-  project: ProjectItem, 
-  onClick: (id: number) => void, 
-  setIsHoveringProject: (v: boolean) => void 
 }) => (
   <motion.div
     layoutId={`card-container-${project.id}`}
@@ -25,14 +25,26 @@ const ProjectCard = ({
     onClick={() => onClick(project.id)}
     className="group relative rounded-[2rem] overflow-hidden cursor-none aspect-[4/5] w-full mb-8 border border-white/5 bg-brand-black"
   >
-    {/* Background Image - Optimized using thumbnail */}
-    <motion.img 
-      layoutId={`card-image-${project.id}`}
-      src={project.thumbnail} 
-      alt={project.title}
-      loading="lazy"
-      className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:scale-110"
-    />
+    {/* Background Media - Video or Image */}
+    {project.videoUrl ? (
+      <motion.video
+        layoutId={`card-image-${project.id}`}
+        src={project.videoUrl}
+        autoPlay
+        loop
+        muted
+        playsInline
+        className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:scale-110"
+      />
+    ) : (
+      <motion.img 
+        layoutId={`card-image-${project.id}`}
+        src={project.thumbnail} 
+        alt={project.title}
+        loading="lazy"
+        className="w-full h-full object-cover transition-transform duration-700 ease-[cubic-bezier(0.33,1,0.68,1)] group-hover:scale-110"
+      />
+    )}
 
     {/* Gradient Overlay (Only visible on hover) */}
     <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
@@ -233,7 +245,7 @@ const Portfolio: React.FC = () => {
         <AnimatePresence>
             {selectedId && selectedProject && (
                 <motion.div 
-                    className="fixed inset-0 z-[70] bg-brand-black overflow-y-auto scrollbar-hide"
+                    className="fixed inset-0 z-[70] bg-brand-black/60 backdrop-blur-2xl overflow-y-auto scrollbar-hide"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     exit={{ opacity: 0 }}
@@ -241,7 +253,7 @@ const Portfolio: React.FC = () => {
                     {/* Sticky Close Button */}
                     <button 
                         onClick={() => setSelectedId(null)}
-                        className="fixed top-4 right-4 md:top-8 md:right-8 w-12 h-12 bg-white rounded-full flex items-center justify-center text-black hover:scale-110 transition-transform z-[80] shadow-lg"
+                        className="fixed top-4 right-4 md:top-8 md:right-8 w-12 h-12 bg-white/10 backdrop-blur-md rounded-full flex items-center justify-center text-white border border-white/20 hover:scale-110 hover:bg-brand-red hover:border-brand-red transition-all duration-300 z-[80] shadow-[0_0_20px_rgba(255,255,255,0.1)]"
                     >
                         <IconX />
                     </button>
@@ -251,11 +263,23 @@ const Portfolio: React.FC = () => {
                         layoutId={`card-container-${selectedProject.id}`} 
                         className="relative w-full h-[50vh] md:h-[75vh]"
                     >
-                         <motion.img 
-                            layoutId={`card-image-${selectedProject.id}`}
-                            src={selectedProject.image} 
-                            className="w-full h-full object-cover grayscale-0"
-                         />
+                         {selectedProject.videoUrl ? (
+                            <motion.video 
+                                layoutId={`card-image-${selectedProject.id}`}
+                                src={selectedProject.videoUrl} 
+                                autoPlay
+                                loop
+                                muted
+                                playsInline
+                                className="w-full h-full object-cover grayscale-0"
+                            />
+                         ) : (
+                             <motion.img 
+                                layoutId={`card-image-${selectedProject.id}`}
+                                src={selectedProject.image} 
+                                className="w-full h-full object-cover grayscale-0"
+                             />
+                         )}
                          <div className="absolute inset-0 bg-gradient-to-t from-brand-black via-brand-black/40 to-transparent"></div>
                          
                          <div className="absolute bottom-0 left-0 w-full p-6 md:p-12 max-w-7xl mx-auto">

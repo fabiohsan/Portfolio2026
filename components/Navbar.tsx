@@ -17,9 +17,9 @@ const Navbar: React.FC = () => {
 
   const navItems = [
     { name: 'Home', href: '#home' },
-    { name: 'Portfólio', href: '#portfolio' },
-    { name: 'Método', href: '#metodo' },
-    { name: 'Serviços', href: '#servicos' },
+    { name: 'Portfólio 3D', href: '#portfolio' },
+    { name: 'Processo', href: '#processo' },
+    { name: 'Competências', href: '#competencias' },
     { name: 'Sobre', href: '#sobre' }
   ];
 
@@ -40,7 +40,7 @@ const Navbar: React.FC = () => {
         }}
         animate={hidden ? "hidden" : "visible"}
         transition={{ duration: 0.35, ease: "easeInOut" }}
-        className="fixed top-0 w-full z-50 bg-brand-black/80 backdrop-blur-md border-b border-white/5 py-4"
+        className="fixed top-0 w-full z-50 bg-brand-black/40 backdrop-blur-xl border-b border-white/10 py-4 shadow-[0_4px_30px_rgba(0,0,0,0.1)]"
       >
         <div className="max-w-7xl mx-auto px-6 flex items-center justify-between">
           <a href="#" className="text-2xl font-black tracking-tighter text-white relative z-50 group">
@@ -63,7 +63,7 @@ const Navbar: React.FC = () => {
             href="#contato" 
             className="hidden md:inline-flex px-8 py-3 bg-white text-black rounded-full text-xs font-bold uppercase tracking-widest hover:bg-brand-red hover:text-white transition-colors duration-300"
           >
-            Vamos Conversar
+            Entrar em Contato
           </motion.a>
 
           {/* Mobile Menu Button */}
@@ -110,7 +110,7 @@ const Navbar: React.FC = () => {
                 onClick={() => setIsOpen(false)}
                 className="mt-8 px-8 py-3 bg-brand-red text-white rounded-full text-xs font-bold uppercase tracking-widest"
              >
-                Solicitar Orçamento
+                Entrar em Contato
              </motion.a>
 
              <div className="absolute bottom-10 text-xs text-gray-500 font-mono tracking-widest">

@@ -26,6 +26,7 @@ export interface ProjectItem {
   category: string;
   image: string;
   thumbnail: string;
+  videoUrl?: string;
   colSpan?: string; // Tailwind class for grid column span
   client?: string;
   year?: string;

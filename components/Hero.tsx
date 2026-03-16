@@ -29,6 +29,20 @@ const Hero: React.FC = () => {
       <div className="relative z-20 max-w-7xl mx-auto px-4 md:px-6 w-full grid grid-cols-1 lg:grid-cols-12 gap-8 lg:gap-12 items-center h-full pb-10 md:pb-0">
         <div className="lg:col-span-9 flex flex-col justify-center pt-10 md:pt-0">
 
+          {/* Glowing Badge Area */}
+          <motion.div 
+             initial={{ opacity: 0, scale: 0.9 }}
+             animate={{ opacity: 1, scale: 1 }}
+             transition={{ duration: 0.8, delay: 0.2 }}
+             className="mb-8 w-fit flex items-center gap-3 px-4 py-2 rounded-full border border-white/10 bg-white/5 backdrop-blur-md relative z-30"
+          >
+             <span className="relative flex h-3 w-3">
+                <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-brand-red opacity-75"></span>
+                <span className="relative inline-flex rounded-full h-3 w-3 bg-brand-red"></span>
+             </span>
+             <span className="text-white/80 text-xs font-medium uppercase tracking-widest">Disponível para Projetos</span>
+          </motion.div>
+
           {/* Main Title Animation */}
           <div className="flex flex-col relative z-20 mix-blend-normal">
             <div className="overflow-hidden">
@@ -38,7 +52,7 @@ const Hero: React.FC = () => {
                 transition={{ duration: 1, ease: [0.33, 1, 0.68, 1], delay: 0.1 }}
                 className="font-display text-[13vw] leading-none md:text-[11vw] lg:text-[150px] lg:leading-[0.9] uppercase text-white/20 select-none tracking-tight"
               >
-                Domine
+                Modelagem
               </motion.h1>
             </div>
             <div className="relative overflow-visible">
@@ -49,7 +63,7 @@ const Hero: React.FC = () => {
                   transition={{ duration: 1, ease: [0.33, 1, 0.68, 1], delay: 0.25 }}
                   className="font-display text-[13vw] leading-none md:text-[11vw] lg:text-[150px] lg:leading-[0.9] uppercase text-brand-red relative z-10 tracking-tight drop-shadow-2xl"
                 >
-                  O Seu
+                  3D
                 </motion.h1>
               </div>
             </div>
@@ -60,7 +74,7 @@ const Hero: React.FC = () => {
                 transition={{ duration: 1, ease: [0.33, 1, 0.68, 1], delay: 0.4 }}
                 className="font-display text-[13vw] leading-none md:text-[11vw] lg:text-[150px] lg:leading-[0.9] uppercase text-white tracking-tight"
               >
-                Mercado
+                Aplicada
               </motion.h1>
             </div>
           </div>
@@ -72,10 +86,10 @@ const Hero: React.FC = () => {
             className="mt-8 md:mt-12 max-w-xl"
           >
             <h2 className="text-white text-lg md:text-xl font-bold uppercase mb-4 tracking-wide pr-4">
-              Não é sobre Design. É sobre <span className="text-brand-red bg-white/5 px-2 py-1 rounded">Poder</span>.
+              Modelagem 3D com <span className="text-brand-red bg-white/5 px-2 py-1 rounded">precisão técnica</span> para peças, protótipos e aplicações didáticas
             </h2>
             <p className="text-gray-300 text-base md:text-lg leading-relaxed mb-8 md:mb-10 border-l-2 border-brand-red pl-6 font-light bg-black/50 backdrop-blur-sm p-4 rounded-r-lg">
-              Chega de brigar por preço. Eu crio ecossistemas visuais que posicionam sua marca no topo da cadeia alimentar, transformando percepção em lucro real.
+              Não é apenas sobre criar formas em 3D. É sobre transformar referência, volume e estrutura em modelos tridimensionais claros, funcionais e viáveis para estudo, visualização e fabricação.
             </p>
 
             <div className="flex flex-col sm:flex-row gap-6 items-start sm:items-center">
@@ -90,7 +104,7 @@ const Hero: React.FC = () => {
                 >
                   <IconArrowUpRight />
                 </motion.span>
-                Ver Casos de Sucesso
+                Ver Portfólio
               </motion.a>
             </div>
           </motion.div>

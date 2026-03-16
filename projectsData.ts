@@ -1,122 +1,121 @@
-
 import { ProjectItem } from './types';
 
-export const categories = ["Todos", "Branding", "Motion", "Web Design", "UI/UX"];
+export const categories = ["Todos", "Orgânico", "CAD", "Escultura", "Protótipo", "Desenho Técnico", "Pesquisa"];
 
 export const allProjects: ProjectItem[] = [
   {
     id: 1,
-    title: "Comfy Retail",
-    category: "Motion",
-    // Baseado na imagem do showreel com eletrodomésticos
-    thumbnail: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=800&auto=format&fit=crop",
-    image: "https://images.unsplash.com/photo-1556742049-0cfed4f7a07d?q=80&w=1920&auto=format&fit=crop", 
+    title: "Simulação de Modelagem Orgânica",
+    category: "Orgânico",
+    thumbnail: "/projects/organic-print.png",
+    image: "/projects/organic-print.png", 
+    videoUrl: "/projects/youtube-short-2.mp4",
     colSpan: "md:col-span-2",
-    client: "Comfy Stores",
+    client: "Medicina Veterinária",
     year: "2024",
-    description: "Campanha de varejo High-Energy com mix de 3D e Motion Graphics.",
-    challenge: "A Comfy precisava quebrar o padrão chato de varejo de eletrodomésticos. O desafio era criar assets visuais que mostrassem produtos comuns (geladeiras, aspiradores) de forma mágica e desejável nas redes sociais.",
-    solution: "Desenvolvemos um universo surrealista onde os produtos ganham vida. Utilizamos simulações 3D e colagens dinâmicas para criar uma linguagem visual proprietária que mistura o tangível com o fantástico, aumentando drasticamente a retenção nos anúncios.",
-    result: "A campanha viralizou organicamente no TikTok e aumentou as vendas do e-commerce em 35% durante o período promocional.",
+    description: "Estudo de caso visual apresentando o processo time-lapse de escultura digital anatômica de um modelo muscular canino diretamente na viewport 3D.",
+    challenge: "Demonstrar o fluxo de trabalho passo-a-passo da blocagem inicial até o detalhamento fino das fibras musculares e proporções faciais do animal, mantendo a forma coesa para posterior impressão em resina.",
+    solution: "No vídeo anexado, observamos a aplicação de pincéis de volume (ClayBuildup e DamStandard no ZBrush) para esculpir e refinar a anatomia orgânica, gerando um modelo hiper-detalhado com topologia controlada.",
+    result: "O modelo final fornece uma referência visual precisa do buldogue/raça específica, ideal para estudos veterinários de miologia, demonstrações cirúrgicas e treinamento acadêmico avançado.",
     gallery: [
-        "https://images.unsplash.com/photo-1628191010210-a59de33e5941?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1616401784845-180882ba9ba8?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1586023492125-27b2c045efd7?q=80&w=1200&auto=format&fit=crop"
+        "/projects/organic-print.png",
+        "/projects/organic-vet.png",
+        "/projects/organic-3d.png"
     ]
   },
   {
     id: 2,
-    title: "Nasdaq Data",
-    category: "UI/UX",
-    // Baseado na imagem do showreel com dashboard financeiro
-    thumbnail: "https://images.unsplash.com/photo-1611974765270-ca12586343bb?q=80&w=800&auto=format&fit=crop",
-    image: "https://images.unsplash.com/photo-1611974765270-ca12586343bb?q=80&w=1920&auto=format&fit=crop",
+    title: "Modelagem Técnica em CAD",
+    category: "CAD",
+    thumbnail: "/projects/cad-print.png",
+    image: "/projects/cad-print.png",
     colSpan: "md:col-span-1",
-    client: "Nasdaq Tech",
+    client: "Ortopedia Animal",
     year: "2024",
-    description: "Interface de visualização de dados financeiros em tempo real.",
-    challenge: "Simplificar a leitura de milhões de dados de mercado para novos investidores sem perder a precisão técnica exigida por traders experientes.",
-    solution: "UI Design focado em hierarquia cognitiva. Criamos cards modulares com micro-interações que expandem para revelar detalhes, mantendo a tela limpa. O uso de modo escuro profundo com acentos neon guiou a atenção para as flutuações críticas do mercado.",
-    result: "Redução de 40% no tempo de onboarding de novos usuários na plataforma.",
+    description: "Modelagem de placa ortopédica e implantes caninos projetados com lógicas construtivas rigorosas para garantir a perfeita osteossíntese.",
+    challenge: "Projetar superfícies que se adapatem à cortical óssea irregular de um fêmur canino e calcular resistências e roscas internamente para fixação do implante.",
+    solution: "Adoção de software CAD puro para garantir total precisão paramétrica. Foram exportadas versões analisadas topologicamente e gerados *toolpaths* (caminhos de ferramenta) com tolerâncias microscópicas.",
+    result: "Design de placa perfeitamente funcional. O protótipo visualizado no software slicer confere exatidão antes da usinagem efetiva ou impressão SLM (metal).",
     gallery: [
-        "https://images.unsplash.com/photo-1642543492481-44e81e3914a7?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=1200&auto=format&fit=crop"
+        "/projects/cad-print.png",
+        "/projects/cad-vet.png",
+        "/projects/cad-modeling.png"
     ]
   },
   {
     id: 3,
-    title: "ShowsHappening",
-    category: "Web Design",
-    // Baseado na imagem do showreel de ingressos/eventos
-    thumbnail: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=800&auto=format&fit=crop",
-    image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30?q=80&w=1920&auto=format&fit=crop",
+    title: "Escultura Digital",
+    category: "Escultura",
+    thumbnail: "/projects/sculpt-print.png",
+    image: "/projects/sculpt-print.png",
     colSpan: "md:col-span-1",
-    client: "ShowsHappening",
+    client: "Museologia e Anatomia",
     year: "2023",
-    description: "Plataforma de venda de ingressos com experiência imersiva.",
-    challenge: "A taxa de abandono de carrinho era alta devido a um processo de checkout complexo e visualmente datado.",
-    solution: "Redesign completo do fluxo de compra. Implementamos uma visualização de palco 3D interativa para seleção de assentos e simplificamos o pagamento para 2 passos. A identidade visual ganhou cores vibrantes que transmitem a energia do evento ao vivo.",
-    result: "Aumento de 22% na conversão final de compra de ingressos.",
+    description: "Escultura digital ultra-realista de um crânio animal com captura de microdetalhes de superfície óssea e cavidades sinusais.",
+    challenge: "Atingir uma textura óssea convincente e exportar para impressão 3D mantendo todas as micro-ranhuras (suturas cranianas e forames) sem que os suportes destruam a superfície.",
+    solution: "Utilização do ZBrush para detalhamento de alta frequência nas áreas menos afetadas pelas árvores de suporte. O planejamento de impressão em ângulo maximizou a qualidade dos dentes e zigomas.",
+    result: "Reprodução física hiper-detalhada. As peças finais são usadas para estudo avançado de taxidermia digital e referência anatômica palpável.",
     gallery: [
-        "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1533174072545-e8d4aa97edf9?q=80&w=1200&auto=format&fit=crop"
+        "/projects/sculpt-print.png",
+        "/projects/sculpt-vet.png",
+        "/projects/digital-sculpture.png"
     ]
   },
   {
     id: 4,
-    title: "Luppa Consultoria",
-    category: "Branding",
-    thumbnail: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=800&auto=format&fit=crop",
-    image: "https://images.unsplash.com/photo-1600607686527-6fb886090705?q=80&w=1920&auto=format&fit=crop", 
+    title: "Protótipo Conceitual",
+    category: "Protótipo",
+    thumbnail: "/projects/prototype-print.png",
+    image: "/projects/prototype-print.png", 
     colSpan: "md:col-span-2",
-    client: "Luppa Consultoria Criativa",
+    client: "Pesquisa P&D",
     year: "2023",
-    description: "Rebranding completo para consultoria estratégica de negócios.",
-    challenge: "A Luppa possuía uma imagem visual que não refletia a senioridade e o valor dos seus contratos. A marca era percebida como 'iniciante'.",
-    solution: "Desenvolvi um ecossistema visual baseado em tipografia suíça e uma paleta monocromática com acentos de cor estratégicos. O foco foi transmitir solidez, clareza e autoridade imediata.",
-    result: "A nova identidade permitiu um reposicionamento de preços imediato, com aumento de 40% no valor dos contratos fechados.",
+    description: "Prototipagem funcional em tecnologia FDM (Deposição de Material Fundido) de uma réplica óssea animal para testes práticos dimensionais.",
+    challenge: "Validar geometrias e proporções volumétricas sem gastar recursos excessivos, necessitando de alta estabilidade mecânica das linhas impressas (layer lines).",
+    solution: "Preparação meticulosa da malha fechada, com fatiamento voltado ao preenchimento otimizado e paredes externas espessas, ideais para sofrer pressões e ajustes com ferramentas de precisão como paquímetros.",
+    result: "Mockup (protótipo) dimensionado perfeitamente. Testes e calibrações de escala foram facilitados, demonstrando total integração entre o arquivo digital e a peça recém fabricada.",
     gallery: [
-        "https://images.unsplash.com/photo-1542744173-8e7e53415bb0?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1497215728101-856f4ea42174?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1557804506-669a67965ba0?q=80&w=1200&auto=format&fit=crop"
+        "/projects/prototype-print.png",
+        "/projects/prototype-vet.png",
+        "/projects/3d-prototype.png"
     ]
   },
   {
     id: 5,
-    title: "Kamyshan Identity",
-    category: "Branding",
-    // Baseado na imagem do showreel com tipografia experimental
-    thumbnail: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=800&auto=format&fit=crop",
-    image: "https://images.unsplash.com/photo-1618005182384-a83a8bd57fbe?q=80&w=1920&auto=format&fit=crop",
+    title: "Desenho Técnico Computadorizado",
+    category: "Desenho Técnico",
+    thumbnail: "/projects/tech-draw-print.png",
+    image: "/projects/tech-draw-print.png",
+    videoUrl: "/projects/youtube-short.mp4",
     colSpan: "md:col-span-1",
-    client: "Kamyshan Fashion",
+    client: "Instrumental Cirúrgico",
     year: "2023",
-    description: "Identidade visual tipográfica para marca de moda urbana.",
-    challenge: "Criar uma marca que funcionasse como estampa por si só, sem depender de logotipos figurativos.",
-    solution: "Desenvolvemos uma tipografia customizada distorcida que evoca movimento e rebeldia. A marca se torna a própria textura das roupas.",
-    result: "A coleção de lançamento com a nova logo esgotou em 48 horas.",
+    description: "Estudo prático da fusão entre digitalização 3D e CAD: demonstração rotacional da adaptação de uma placa de metal diretamente sobre um crânio fraturado.",
+    challenge: "Garantir o perfeito encaixe topológico entre a geometria complexa e orgânica do crânio com a rigidez paramétrica da placa de fixação virtual.",
+    solution: "Como visto no vídeo em anexo, a varredura 3D do crânio serviu como molde para o design booleano no software técnico paramétrico, desenhando uma órtese personalizada que abraçasse exatamente os contornos cranianos sem danificar áreas sensíveis.",
+    result: "Projeto de reabilitação customizado finalizado. A análise por simulação em tela prova a eficácia do planejamento pré-cirúrgico antes de levar o arquivo ao centro de processamento CNC.",
     gallery: [
-        "https://images.unsplash.com/photo-1523381210434-271e8be1f52b?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1512436991641-6745cdb1723f?q=80&w=1200&auto=format&fit=crop"
+        "/projects/tech-draw-print.png",
+        "/projects/tech-draw-vet.png",
+        "/projects/technical-drawing.png"
     ]
   },
   {
     id: 6,
-    title: "Dream Account",
-    category: "UI/UX",
-    // Baseado na imagem do showreel de perfil/cartão
-    thumbnail: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=800&auto=format&fit=crop",
-    image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?q=80&w=1920&auto=format&fit=crop",
+    title: "Pesquisa e Desenvolvimento 3D",
+    category: "Pesquisa",
+    thumbnail: "/projects/research-vet.png",
+    image: "/projects/research-vet.png",
     colSpan: "md:col-span-1",
-    client: "Dream Digital",
+    client: "Biomecânica e Genética",
     year: "2024",
-    description: "Sistema de perfis digitais para criadores de conteúdo.",
-    challenge: "Tornar a gestão de identidade digital divertida e gamificada.",
-    solution: "Interface colorida e amigável com cartões de perfil personalizáveis. Foco total em micro-interações que recompensam o usuário por completar seu perfil.",
-    result: "Engajamento diário na plataforma subiu 150%.",
+    description: "Pesquisa de simulações físicas e desenvolvimento aplicado focando no sequenciamento e visualização estrutural dinâmica.",
+    challenge: "Construir malhas dinâmicas que suportassem animação paramétrica em tempo real de sequenciamentos complexos para pesquisa.",
+    solution: "Investigação intensiva misturando digitalização, algoritmos paramétricos em CAD, e scripts de rotação em eixos múltiplos para gerar movimentos fluidos anatômicos.",
+    result: "Inovação validada visualmente. Os modelos produzidos garantem clareza cirúrgica e genética, comprovando que a renderização dinâmica mitiga riscos e facilita o aprendizado.",
     gallery: [
-        "https://images.unsplash.com/photo-1611162617474-5b21e879e113?q=80&w=1200&auto=format&fit=crop",
-        "https://images.unsplash.com/photo-1616469829581-73993eb86b02?q=80&w=1200&auto=format&fit=crop"
+        "/projects/research-vet.png",
+        "/projects/3d-research.png"
     ]
   }
 ];

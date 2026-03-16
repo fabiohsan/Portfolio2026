@@ -1,38 +1,44 @@
 import React from 'react';
 import { motion } from 'framer-motion';
-import { IconSearch, IconTarget, IconZap, IconRocket } from './Icons';
+import { IconSearch, IconTarget, IconZap, IconRocket, IconCheck } from './Icons';
 import { ProcessStep } from '../types';
 
 const steps: ProcessStep[] = [
   {
     number: "01",
-    title: "Imersão Profunda",
-    description: "Não começo desenhando. Começo entendendo. Faço uma auditoria completa do seu negócio, concorrentes e público para encontrar as brechas de oportunidade no mercado.",
+    title: "Leitura e interpretação",
+    description: "O processo começa com o entendimento da referência, da finalidade do modelo e das exigências formais, funcionais e didáticas da peça.",
     icon: <IconSearch />
   },
   {
     number: "02",
-    title: "Estratégia Visual",
-    description: "Definição dos arquétipos de marca e direção de arte. Aqui decidimos 'quem' sua marca é e como ela deve falar para converter curiosos em clientes fiéis.",
+    title: "Estrutura e modelagem",
+    description: "Desenvolvo a base tridimensional considerando proporção, volume, organização da forma e viabilidade construtiva.",
     icon: <IconTarget />
   },
   {
     number: "03",
-    title: "Design & Execução",
-    description: "Criação dos ativos visuais (ID, Web, Motion) com foco em alta performance. Cada pixel é posicionado intencionalmente para guiar o olhar do usuário.",
+    title: "Refinamento técnico",
+    description: "Ajusto superfícies, detalhes, espessuras, separações e elementos estruturais conforme a necessidade do projeto e do processo de fabricação.",
     icon: <IconZap />
   },
   {
     number: "04",
-    title: "Dominação",
-    description: "Entrega dos arquivos finais, brandbook e suporte para implementação. Sua marca vai para o mundo pronta para se destacar da multidão.",
+    title: "Validação e iteração",
+    description: "O modelo evolui por meio de testes, ajustes e feedbacks, garantindo que a peça atenda ao objetivo visual, técnico e prático.",
     icon: <IconRocket />
+  },
+  {
+    number: "05",
+    title: "Entrega organizada",
+    description: "Os arquivos são preparados e organizados de forma clara para continuidade do trabalho, revisão ou produção.",
+    icon: <IconCheck />
   }
 ];
 
 const Process: React.FC = () => {
   return (
-    <section id="metodo" className="py-32 bg-brand-dark border-t border-white/5 relative overflow-hidden">
+    <section id="processo" className="py-32 bg-brand-dark border-t border-white/5 relative overflow-hidden">
       {/* Background elements */}
       <div className="absolute left-0 top-1/4 w-[500px] h-[500px] bg-brand-red/5 blur-[120px] rounded-full pointer-events-none"></div>
 
@@ -44,7 +50,7 @@ const Process: React.FC = () => {
             viewport={{ once: true }}
             className="text-brand-red font-mono text-xs font-bold uppercase tracking-widest mb-4 block"
           >
-            O Caminho da Autoridade
+            Processo de desenvolvimento
           </motion.span>
           <motion.h2 
             initial={{ opacity: 0, y: 20 }}
@@ -53,12 +59,22 @@ const Process: React.FC = () => {
             transition={{ delay: 0.1 }}
             className="text-4xl md:text-6xl font-display uppercase max-w-2xl"
           >
-            Metodologia <br/>
-            <span className="text-white/30">Proprietária</span>
+            Do conceito ao <br/>
+            <span className="text-white/30">modelo físico</span>
           </motion.h2>
+          
+          <motion.p
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+            className="text-gray-300 text-lg md:text-xl font-light leading-relaxed mt-6 max-w-3xl"
+          >
+            Cada projeto tridimensional exige mais do que domínio de software. Exige leitura, interpretação, construção e refinamento orientados ao uso final da peça.
+          </motion.p>
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-8">
           {steps.map((step, index) => (
             <motion.div 
               key={index}
@@ -94,13 +110,13 @@ const Process: React.FC = () => {
         
         <div className="mt-20 p-8 bg-brand-black/50 border border-white/10 rounded-2xl flex flex-col md:flex-row items-center justify-between gap-8 backdrop-blur-sm">
            <div className="text-center md:text-left">
-              <h4 className="text-white font-bold uppercase mb-2">Não pule etapas</h4>
+              <h4 className="text-white font-bold uppercase mb-2">Não pulo etapas.</h4>
               <p className="text-gray-400 text-sm max-w-lg">
-                 Marcas fracas focam apenas na execução. Marcas líderes investem pesado na estratégia. Onde você quer estar?
+                 Modelos bem resolvidos nascem da combinação entre observação, estrutura e refinamento contínuo.
               </p>
            </div>
            <a href="#contato" className="px-8 py-3 bg-white text-black font-bold uppercase text-xs tracking-widest hover:bg-brand-red hover:text-white transition-all rounded-full">
-              Aplicar Metodologia
+              Solicitar Projeto
            </a>
         </div>
       </div>

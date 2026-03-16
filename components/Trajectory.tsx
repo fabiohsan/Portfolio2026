@@ -49,7 +49,20 @@ const education: EducationItem[] = [
   }
 ];
 
-const tools = ["After Effects", "Premiere Pro", "Photoshop", "Illustrator", "Element 3D", "Figma", "Marketing Strategy", "UI/UX"];
+const softwareGroups = [
+  {
+    category: "Modelagem Orgânica / Escultura Digital",
+    tools: ["ZBrush", "Blender", "Autodesk Maya"]
+  },
+  {
+    category: "Modelagem Técnica / CAD",
+    tools: ["SolidWorks", "Fusion 360", "AutoCAD"]
+  },
+  {
+    category: "Visualização e Apoio 3D",
+    tools: ["3ds Max", "Cinema 4D", "Marvelous Designer"]
+  }
+];
 
 const Trajectory: React.FC = () => {
   return (
@@ -119,22 +132,29 @@ const Trajectory: React.FC = () => {
             transition={{ delay: 0.3 }}
         >
           <h2 className="text-3xl md:text-4xl font-display uppercase mb-12">
-            Stack <span className="text-gray-600">&</span> Tools
+            Softwares <span className="text-gray-600">&</span> Ferramentas
           </h2>
           <p className="text-gray-400 mb-8 max-w-md">
-            Domínio técnico aliado a inteligência de mercado. Ferramentas são apenas o meio para entregar resultados de alto impacto.
+            Domínio técnico aliado à precisão construtiva. Ferramentas são o meio para entregar modelos tridimensionais íntegros e funcionais.
           </p>
 
-          <div className="flex flex-wrap gap-3">
-             {tools.map((tool, idx) => (
-               <motion.span 
-                 key={idx} 
-                 whileHover={{ scale: 1.05, backgroundColor: "#fff", color: "#000", borderColor: "#fff" }}
-                 className="px-4 py-3 border border-white/10 text-xs font-bold uppercase tracking-wider text-gray-300 transition-all cursor-default"
-               >
-                 {tool}
-               </motion.span>
-             ))}
+          <div className="space-y-8">
+            {softwareGroups.map((group, groupIdx) => (
+              <div key={groupIdx}>
+                 <h3 className="text-sm font-bold uppercase tracking-widest text-brand-red mb-4">{group.category}</h3>
+                 <div className="flex flex-wrap gap-3">
+                    {group.tools.map((tool, idx) => (
+                      <motion.span 
+                        key={idx} 
+                        whileHover={{ scale: 1.05, backgroundColor: "#fff", color: "#000", borderColor: "#fff" }}
+                        className="px-4 py-3 border border-white/10 text-xs font-bold uppercase tracking-wider text-gray-300 transition-all cursor-default"
+                      >
+                        {tool}
+                      </motion.span>
+                    ))}
+                 </div>
+              </div>
+            ))}
           </div>
         </motion.div>
 

@@ -6,19 +6,19 @@ import { FAQItem } from '../types';
 const questions: FAQItem[] = [
   {
     question: "Quanto custa um projeto?",
-    answer: "Não vendo 'preço', vendo ROI. Meus projetos partem de um valor base que garante a dedicação exclusiva e a profundidade estratégica necessária. Para ter um orçamento exato, preciso entender o tamanho do seu desafio. Clique em 'Iniciar Projeto' e vamos conversar."
+    answer: "O custo está atrelado à complexidade da malha e ao rigor dimensional necessário. Projetos de anatomia com alta densidade poligonal, rigs para simulações ou tolerâncias estritas para impressão 3D (SLM/FDM) demandam orçamentos distintos. Me envie sua tomografia (DICOM) ou esboço inicial para avaliarmos."
   },
   {
     question: "Qual o prazo de entrega?",
-    answer: "A pressa é inimiga da perfeição, mas o mercado não espera. Um projeto completo de Identidade Visual leva em média 30 a 45 dias. Landing Pages de alta conversão, cerca de 15 a 20 dias. Tudo depende da complexidade e da sua urgência."
+    answer: "Depende do nível de detalhamento (LOD) e da função. Adaptações rápidas para prototipagem volumétrica podem levar de 3 a 7 dias. Já esculturas musculares hiper-realistas texturizadas ou desenho paramétrico de precisão para placas cirúrgicas podem variar entre 15 e 30 dias de modelagem rigorosa."
   },
   {
     question: "O que exatamente eu recebo?",
-    answer: "Você não recebe apenas um logotipo. Você recebe um Ecossistema Visual completo: Brandbook, Guia de Estilo, Arquivos em todos os formatos (vetor, web, print), aplicações em mockups reais e estratégia de uso. É uma caixa de ferramentas completa para sua marca."
+    answer: "Você não recebe apenas uma imagem bonita. Entrego a matéria final: arquivos topologicamente corretos (.STL, .OBJ, .STEP), malhas fechadas (manifold) livres de erros para impressão sem falhas, texturas de alta frequência e modelos rigados caso envolva simulação orgânica."
   },
   {
     question: "Você atende agências (White Label)?",
-    answer: "Sim. Atuo como braço estratégico de design para agências que precisam elevar a barra de entrega para clientes high-ticket. Entre em contato para discutirmos modelos de parceria."
+    answer: "Com certeza. Atuo anonimamente como o braço técnico de Inteligência 3D para laboratórios, estúdios de animação médica e agências que precisam elevar o nível das suas entregas visuais e físicas para clientes high-ticket. Operamos sob NDA absoluto."
   }
 ];
 

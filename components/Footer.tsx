@@ -8,7 +8,7 @@ const Footer: React.FC = () => {
         
         <div className="text-xs text-gray-500 font-mono">
           <span className="text-brand-red text-lg leading-none align-middle mr-2">●</span>
-          © 2025 FÁBIO SAN DESIGNER & MOTION.
+          © 2025 FÁBIO HENRIQUE NASCIMENTO. MODELAGEM 3D.
         </div>
 
         <div className="flex gap-8 text-[10px] font-bold uppercase tracking-widest text-gray-400">
@@ -27,7 +27,7 @@ const Footer: React.FC = () => {
         </div>
 
         <div className="text-[10px] font-bold uppercase tracking-widest text-white/20">
-          Senior Graphic Designer
+          3D Modeler & Designer
         </div>
 
       </div>
