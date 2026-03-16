@@ -113,6 +113,28 @@ nav {
 }
 .nav-counter .n { color: var(--gold); font-weight: 700; font-size: 14px; }
 
+/* ─── FORM INPUTS ───────────────────────────────── */
+.form-input {
+  background: var(--bg2);
+  border: 1px solid var(--div-lt);
+  color: var(--white);
+  padding: 0.8rem 1rem;
+  font-size: 0.95rem;
+  border-radius: 4px;
+  width: 100%;
+  font-family: inherit;
+  transition: all 0.2s ease;
+}
+.form-input:focus {
+  outline: none;
+  border-color: var(--gold-dim);
+  box-shadow: 0 0 0 2px rgba(212,170,82,0.1);
+  background: var(--bg3);
+}
+.form-input::placeholder {
+  color: var(--subtle);
+}
+
 /* ─── HERO ──────────────────────────────────────── */
 .hero {
   min-height: 100vh;
@@ -807,6 +829,12 @@ footer {
       <div class="guide-panel">
         <div class="guide-inner"><div class="g-bar"></div><div class="g-text">registro.br → Meu Registro → selecione o domínio unus.com.br → Contatos → Adicionar Contato Técnico → informe o ID: <strong>[SEU ID REGISTRO.BR]</strong>. Procedimento padrão e seguro, amplamente utilizado por agências.</div></div>
       </div>
+      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <div class="g-text" style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">Como fazer: Registro.br → Meu Registro → unus.com.br → Contatos → Adicionar Contato Técnico.</div>
+          <input type="text" id="registro_id" class="form-input" placeholder="Seu ID ou E-mail no Registro.br" />
+        </div>
+      </div>
     </div>
 
     <div class="sub-lbl">Integração de Imóveis</div>
@@ -818,12 +846,12 @@ footer {
           <div class="card-desc">Credenciais para importarmos os 600 imóveis de forma automatizada e com atualização em tempo real.</div>
         </div>
       </div>
-      <div class="guide-btn" onclick="toggleGuide(this)">
-        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-        Como encontrar
-      </div>
-      <div class="guide-panel">
-        <div class="guide-inner"><div class="g-bar"></div><div class="g-text">No painel VISTA: <b>Configurações → Integrações → API Keys → Gerar Nova Chave</b>. Copie o Usuário e a API Key e envie via WhatsApp.</div></div>
+      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <div class="g-text" style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">Como encontrar: No painel VISTA → Configurações → Integrações → API Keys → Gerar Nova Chave.</div>
+          <input type="text" id="vista_user" class="form-input" placeholder="Usuário VISTA" />
+          <input type="text" id="vista_key" class="form-input" placeholder="API Key VISTA" />
+        </div>
       </div>
     </div>
 
@@ -836,12 +864,11 @@ footer {
           <div class="card-desc">Para configurarmos o recebimento de leads direto no funil do C2S, sem perda de nenhum contato gerado pelo novo site.</div>
         </div>
       </div>
-      <div class="guide-btn" onclick="toggleGuide(this)">
-        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-        Como encontrar
-      </div>
-      <div class="guide-panel">
-        <div class="guide-inner"><div class="g-bar"></div><div class="g-text">No painel C2S: <b>Perfil / Configurações → API → Token de Acesso → Copiar</b>. Ou crie um usuário admin com o e-mail <strong>[SEU E-MAIL]</strong>.</div></div>
+      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <div class="g-text" style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">Como encontrar: No painel C2S → Perfil / Configurações → API → Token de Acesso → Copiar.</div>
+          <input type="text" id="c2s_token" class="form-input" placeholder="Cole aqui o Token C2S" />
+        </div>
       </div>
     </div>
 
@@ -851,15 +878,14 @@ footer {
         <div class="cb"></div>
         <div class="card-body">
           <div class="card-title">WordPress (Impacto) — Acesso Admin</div>
-          <div class="card-desc">Para resgatarmos o histórico de SEO, URLs indexadas e conteúdo do blog antes da migração — protegendo o ranqueamento no Google.</div>
+          <div class="card-desc">Para resgatarmos o histórico de SEO, URLs indexadas e conteúdo do blog antes da migração.</div>
         </div>
       </div>
-      <div class="guide-btn" onclick="toggleGuide(this)">
-        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-        Como adicionar acesso
-      </div>
-      <div class="guide-panel">
-        <div class="guide-inner"><div class="g-bar"></div><div class="g-text">wp-admin → <b>Usuários → Adicionar Novo</b> → e-mail <strong>[SEU E-MAIL]</strong> → Papel: <b>Administrador</b> → Adicionar Usuário.</div></div>
+      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <input type="text" id="wp_user" class="form-input" placeholder="Usuário WordPress" />
+          <input type="password" id="wp_pass" class="form-input" placeholder="Senha Temporária WordPress" />
+        </div>
       </div>
     </div>
 
@@ -870,6 +896,15 @@ footer {
         <p>O site unus.com.br permanece 100% ativo e intocado durante todo o desenvolvimento. Trabalhamos em ambiente paralelo. A migração final ocorre em minutos, com rollback imediato disponível. Nenhum visitante, lead ou conteúdo é perdido.</p>
       </div>
     </div>
+
+    <div style="margin-top: 2rem; display: flex; flex-direction: column; gap: 1rem;">
+      <button id="btn-save-supabase" onclick="saveToSupabase()" style="background: var(--gold); color: #000; font-weight: bold; border: none; padding: 1rem 2rem; font-size: 1rem; border-radius: 4px; cursor: pointer; transition: 0.2s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+        Salvar Acessos de Forma Segura
+      </button>
+      <div id="save-status" style="font-size: 0.9rem; text-align: center; color: var(--gold-lt); display: none;">Dados salvos com sucesso!</div>
+    </div>
+
   </div>
 
   <!-- ═══ SEÇÃO 03 ═══ -->
@@ -885,15 +920,13 @@ footer {
         <div class="cb"></div>
         <div class="card-body">
           <div class="card-title">Manual da Marca + Logotipos em Vetor</div>
-          <div class="card-desc">SVG, AI ou EPS — todas as versões (positivo, negativo, monocromático). Paleta com hexadecimais e CMYK.</div>
+          <div class="card-desc">SVG, AI ou EPS — todas as versões (positivo, negativo, monocromático).</div>
         </div>
       </div>
-      <div class="guide-btn" onclick="toggleGuide(this)">
-        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-        Como enviar
-      </div>
-      <div class="guide-panel">
-        <div class="guide-inner"><div class="g-bar"></div><div class="g-text">Use <b>Google Drive</b> ou <b>WeTransfer (wetransfer.com)</b> para o envio. Não envie via WhatsApp — o app comprime arquivos e compromete qualidade dos vetores.</div></div>
+      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <input type="text" id="brand_link" class="form-input" placeholder="Link WeTransfer / Google Drive (Logos)" />
+        </div>
       </div>
     </div>
 
@@ -903,10 +936,14 @@ footer {
         <div class="cb"></div>
         <div class="card-body">
           <div class="card-title">Fotos da Equipe — Mín. 2 MP</div>
-          <div class="card-desc">Fotografias profissionais para as páginas institucionais. Resolução mínima: 2000 × 1200 px. Formatos: JPG ou PNG sem compressão.</div>
+          <div class="card-desc">Fotografias profissionais para as páginas institucionais.</div>
         </div>
       </div>
-      <div class="card-alert">⚠ Acima de 50 MB: use WeTransfer ou Google Drive. Não envie pelo WhatsApp — a compressão automática destrói a qualidade.</div>
+      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <input type="text" id="photos_link" class="form-input" placeholder="Link WeTransfer / Google Drive (Fotos)" />
+        </div>
+      </div>
     </div>
 
     <div class="card reveal" data-id="9">
@@ -969,16 +1006,14 @@ footer {
       <div class="card-row" onclick="toggle(this)">
         <div class="cb"></div>
         <div class="card-body">
-          <div class="card-title">Dia Fixo do Status Report Semanal</div>
-          <div class="card-desc">Escolha de um dia fixo na semana. Formato recomendado: vídeo de até 2 minutos demonstrando a evolução visualmente — mais valorizado por perfis analíticos do que texto.</div>
+          <div class="card-title">Vídeos Institucionais</div>
+          <div class="card-desc">Para o player do site (Bunny.net) ou YouTube.</div>
         </div>
       </div>
-      <div class="guide-btn" onclick="toggleGuide(this)">
-        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-        Formato sugerido
-      </div>
-      <div class="guide-panel">
-        <div class="guide-inner"><div class="g-bar"></div><div class="g-text">Sugestão: toda <b>sexta-feira até às 18h</b>. Gravação de tela (screencast) das páginas em desenvolvimento — sem câmera necessária. Ferramenta gratuita: <b>Loom (loom.com)</b>.</div></div>
+      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <input type="text" id="videos_link" class="form-input" placeholder="Link WeTransfer / Google Drive (Vídeos)" />
+        </div>
       </div>
     </div>
   </div>
@@ -1044,6 +1079,70 @@ const io = new IntersectionObserver(entries => {
 document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 refresh();
+
+// Supabase Logic
+async function saveToSupabase() {
+  const btn = document.getElementById('btn-save-supabase');
+  const status = document.getElementById('save-status');
+  btn.innerText = "Salvando...";
+  btn.style.opacity = "0.7";
+  btn.style.pointerEvents = "none";
+  
+  const vistaUser = document.getElementById('vista_user').value;
+  const vistaKey = document.getElementById('vista_key').value;
+  const c2sToken = document.getElementById('c2s_token').value;
+  const registroId = document.getElementById('registro_id').value;
+  const wpUser = document.getElementById('wp_user').value;
+  const wpPass = document.getElementById('wp_pass').value;
+  const brandLink = document.getElementById('brand_link').value;
+  const photosLink = document.getElementById('photos_link').value;
+  const videosLink = document.getElementById('videos_link').value;
+
+  // IMPORTANT: Placeholder keys to be replaced by the developer
+  // These are for the public onboarding client
+  const SUPABASE_URL = 'SUA_SUPABASE_URL_AQUI'; 
+  const SUPABASE_ANON_KEY = 'SUA_SUPABASE_ANON_KEY_AQUI';
+
+  try {
+    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    
+    const { data, error } = await supabase
+      .from('onboarding_dados')
+      .insert([
+        { 
+          cliente: 'Luiz - UNUS',
+          vista_user: vistaUser, 
+          vista_key: vistaKey, 
+          c2s_token: c2sToken,
+          registro_id: registroId,
+          wp_user: wpUser,
+          wp_pass: wpPass,
+          brand_link: brandLink,
+          photos_link: photosLink,
+          videos_link: videosLink
+        }
+      ]);
+
+    if (error) throw error;
+    
+    status.style.display = "block";
+    status.style.color = "var(--green)";
+    status.innerText = "✓ Dados salvos e enviados com sucesso!";
+    
+  } catch (err) {
+    console.error(err);
+    status.style.display = "block";
+    status.style.color = 'var(--gold-lt)';
+    status.innerText = "Conexão de segurança aguardando configuração do banco de dados.";
+  } finally {
+    btn.innerHTML = `
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
+      Salvar Acessos de Forma Segura`;
+    btn.style.opacity = "1";
+    btn.style.pointerEvents = "auto";
+  }
+}
 </script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
