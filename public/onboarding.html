@@ -1094,10 +1094,8 @@ async function saveToSupabase() {
   const photosLink = document.getElementById('photos_link').value;
   const videosLink = document.getElementById('videos_link').value;
 
-  // IMPORTANT: Placeholder keys to be replaced by the developer
-  // These are for the public onboarding client
-  const SUPABASE_URL = 'SUA_SUPABASE_URL_AQUI'; 
-  const SUPABASE_ANON_KEY = 'SUA_SUPABASE_ANON_KEY_AQUI';
+  const SUPABASE_URL = 'https://koodphmrnnyngpdzqvah.supabase.co';
+  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtvb2RwaG1ybm55bmdwZHpxdmFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxOTI2NTMsImV4cCI6MjA4MDc2ODY1M30.kEDecgxP2lEnchXDBOBz7aYlgYUBY65qI5O5NUs2VF4';
 
   try {
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
