@@ -818,21 +818,14 @@ footer {
       <div class="card-row" onclick="toggle(this)">
         <div class="cb"></div>
         <div class="card-body">
-          <div class="card-title">Registro.br — Contato Técnico</div>
-          <div class="card-desc">Para o apontamento DNS de unus.com.br ao novo servidor. Recomendamos a adição como "Contato Técnico" — sem necessidade de compartilhar login ou senha.</div>
+          <div class="card-title">Domínio</div>
+          <div class="card-desc">Como fazer: Registro.br → Meu Registro → unus.com.br → Contatos → Adicionar Contato Técnico.</div>
         </div>
-      </div>
-      <div class="guide-btn" onclick="toggleGuide(this)">
-        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-        Como fazer
-      </div>
-      <div class="guide-panel">
-        <div class="guide-inner"><div class="g-bar"></div><div class="g-text">registro.br → Meu Registro → selecione o domínio unus.com.br → Contatos → Adicionar Contato Técnico → informe o ID: <strong>[SEU ID REGISTRO.BR]</strong>. Procedimento padrão e seguro, amplamente utilizado por agências.</div></div>
       </div>
       <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text" style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">Como fazer: Registro.br → Meu Registro → unus.com.br → Contatos → Adicionar Contato Técnico.</div>
-          <input type="text" id="registro_id" class="form-input" placeholder="Seu ID ou E-mail no Registro.br" />
+          <div class="g-text"><b>Seu ID ou E-mail no Registro.br</b></div>
+          <input type="text" id="registro_id" class="form-input" placeholder="Ex: FABIO123" />
         </div>
       </div>
     </div>
@@ -842,14 +835,15 @@ footer {
       <div class="card-row" onclick="toggle(this)">
         <div class="cb"></div>
         <div class="card-body">
-          <div class="card-title">VISTA API — Usuário + API Key</div>
-          <div class="card-desc">Credenciais para importarmos os 600 imóveis de forma automatizada e com atualização em tempo real.</div>
+          <div class="card-title">Integração de Imóveis</div>
+          <div class="card-desc">Como encontrar: No painel VISTA → Configurações → Integrações → API Keys → Gerar Nova Chave.</div>
         </div>
       </div>
       <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text" style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">Como encontrar: No painel VISTA → Configurações → Integrações → API Keys → Gerar Nova Chave.</div>
+          <div class="g-text"><b>Usuário VISTA</b></div>
           <input type="text" id="vista_user" class="form-input" placeholder="Usuário VISTA" />
+          <div class="g-text"><b>API Key VISTA</b></div>
           <input type="text" id="vista_key" class="form-input" placeholder="API Key VISTA" />
         </div>
       </div>
@@ -860,14 +854,14 @@ footer {
       <div class="card-row" onclick="toggle(this)">
         <div class="cb"></div>
         <div class="card-body">
-          <div class="card-title">C2S — Token de Acesso</div>
-          <div class="card-desc">Para configurarmos o recebimento de leads direto no funil do C2S, sem perda de nenhum contato gerado pelo novo site.</div>
+          <div class="card-title">CRM — Leads</div>
+          <div class="card-desc">Como encontrar: No painel C2S → Perfil / Configurações → API → Token de Acesso → Copiar.</div>
         </div>
       </div>
       <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text" style="font-size: 0.85rem; color: var(--muted); margin-bottom: 0.5rem;">Como encontrar: No painel C2S → Perfil / Configurações → API → Token de Acesso → Copiar.</div>
-          <input type="text" id="c2s_token" class="form-input" placeholder="Cole aqui o Token C2S" />
+          <div class="g-text"><b>Cole aqui o Token C2S</b></div>
+          <input type="text" id="c2s_token" class="form-input" placeholder="Token C2S" />
         </div>
       </div>
     </div>
@@ -877,13 +871,15 @@ footer {
       <div class="card-row" onclick="toggle(this)">
         <div class="cb"></div>
         <div class="card-body">
-          <div class="card-title">WordPress (Impacto) — Acesso Admin</div>
-          <div class="card-desc">Para resgatarmos o histórico de SEO, URLs indexadas e conteúdo do blog antes da migração.</div>
+          <div class="card-title">SEO & Blog</div>
+          <div class="card-desc">Credenciais WordPress para gestão de conteúdo.</div>
         </div>
       </div>
       <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <input type="text" id="wp_user" class="form-input" placeholder="Usuário WordPress" />
+          <div class="g-text"><b>Usuário WordPress</b></div>
+          <input type="text" id="wp_user" class="form-input" placeholder="Admin ou editor" />
+          <div class="g-text"><b>Senha Temporária WordPress</b></div>
           <input type="password" id="wp_pass" class="form-input" placeholder="Senha Temporária WordPress" />
         </div>
       </div>
