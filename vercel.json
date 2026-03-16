@@ -1,5 +1,10 @@
 {
+    "cleanUrls": true,
     "rewrites": [
+        {
+            "source": "/onboarding",
+            "destination": "/onboarding.html"
+        },
         {
             "source": "/(.*)",
             "destination": "/index.html"
