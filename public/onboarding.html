@@ -779,6 +779,12 @@ footer {
           </div>
         </div>
       </div>
+      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <div class="g-text"><b>Após assinar, cole aqui o link do contrato</b></div>
+          <input type="text" id="contrato_link" class="form-input" placeholder="Google Drive / DocuSign / Dropbox" />
+        </div>
+      </div>
     </div>
 
     <div class="sub-lbl">Pagamento</div>
@@ -801,6 +807,12 @@ footer {
             <b>Chave PIX (CNPJ):</b> 46.550.399/0001-85<br>
             <b>Nome:</b> Fábio Henrique Silva Alves Nascimento
           </div>
+        </div>
+      </div>
+      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <div class="g-text"><b>Confirmação do pagamento</b></div>
+          <input type="text" id="comprovante_nota" class="form-input" placeholder="Cole o link do comprovante ou escreva 'Enviado via WhatsApp'" />
         </div>
       </div>
     </div>
@@ -958,6 +970,12 @@ footer {
         <div class="guide-inner"><div class="g-bar"></div><div class="g-text">Acima de 500 MB: <b>Google Drive</b> + compartilhe o link. Para vídeos publicados, envie apenas a URL do YouTube/Vimeo.</div></div>
       </div>
       <div class="card-alert">⚠ Não envie vídeos pelo WhatsApp — o app comprime e reduz resolução abaixo do mínimo necessário.</div>
+      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <div class="g-text"><b>Link do(s) vídeo(s)</b></div>
+          <input type="text" id="videos_link" class="form-input" placeholder="YouTube, Vimeo, Google Drive ou WeTransfer" />
+        </div>
+      </div>
     </div>
 
     <div class="sub-lbl">Referências Visuais</div>
@@ -975,6 +993,14 @@ footer {
       </div>
       <div class="guide-panel">
         <div class="guide-inner"><div class="g-bar"></div><div class="g-text">Referências internacionais: sothebysrealty.com · christiesrealestate.com · compass.com. Qualquer portal que você admire — nacional ou internacional — serve como referência válida.</div></div>
+      </div>
+      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <div class="g-text"><b>Cole os links dos sites de referência</b></div>
+          <input type="text" id="benchmark_1" class="form-input" placeholder="Site de referência 1 (ex: sothebysrealty.com)" />
+          <input type="text" id="benchmark_2" class="form-input" placeholder="Site de referência 2" />
+          <input type="text" id="benchmark_3" class="form-input" placeholder="Site de referência 3 (opcional)" />
+        </div>
       </div>
     </div>
   </div>
@@ -995,6 +1021,12 @@ footer {
           <div class="card-desc">Para comunicações rápidas, arquivos pontuais e aprovações imediatas. Usado para avisos urgentes e confirmações que não requerem reunião.</div>
         </div>
       </div>
+      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
+          <div class="g-text"><b>Seu número de WhatsApp</b></div>
+          <input type="tel" id="whatsapp_numero" class="form-input" placeholder="+55 (11) 99999-9999" />
+        </div>
+      </div>
     </div>
 
     <div class="sub-lbl">Status Report</div>
@@ -1002,13 +1034,14 @@ footer {
       <div class="card-row" onclick="toggle(this)">
         <div class="cb"></div>
         <div class="card-body">
-          <div class="card-title">Vídeos Institucionais</div>
-          <div class="card-desc">Para o player do site (Bunny.net) ou YouTube.</div>
+          <div class="card-title">E-mail para Relatórios de Progresso</div>
+          <div class="card-desc">Enviaremos atualizações semanais de progresso, links de preview e solicitações de aprovação para este e-mail.</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
+      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <input type="text" id="videos_link" class="form-input" placeholder="Link WeTransfer / Google Drive (Vídeos)" />
+          <div class="g-text"><b>E-mail para receber os relatórios</b></div>
+          <input type="email" id="email_relatorios" class="form-input" placeholder="seu@email.com.br" />
         </div>
       </div>
     </div>
@@ -1084,15 +1117,22 @@ async function saveToSupabase() {
   btn.style.opacity = "0.7";
   btn.style.pointerEvents = "none";
   
-  const vistaUser = document.getElementById('vista_user').value;
-  const vistaKey = document.getElementById('vista_key').value;
-  const c2sToken = document.getElementById('c2s_token').value;
-  const registroId = document.getElementById('registro_id').value;
-  const wpUser = document.getElementById('wp_user').value;
-  const wpPass = document.getElementById('wp_pass').value;
-  const brandLink = document.getElementById('brand_link').value;
-  const photosLink = document.getElementById('photos_link').value;
-  const videosLink = document.getElementById('videos_link').value;
+  const contratoLink    = document.getElementById('contrato_link').value;
+  const comprovanteNota = document.getElementById('comprovante_nota').value;
+  const registroId      = document.getElementById('registro_id').value;
+  const vistaUser       = document.getElementById('vista_user').value;
+  const vistaKey        = document.getElementById('vista_key').value;
+  const c2sToken        = document.getElementById('c2s_token').value;
+  const wpUser          = document.getElementById('wp_user').value;
+  const wpPass          = document.getElementById('wp_pass').value;
+  const brandLink       = document.getElementById('brand_link').value;
+  const photosLink      = document.getElementById('photos_link').value;
+  const videosLink      = document.getElementById('videos_link').value;
+  const benchmark1      = document.getElementById('benchmark_1').value;
+  const benchmark2      = document.getElementById('benchmark_2').value;
+  const benchmark3      = document.getElementById('benchmark_3').value;
+  const whatsappNumero  = document.getElementById('whatsapp_numero').value;
+  const emailRelatorios = document.getElementById('email_relatorios').value;
 
   const SUPABASE_URL = 'https://koodphmrnnyngpdzqvah.supabase.co';
   const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtvb2RwaG1ybm55bmdwZHpxdmFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxOTI2NTMsImV4cCI6MjA4MDc2ODY1M30.kEDecgxP2lEnchXDBOBz7aYlgYUBY65qI5O5NUs2VF4';
@@ -1103,17 +1143,24 @@ async function saveToSupabase() {
     const { data, error } = await supabase
       .from('onboarding_dados')
       .insert([
-        { 
-          cliente: 'Luiz - UNUS',
-          vista_user: vistaUser, 
-          vista_key: vistaKey, 
-          c2s_token: c2sToken,
-          registro_id: registroId,
-          wp_user: wpUser,
-          wp_pass: wpPass,
-          brand_link: brandLink,
-          photos_link: photosLink,
-          videos_link: videosLink
+        {
+          cliente:          'Luiz - UNUS',
+          contrato_link:    contratoLink,
+          comprovante_nota: comprovanteNota,
+          registro_id:      registroId,
+          vista_user:       vistaUser,
+          vista_key:        vistaKey,
+          c2s_token:        c2sToken,
+          wp_user:          wpUser,
+          wp_pass:          wpPass,
+          brand_link:       brandLink,
+          photos_link:      photosLink,
+          videos_link:      videosLink,
+          benchmark_1:      benchmark1,
+          benchmark_2:      benchmark2,
+          benchmark_3:      benchmark3,
+          whatsapp_numero:  whatsappNumero,
+          email_relatorios: emailRelatorios
         }
       ]);
 
