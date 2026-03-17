@@ -81,6 +81,13 @@ const getStatusClasses = (status: string | null) => {
   }
 };
 
+const canExposeContractLink = (row: OnboardingRow, missingFields: string[]) => {
+  if (!row.contrato_link?.trim()) return false;
+  if (missingFields.length === 0) return true;
+
+  return ['gerado', 'aguardando_assinatura', 'assinado'].includes(row.contrato_status || '');
+};
+
 export const ContractAdmin: React.FC = () => {
   const [pin, setPin] = useState('');
   const [unlocked, setUnlocked] = useState(false);
@@ -343,6 +350,7 @@ export const ContractAdmin: React.FC = () => {
           {rows.map((row, index) => {
             const missingFields = getMissingFields(row);
             const rowKey = `${row.cliente ?? 'sem-cliente'}-${row.updated_at ?? index}`;
+            const showContractLink = canExposeContractLink(row, missingFields);
 
             return (
               <article
@@ -424,7 +432,7 @@ export const ContractAdmin: React.FC = () => {
                   </div>
 
                   <div className="flex flex-wrap items-center gap-2">
-                    {row.contrato_link ? (
+                    {showContractLink ? (
                       <a
                         href={row.contrato_link}
                         target="_blank"
@@ -433,6 +441,11 @@ export const ContractAdmin: React.FC = () => {
                       >
                         Abrir contrato
                       </a>
+                    ) : row.contrato_link ? (
+                      <span className="text-xs text-gray-500">
+                        Existe um contrato antigo salvo, mas ele permanece oculto ate os campos atuais
+                        estarem completos.
+                      </span>
                     ) : (
                       <span className="text-xs text-gray-500">Contrato ainda nao gerado</span>
                     )}
