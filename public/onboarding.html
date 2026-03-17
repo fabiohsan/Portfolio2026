@@ -927,7 +927,7 @@ footer {
 
     <div class="hero-stats">
       <div class="stat">
-        <div class="stat-num">12<span>.</span></div>
+        <div class="stat-num">16<span>.</span></div>
         <div class="stat-label">Itens no checklist</div>
       </div>
       <div class="stat">
@@ -1668,14 +1668,12 @@ footer {
 <script>
 const TOTAL = 16;
 const done  = new Set();
+let onboardingCache = null;
+const SAVED_ICON = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>';
 
 // toggle check
 function toggle(row) {
-  const card = row.closest('.card');
-  const id   = card.dataset.id;
-  done.has(id) ? done.delete(id) : done.add(id);
-  card.classList.toggle('done', done.has(id));
-  refresh();
+  return;
 }
 
 // guide accordion
@@ -1694,6 +1692,171 @@ function refresh() {
   document.getElementById('stat-done').innerHTML = n + '<span>.</span>';
   document.getElementById('prog-fill').style.width = pct + '%';
   document.getElementById('prog-pct').textContent  = pct + '%';
+}
+
+function primeButtons() {
+  document.querySelectorAll('.btn-item-save').forEach(function(btn) {
+    if (!btn.dataset.defaultHtml) btn.dataset.defaultHtml = btn.innerHTML;
+  });
+}
+
+function setStatus(statusId, message, tone) {
+  const status = document.getElementById(statusId);
+  if (!status) return;
+  status.style.display = 'block';
+  status.style.color = tone === 'success' ? 'var(--green)' : 'var(--gold-lt)';
+  status.textContent = message;
+}
+
+function clearStatus(statusId) {
+  const status = document.getElementById(statusId);
+  if (!status) return;
+  status.style.display = 'none';
+  status.textContent = '';
+}
+
+function isFilled(value) {
+  return !!String(value || '').trim();
+}
+
+function isValidEmail(value) {
+  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(value || '').trim());
+}
+
+function getValue(id) {
+  const el = document.getElementById(id);
+  return el ? String(el.value || '').trim() : '';
+}
+
+function setValue(id, value) {
+  const el = document.getElementById(id);
+  if (!el || value == null) return;
+  el.value = String(value);
+}
+
+function setButtonSaved(btnId, label, disabled) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.classList.add('saved');
+  btn.innerHTML = SAVED_ICON + ' ' + (label || 'Enviado');
+  btn.disabled = !!disabled;
+}
+
+function resetButton(btnId) {
+  const btn = document.getElementById(btnId);
+  if (!btn) return;
+  btn.classList.remove('saved');
+  btn.disabled = false;
+  if (btn.dataset.defaultHtml) btn.innerHTML = btn.dataset.defaultHtml;
+}
+
+function syncDoneState(cardNum, isDone, buttonLabel, disabled) {
+  const id = String(cardNum);
+  const card = document.querySelector('.card[data-id="' + id + '"]');
+
+  if (card) card.classList.toggle('done', !!isDone);
+  if (isDone) done.add(id);
+  else done.delete(id);
+
+  if (isDone) setButtonSaved('ibtn-' + id, buttonLabel || 'Enviado', disabled);
+  else resetButton('ibtn-' + id);
+
+  refresh();
+}
+
+function ensureFields(statusId, fields) {
+  for (var i = 0; i < fields.length; i++) {
+    var field = fields[i];
+    if (!isFilled(field.value)) {
+      setStatus(statusId, field.message, 'warn');
+      return false;
+    }
+  }
+  clearStatus(statusId);
+  return true;
+}
+
+function ensureContractReceivedState() {
+  if (document.getElementById('contrato-estado-recebido')) return;
+
+  var waiting = document.getElementById('contrato-estado-aguardando');
+  if (!waiting || !waiting.parentNode) return;
+
+  var received = document.createElement('div');
+  received.id = 'contrato-estado-recebido';
+  received.style.display = 'none';
+  received.innerHTML =
+    '<div class="callout green">' +
+      '<div class="c-icon">✓</div>' +
+      '<div class="c-body">' +
+        '<strong>Dados recebidos com sucesso</strong>' +
+        '<p>Seu contrato esta em preparacao e sera enviado em breve para esse mesmo e-mail.</p>' +
+      '</div>' +
+    '</div>';
+
+  waiting.parentNode.insertBefore(received, waiting.nextSibling);
+}
+
+function setContractState(state) {
+  ['pendente', 'recebido', 'aguardando', 'assinado'].forEach(function(key) {
+    var el = document.getElementById('contrato-estado-' + key);
+    if (el) el.style.display = key === state ? 'block' : 'none';
+  });
+
+  if (state === 'assinado') {
+    syncDoneState('1', true, 'Assinado', true);
+    return;
+  }
+
+  if (state === 'aguardando' || state === 'recebido') {
+    syncDoneState('1', true, 'Enviado', false);
+    return;
+  }
+
+  syncDoneState('1', false);
+}
+
+function mirrorPrimaryEmail() {
+  var contractEmail = document.getElementById('contrato_email');
+  var primaryEmail = document.getElementById('email_relatorios');
+  if (!contractEmail || !primaryEmail) return;
+
+  var syncing = false;
+  function sync(source, target) {
+    if (syncing) return;
+    syncing = true;
+    target.value = source.value;
+    syncing = false;
+  }
+
+  contractEmail.addEventListener('input', function() { sync(contractEmail, primaryEmail); });
+  primaryEmail.addEventListener('input', function() { sync(primaryEmail, contractEmail); });
+}
+
+function applyStaticCopy() {
+  var introTexts = document.querySelectorAll('.intro-text');
+  if (introTexts[1]) {
+    introTexts[1].textContent = 'Cada item sera marcado automaticamente apos o envio. Ao voltar para esta pagina, seus dados preenchidos continuarao disponiveis.';
+  }
+
+  var contractDesc = document.querySelector('.card[data-id="1"] .card-desc');
+  if (contractDesc) {
+    contractDesc.textContent = 'Preencha seu e-mail principal, estado civil e CPF. Usaremos esse e-mail para contrato, aprovacoes e atualizacoes do projeto.';
+  }
+
+  var contractLabel = document.querySelector('label[for="contrato_email"]');
+  if (contractLabel) contractLabel.textContent = 'Seu e-mail principal de contato';
+
+  var reportTitle = document.querySelector('.card[data-id="12"] .card-title');
+  if (reportTitle) reportTitle.textContent = 'E-mail Principal de Acompanhamento';
+
+  var reportDesc = document.querySelector('.card[data-id="12"] .card-desc');
+  if (reportDesc) {
+    reportDesc.textContent = 'Esse e-mail sera usado para contrato, relatorios de progresso, links de preview e solicitacoes de aprovacao. Se quiser atualizar esse contato, altere aqui.';
+  }
+
+  var reportLabel = document.querySelector('label[for="email_relatorios"]');
+  if (reportLabel) reportLabel.textContent = 'E-mail principal';
 }
 
 // scroll progress bar
@@ -1841,21 +2004,17 @@ async function saveItem(btnId, statusId, itemKey, dataFn) {
 
     const { error } = await sb.rpc('upsert_onboarding_dados', { p_payload: payload });
     if (error) throw error;
+    onboardingCache = Object.assign({}, onboardingCache || {}, payload);
 
     status.style.display = 'block';
     status.style.color   = 'var(--green)';
     status.textContent   = '✓ Salvo com sucesso';
     btn.classList.add('saved');
-    btn.innerHTML = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg> Enviado';
+    btn.innerHTML = SAVED_ICON + ' Enviado';
 
     // Mark the corresponding checklist card as done
     const cardNum = btnId.replace('ibtn-', '');
-    const card = document.querySelector('.card[data-id="' + cardNum + '"]');
-    if (card && !done.has(cardNum)) {
-      done.add(cardNum);
-      card.classList.add('done');
-      refresh();
-    }
+    syncDoneState(cardNum, true, 'Enviado', false);
   } catch (err) {
     console.error(err);
     status.style.display = 'block';
@@ -2089,6 +2248,341 @@ async function saveItem15() {
     };
   });
 }
+
+primeButtons();
+applyStaticCopy();
+ensureContractReceivedState();
+mirrorPrimaryEmail();
+
+function hydrateOnboarding(data) {
+  onboardingCache = data || null;
+
+  if (!data) {
+    setContractState('pendente');
+    return;
+  }
+
+  setValue('contrato_email', data.email_relatorios);
+  setValue('email_relatorios', data.email_relatorios);
+  setValue('contrato_estado_civil', data.estado_civil);
+  setValue('contrato_cpf', data.cpf_representante);
+  setValue('registro_id', data.registro_id);
+  setValue('vista_user', data.vista_user);
+  setValue('vista_pass', data.vista_pass);
+  setValue('c2s_token', data.c2s_token);
+  setValue('wp_user', data.wp_user);
+  setValue('wp_pass', data.wp_pass);
+  setValue('brand_link', data.brand_link);
+  setValue('photos_link', data.photos_link);
+  setValue('videos_link', data.videos_link);
+  setValue('benchmark_1', data.benchmark_1);
+  setValue('benchmark_2', data.benchmark_2);
+  setValue('benchmark_3', data.benchmark_3);
+  setValue('whatsapp_numero', data.whatsapp_numero);
+  setValue('cnpj', data.cnpj);
+  setValue('razao_social', data.razao_social);
+  setValue('creci', data.creci);
+  setValue('endereco', data.endereco);
+  setValue('telefone', data.telefone);
+  setValue('instagram', data.instagram);
+  setValue('facebook', data.facebook);
+  setValue('youtube', data.youtube);
+  setValue('hosting_provider', data.hosting_provider);
+  setValue('hosting_url', data.hosting_url);
+  setValue('hosting_user', data.hosting_user);
+  setValue('hosting_pass', data.hosting_pass);
+  setValue('ftp_host', data.ftp_host);
+  setValue('ftp_user', data.ftp_user);
+  setValue('ftp_pass', data.ftp_pass);
+  setValue('registrobr_login', data.registrobr_login);
+  setValue('registrobr_pass', data.registrobr_pass);
+
+  syncDoneState('2', isFilled(data.comprovante_nota), 'Enviado', false);
+  syncDoneState('3', isFilled(data.registro_id), 'Enviado', false);
+  syncDoneState('4', isFilled(data.vista_user) && isFilled(data.vista_pass), 'Enviado', false);
+  syncDoneState('5', isFilled(data.c2s_token), 'Enviado', false);
+  syncDoneState('6', isFilled(data.wp_user) && isFilled(data.wp_pass), 'Enviado', false);
+  syncDoneState('7', isFilled(data.brand_link), 'Enviado', false);
+  syncDoneState('8', isFilled(data.photos_link), 'Enviado', false);
+  syncDoneState('9', isFilled(data.videos_link), 'Enviado', false);
+  syncDoneState('10', isFilled(data.benchmark_1) && isFilled(data.benchmark_2), 'Enviado', false);
+  syncDoneState('11', isFilled(data.whatsapp_numero), 'Enviado', false);
+  syncDoneState('12', isFilled(data.email_relatorios), 'Enviado', false);
+  syncDoneState('13', isFilled(data.cnpj) && isFilled(data.razao_social) && isFilled(data.creci), 'Enviado', false);
+  syncDoneState('14', isFilled(data.endereco) && isFilled(data.telefone), 'Enviado', false);
+  syncDoneState('15', isFilled(data.registrobr_login) && isFilled(data.registrobr_pass), 'Enviado', false);
+  syncDoneState('16', isFilled(data.hosting_provider) && isFilled(data.hosting_url) && isFilled(data.hosting_user) && isFilled(data.hosting_pass), 'Enviado', false);
+
+  if (data.contrato_status === 'assinado') {
+    setContractState('assinado');
+    return;
+  }
+
+  if (data.contrato_status === 'aguardando_assinatura') {
+    setContractState('aguardando');
+    return;
+  }
+
+  if (isFilled(data.email_relatorios) && isFilled(data.estado_civil) && isFilled(data.cpf_representante)) {
+    setContractState('recebido');
+    return;
+  }
+
+  setContractState('pendente');
+}
+
+async function loadSavedData() {
+  try {
+    const sb = getSupabase();
+    const { data, error } = await sb.from('onboarding_dados')
+      .select('contrato_status,email_relatorios,estado_civil,cpf_representante,comprovante_nota,registro_id,vista_user,vista_pass,c2s_token,wp_user,wp_pass,brand_link,photos_link,videos_link,benchmark_1,benchmark_2,benchmark_3,whatsapp_numero,cnpj,razao_social,creci,endereco,telefone,instagram,facebook,youtube,hosting_provider,hosting_url,hosting_user,hosting_pass,ftp_host,ftp_user,ftp_pass,registrobr_login,registrobr_pass')
+      .eq('cliente', CLIENT_ID)
+      .maybeSingle();
+
+    if (error) throw error;
+    hydrateOnboarding(data);
+  } catch (_) { /* silencioso */ }
+}
+
+async function saveItem1() {
+  const email = getValue('contrato_email');
+  const estadoCivil = getValue('contrato_estado_civil');
+  const cpf = getValue('contrato_cpf');
+
+  if (!ensureFields('istatus-1', [
+    { value: email, message: 'Informe seu e-mail principal.' },
+    { value: estadoCivil, message: 'Preencha o estado civil.' },
+    { value: cpf, message: 'Preencha o CPF.' }
+  ])) return;
+
+  if (!isValidEmail(email)) {
+    setStatus('istatus-1', 'Informe um e-mail valido.', 'warn');
+    return;
+  }
+
+  setValue('email_relatorios', email);
+
+  const btn = document.getElementById('ibtn-1');
+  const status = document.getElementById('istatus-1');
+  const origHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">SALVANDOâ€¦</span>';
+  status.style.display = 'none';
+
+  try {
+    const sb = getSupabase();
+    const payload = {
+      cliente: CLIENT_ID,
+      email_relatorios: email,
+      estado_civil: estadoCivil,
+      cpf_representante: cpf,
+      updated_at: new Date().toISOString(),
+    };
+
+    const { error } = await sb.rpc('upsert_onboarding_dados', { p_payload: payload });
+    if (error) throw error;
+
+    onboardingCache = Object.assign({}, onboardingCache || {}, payload);
+    syncDoneState('12', true, 'Enviado', false);
+    setContractState('recebido');
+    setStatus('istatus-1', '✓ Dados salvos. O contrato sera enviado em breve.', 'success');
+  } catch (err) {
+    setStatus('istatus-1', traduzirErro(err), 'warn');
+    btn.innerHTML = origHTML;
+  } finally {
+    btn.disabled = false;
+  }
+}
+
+async function saveItem2() {
+  var input = document.getElementById('file_comprovante');
+  var file = input && input.files && input.files[0];
+  if (!file) {
+    setStatus('istatus-2', 'Envie o comprovante de pagamento antes de confirmar.', 'warn');
+    return;
+  }
+
+  await saveItem('ibtn-2', 'istatus-2', 'comprovante', async function(sb) {
+    document.getElementById('ibtn-2').innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">ENVIANDOâ€¦</span>';
+    var url = await uploadFileToStorage(sb, 'file_comprovante', 'onboarding', 'comprovante');
+    return { comprovante_nota: url };
+  });
+}
+
+async function saveItem3() {
+  var registroId = getValue('registro_id');
+  if (!ensureFields('istatus-3', [{ value: registroId, message: 'Informe seu ID ou e-mail no Registro.br.' }])) return;
+  await saveItem('ibtn-3', 'istatus-3', 'dominio', async function() {
+    return { registro_id: registroId };
+  });
+}
+
+async function saveItem4() {
+  var vistaUser = getValue('vista_user');
+  var vistaPass = getValue('vista_pass');
+  if (!ensureFields('istatus-4', [
+    { value: vistaUser, message: 'Informe o usuario VISTA.' },
+    { value: vistaPass, message: 'Informe a senha VISTA.' }
+  ])) return;
+  await saveItem('ibtn-4', 'istatus-4', 'vista_api', async function() {
+    return { vista_user: vistaUser, vista_pass: vistaPass };
+  });
+}
+
+async function saveItem5() {
+  var token = getValue('c2s_token');
+  if (!ensureFields('istatus-5', [{ value: token, message: 'Cole o token de acesso do C2S.' }])) return;
+  await saveItem('ibtn-5', 'istatus-5', 'c2s_crm', async function() {
+    return { c2s_token: token };
+  });
+}
+
+async function saveItem6() {
+  var wpUser = getValue('wp_user');
+  var wpPass = getValue('wp_pass');
+  if (!ensureFields('istatus-6', [
+    { value: wpUser, message: 'Informe o usuario do WordPress.' },
+    { value: wpPass, message: 'Informe a senha temporaria do WordPress.' }
+  ])) return;
+  await saveItem('ibtn-6', 'istatus-6', 'wordpress', async function() {
+    return { wp_user: wpUser, wp_pass: wpPass };
+  });
+}
+
+async function saveItem7() {
+  var brandLink = getValue('brand_link');
+  if (!ensureFields('istatus-7', [{ value: brandLink, message: 'Envie o link da pasta com os arquivos da marca.' }])) return;
+  await saveItem('ibtn-7', 'istatus-7', 'marca', async function() {
+    return { brand_link: brandLink };
+  });
+}
+
+async function saveItem8() {
+  var photosLink = getValue('photos_link');
+  if (!ensureFields('istatus-8', [{ value: photosLink, message: 'Envie o link da pasta com as fotos.' }])) return;
+  await saveItem('ibtn-8', 'istatus-8', 'fotos', async function() {
+    return { photos_link: photosLink };
+  });
+}
+
+async function saveItem9() {
+  var videosLink = getValue('videos_link');
+  if (!ensureFields('istatus-9', [{ value: videosLink, message: 'Envie o link dos videos institucionais.' }])) return;
+  await saveItem('ibtn-9', 'istatus-9', 'videos', async function() {
+    return { videos_link: videosLink };
+  });
+}
+
+async function saveItem10() {
+  var benchmark1 = getValue('benchmark_1');
+  var benchmark2 = getValue('benchmark_2');
+  var benchmark3 = getValue('benchmark_3');
+  if (!ensureFields('istatus-10', [
+    { value: benchmark1, message: 'Informe o site de referencia 1.' },
+    { value: benchmark2, message: 'Informe o site de referencia 2.' }
+  ])) return;
+  await saveItem('ibtn-10', 'istatus-10', 'benchmark', async function() {
+    return { benchmark_1: benchmark1, benchmark_2: benchmark2, benchmark_3: benchmark3 };
+  });
+}
+
+async function saveItem11() {
+  var disponibilidade = getValue('whatsapp_numero');
+  if (!ensureFields('istatus-11', [{ value: disponibilidade, message: 'Informe seus dias e horarios de preferencia.' }])) return;
+  await saveItem('ibtn-11', 'istatus-11', 'disponibilidade', async function() {
+    return { whatsapp_numero: disponibilidade };
+  });
+}
+
+async function saveItem12() {
+  var email = getValue('email_relatorios');
+  if (!ensureFields('istatus-12', [{ value: email, message: 'Informe seu e-mail principal.' }])) return;
+  if (!isValidEmail(email)) {
+    setStatus('istatus-12', 'Informe um e-mail valido.', 'warn');
+    return;
+  }
+  setValue('contrato_email', email);
+  await saveItem('ibtn-12', 'istatus-12', 'email_relatorios', async function() {
+    return { email_relatorios: email };
+  });
+}
+
+async function saveItem13() {
+  var cnpj = getValue('cnpj');
+  var razaoSocial = getValue('razao_social');
+  var creci = getValue('creci');
+  if (!ensureFields('istatus-13', [
+    { value: cnpj, message: 'Informe o CNPJ da empresa.' },
+    { value: razaoSocial, message: 'Informe a razao social.' },
+    { value: creci, message: 'Informe o numero do CRECI.' }
+  ])) return;
+  await saveItem('ibtn-13', 'istatus-13', 'dados_empresa', async function() {
+    return { cnpj: cnpj, razao_social: razaoSocial, creci: creci };
+  });
+}
+
+async function saveItem14() {
+  var endereco = getValue('endereco');
+  var telefone = getValue('telefone');
+  var instagram = getValue('instagram');
+  var facebook = getValue('facebook');
+  var youtube = getValue('youtube');
+  if (!ensureFields('istatus-14', [
+    { value: endereco, message: 'Informe o endereco do escritorio.' },
+    { value: telefone, message: 'Informe o telefone de contato.' }
+  ])) return;
+  await saveItem('ibtn-14', 'istatus-14', 'contato_redes', async function() {
+    return { endereco: endereco, telefone: telefone, instagram: instagram, facebook: facebook, youtube: youtube };
+  });
+}
+
+async function saveItem16() {
+  var hostingProvider = getValue('hosting_provider');
+  var hostingUrl = getValue('hosting_url');
+  var hostingUser = getValue('hosting_user');
+  var hostingPass = getValue('hosting_pass');
+  var ftpHost = getValue('ftp_host');
+  var ftpUser = getValue('ftp_user');
+  var ftpPass = getValue('ftp_pass');
+  if (!ensureFields('istatus-16', [
+    { value: hostingProvider, message: 'Informe o provedor de hospedagem.' },
+    { value: hostingUrl, message: 'Informe a URL do painel.' },
+    { value: hostingUser, message: 'Informe o usuario de acesso ao painel.' },
+    { value: hostingPass, message: 'Informe a senha do painel.' }
+  ])) return;
+  await saveItem('ibtn-16', 'istatus-16', 'hospedagem', async function() {
+    return {
+      hosting_provider: hostingProvider,
+      hosting_url: hostingUrl,
+      hosting_user: hostingUser,
+      hosting_pass: hostingPass,
+      ftp_host: ftpHost,
+      ftp_user: ftpUser,
+      ftp_pass: ftpPass,
+    };
+  });
+}
+
+async function saveItem15() {
+  var login = getValue('registrobr_login');
+  var pass = getValue('registrobr_pass');
+
+  if (!isFilled(login) && !isFilled(pass)) {
+    setStatus('istatus-15', 'Deixe esse item para perto da migracao. Preencha apenas quando eu avisar.', 'warn');
+    return;
+  }
+
+  if (!ensureFields('istatus-15', [
+    { value: login, message: 'Informe o login do Registro.br.' },
+    { value: pass, message: 'Informe a senha do Registro.br.' }
+  ])) return;
+
+  await saveItem('ibtn-15', 'istatus-15', 'registro_br', async function() {
+    return { registrobr_login: login, registrobr_pass: pass };
+  });
+}
+
+loadSavedData();
 </script>
 </body>
 </html>

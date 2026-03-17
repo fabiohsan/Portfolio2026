@@ -1,7 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { supabase } from '../src/lib/supabase';
-
-const ADMIN_PIN = '0803';
 
 const inputCls =
   'w-full bg-[#0d0d0d] border border-white/10 p-3 text-white text-sm focus:border-red-600 focus:outline-none transition-colors rounded-lg';
@@ -14,6 +11,11 @@ type OnboardingRow = {
   contrato_status: string | null;
   contrato_link: string | null;
   updated_at: string | null;
+};
+
+type AdminResponse = {
+  rows?: OnboardingRow[];
+  error?: string;
 };
 
 const formatDate = (value: string | null) => {
@@ -31,7 +33,7 @@ const formatDate = (value: string | null) => {
 const getMissingFields = (row: OnboardingRow) => {
   const missing: string[] = [];
 
-  if (!row.email_relatorios?.trim()) missing.push('E-mail');
+  if (!row.email_relatorios?.trim()) missing.push('E-mail principal');
   if (!row.estado_civil?.trim()) missing.push('Estado civil');
   if (!row.cpf_representante?.trim()) missing.push('CPF');
 
@@ -71,50 +73,90 @@ export const ContractAdmin: React.FC = () => {
 
   const [rows, setRows] = useState<OnboardingRow[]>([]);
   const [loading, setLoading] = useState(false);
+  const [checkingSession, setCheckingSession] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
   const [lastSync, setLastSync] = useState<string | null>(null);
 
-  const handlePin = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (pin === ADMIN_PIN) {
-      setUnlocked(true);
-      setPinError(false);
-      return;
-    }
-
-    setPinError(true);
-  };
-
-  const loadRows = async () => {
+  const loadRows = async (options?: { silentAuth?: boolean }) => {
     setLoading(true);
-    setErrorMsg('');
+    if (!options?.silentAuth) setErrorMsg('');
 
     try {
-      const { data, error } = await supabase
-        .from('onboarding_dados')
-        .select('cliente,email_relatorios,estado_civil,cpf_representante,contrato_status,contrato_link,updated_at')
-        .order('updated_at', { ascending: false })
-        .limit(100);
+      const response = await fetch('/api/admin/onboarding', {
+        credentials: 'same-origin',
+      });
 
-      if (error) throw new Error(error.message);
+      if (response.status === 401) {
+        setUnlocked(false);
+        if (!options?.silentAuth) {
+          setErrorMsg('Sessao expirada. Entre novamente.');
+        }
+        return;
+      }
 
-      setRows((data as OnboardingRow[] | null) ?? []);
+      const payload = (await response.json()) as AdminResponse;
+      if (!response.ok) throw new Error(payload.error || 'Nao foi possivel carregar os dados.');
+
+      setRows(payload.rows ?? []);
+      setUnlocked(true);
       setLastSync(new Date().toISOString());
     } catch (err: unknown) {
-      setErrorMsg(
-        err instanceof Error
-          ? err.message
-          : 'Nao foi possivel carregar os dados do onboarding.'
-      );
+      if (!options?.silentAuth) {
+        setErrorMsg(err instanceof Error ? err.message : 'Nao foi possivel carregar os dados.');
+      }
     } finally {
       setLoading(false);
+      setCheckingSession(false);
     }
   };
 
   useEffect(() => {
-    if (!unlocked) return;
-    void loadRows();
-  }, [unlocked]);
+    void loadRows({ silentAuth: true });
+  }, []);
+
+  const handlePin = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setPinError(false);
+    setErrorMsg('');
+
+    try {
+      const response = await fetch('/api/admin/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ pin }),
+      });
+
+      const payload = (await response.json()) as { error?: string };
+      if (!response.ok) {
+        setPinError(true);
+        throw new Error(payload.error || 'PIN invalido.');
+      }
+
+      setPin('');
+      setUnlocked(true);
+      await loadRows();
+    } catch (err: unknown) {
+      setPinError(true);
+      setErrorMsg(err instanceof Error ? err.message : 'Nao foi possivel autenticar.');
+    }
+  };
+
+  const handleLogout = async () => {
+    try {
+      await fetch('/api/admin/logout', {
+        method: 'POST',
+        credentials: 'same-origin',
+      });
+    } finally {
+      setUnlocked(false);
+      setRows([]);
+      setLastSync(null);
+      setPin('');
+    }
+  };
 
   const total = rows.length;
   const readyForContract = rows.filter((row) => getMissingFields(row).length === 0).length;
@@ -137,11 +179,13 @@ export const ContractAdmin: React.FC = () => {
             className={`${inputCls} text-center text-lg tracking-[0.5em]`}
           />
           {pinError && <p className="text-xs text-red-400 text-center">PIN incorreto.</p>}
+          {errorMsg && !pinError && <p className="text-xs text-red-400 text-center">{errorMsg}</p>}
           <button
             type="submit"
-            className="w-full bg-red-600 text-white font-bold uppercase tracking-widest py-3 rounded-lg hover:bg-red-700 transition-colors text-xs"
+            disabled={checkingSession}
+            className="w-full bg-red-600 text-white font-bold uppercase tracking-widest py-3 rounded-lg hover:bg-red-700 transition-colors text-xs disabled:opacity-60"
           >
-            Entrar
+            {checkingSession ? 'Verificando...' : 'Entrar'}
           </button>
         </form>
       </div>
@@ -156,7 +200,7 @@ export const ContractAdmin: React.FC = () => {
             <p className="text-[10px] font-bold uppercase tracking-widest text-red-500 mb-1">Admin</p>
             <h1 className="text-3xl font-bold uppercase tracking-tight">Onboarding e contrato</h1>
             <p className="text-sm text-gray-400 mt-2">
-              O cliente salva os campos faltantes no onboarding. Aqui voce so acompanha o que ja chegou no Supabase.
+              O cliente salva os campos faltantes no onboarding. Aqui voce acompanha o que ja chegou no Supabase.
             </p>
           </div>
 
@@ -172,6 +216,13 @@ export const ContractAdmin: React.FC = () => {
               className="bg-white/5 border border-white/10 text-white font-bold uppercase tracking-widest px-4 py-3 rounded-lg hover:bg-white/10 transition-colors text-xs disabled:opacity-50"
             >
               {loading ? 'Atualizando...' : 'Atualizar'}
+            </button>
+            <button
+              type="button"
+              onClick={() => void handleLogout()}
+              className="bg-transparent border border-white/10 text-gray-300 font-bold uppercase tracking-widest px-4 py-3 rounded-lg hover:bg-white/5 transition-colors text-xs"
+            >
+              Sair
             </button>
           </div>
         </div>
@@ -228,8 +279,10 @@ export const ContractAdmin: React.FC = () => {
 
                     <div className="grid gap-3 md:grid-cols-3">
                       <div>
-                        <p className="text-[10px] uppercase tracking-widest text-gray-500">E-mail</p>
-                        <p className="text-sm text-white break-all">{row.email_relatorios?.trim() || 'Nao enviado'}</p>
+                        <p className="text-[10px] uppercase tracking-widest text-gray-500">E-mail principal</p>
+                        <p className="text-sm text-white break-all">
+                          {row.email_relatorios?.trim() || 'Nao enviado'}
+                        </p>
                       </div>
                       <div>
                         <p className="text-[10px] uppercase tracking-widest text-gray-500">Estado civil</p>
