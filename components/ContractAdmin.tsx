@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import { getContractMissingFields } from '../lib/contractModel.js';
 
 const inputCls =
   'w-full bg-[#0d0d0d] border border-white/10 p-3 text-white text-sm focus:border-red-600 focus:outline-none transition-colors rounded-lg';
@@ -8,13 +9,35 @@ type OnboardingRow = {
   email_relatorios: string | null;
   estado_civil: string | null;
   cpf_representante: string | null;
+  cnpj: string | null;
+  razao_social: string | null;
+  creci: string | null;
+  endereco: string | null;
+  telefone: string | null;
+  instagram: string | null;
+  facebook: string | null;
+  youtube: string | null;
   contrato_status: string | null;
   contrato_link: string | null;
   updated_at: string | null;
 };
 
+type ContractTemplateMeta = {
+  id: string;
+  name: string;
+  requiredFields: string[];
+};
+
 type AdminResponse = {
   rows?: OnboardingRow[];
+  contractTemplate?: ContractTemplateMeta;
+  error?: string;
+};
+
+type GenerateContractResponse = {
+  contractLink?: string;
+  contractTemplate?: ContractTemplateMeta;
+  missingFields?: string[];
   error?: string;
 };
 
@@ -30,15 +53,7 @@ const formatDate = (value: string | null) => {
   }).format(date);
 };
 
-const getMissingFields = (row: OnboardingRow) => {
-  const missing: string[] = [];
-
-  if (!row.email_relatorios?.trim()) missing.push('E-mail principal');
-  if (!row.estado_civil?.trim()) missing.push('Estado civil');
-  if (!row.cpf_representante?.trim()) missing.push('CPF');
-
-  return missing;
-};
+const getMissingFields = (row: OnboardingRow) => getContractMissingFields(row);
 
 const getStatusLabel = (status: string | null) => {
   switch (status) {
@@ -72,10 +87,13 @@ export const ContractAdmin: React.FC = () => {
   const [pinError, setPinError] = useState(false);
 
   const [rows, setRows] = useState<OnboardingRow[]>([]);
+  const [contractTemplate, setContractTemplate] = useState<ContractTemplateMeta | null>(null);
   const [loading, setLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+  const [actionMsg, setActionMsg] = useState('');
   const [lastSync, setLastSync] = useState<string | null>(null);
+  const [busyClient, setBusyClient] = useState<string | null>(null);
 
   const loadRows = async (options?: { silentAuth?: boolean }) => {
     setLoading(true);
@@ -98,6 +116,7 @@ export const ContractAdmin: React.FC = () => {
       if (!response.ok) throw new Error(payload.error || 'Nao foi possivel carregar os dados.');
 
       setRows(payload.rows ?? []);
+      setContractTemplate(payload.contractTemplate ?? null);
       setUnlocked(true);
       setLastSync(new Date().toISOString());
     } catch (err: unknown) {
@@ -107,6 +126,53 @@ export const ContractAdmin: React.FC = () => {
     } finally {
       setLoading(false);
       setCheckingSession(false);
+    }
+  };
+
+  const handleGenerateContract = async (row: OnboardingRow) => {
+    const clientId = row.cliente?.trim();
+
+    if (!clientId) {
+      setErrorMsg('Este registro nao possui identificacao de cliente para gerar o contrato.');
+      return;
+    }
+
+    setBusyClient(clientId);
+    setErrorMsg('');
+    setActionMsg('');
+
+    try {
+      const response = await fetch('/api/admin/contracts/generate', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        credentials: 'same-origin',
+        body: JSON.stringify({ client: clientId }),
+      });
+
+      if (response.status === 401) {
+        setUnlocked(false);
+        setRows([]);
+        setLastSync(null);
+        setContractTemplate(null);
+        throw new Error('Sessao expirada. Entre novamente.');
+      }
+
+      const payload = (await response.json()) as GenerateContractResponse;
+      if (!response.ok) {
+        const missing = payload.missingFields?.length
+          ? ` Faltando: ${payload.missingFields.join(', ')}.`
+          : '';
+        throw new Error((payload.error || 'Nao foi possivel gerar o contrato.') + missing);
+      }
+
+      setActionMsg(`Contrato atualizado para ${clientId}.`);
+      await loadRows();
+    } catch (err: unknown) {
+      setErrorMsg(err instanceof Error ? err.message : 'Nao foi possivel gerar o contrato.');
+    } finally {
+      setBusyClient(null);
     }
   };
 
@@ -153,8 +219,11 @@ export const ContractAdmin: React.FC = () => {
     } finally {
       setUnlocked(false);
       setRows([]);
+      setContractTemplate(null);
       setLastSync(null);
       setPin('');
+      setActionMsg('');
+      setErrorMsg('');
     }
   };
 
@@ -202,6 +271,12 @@ export const ContractAdmin: React.FC = () => {
             <p className="text-sm text-gray-400 mt-2">
               O cliente salva os campos faltantes no onboarding. Aqui voce acompanha o que ja chegou no Supabase.
             </p>
+            {contractTemplate && (
+              <p className="text-xs text-gray-500 mt-3">
+                Modelo ativo: <span className="text-white">{contractTemplate.name}</span>{' '}
+                <span className="text-gray-600">({contractTemplate.id})</span>
+              </p>
+            )}
           </div>
 
           <div className="flex items-center gap-3">
@@ -252,6 +327,12 @@ export const ContractAdmin: React.FC = () => {
           </div>
         )}
 
+        {actionMsg && !errorMsg && (
+          <div className="rounded-2xl border border-green-500/20 bg-green-500/10 px-4 py-3 text-sm text-green-200">
+            {actionMsg}
+          </div>
+        )}
+
         {!loading && rows.length === 0 && !errorMsg && (
           <div className="rounded-2xl border border-white/10 bg-white/5 px-5 py-6 text-sm text-gray-300">
             Nenhum registro encontrado em <code className="text-red-400">onboarding_dados</code>.
@@ -293,6 +374,25 @@ export const ContractAdmin: React.FC = () => {
                         <p className="text-sm text-white">{row.cpf_representante?.trim() || 'Nao enviado'}</p>
                       </div>
                     </div>
+
+                    <div className="grid gap-3 md:grid-cols-4">
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest text-gray-500">Razao social</p>
+                        <p className="text-sm text-white">{row.razao_social?.trim() || 'Nao salvo'}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest text-gray-500">CNPJ</p>
+                        <p className="text-sm text-white">{row.cnpj?.trim() || 'Nao salvo'}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest text-gray-500">CRECI</p>
+                        <p className="text-sm text-white">{row.creci?.trim() || 'Nao salvo'}</p>
+                      </div>
+                      <div>
+                        <p className="text-[10px] uppercase tracking-widest text-gray-500">Telefone</p>
+                        <p className="text-sm text-white">{row.telefone?.trim() || 'Nao salvo'}</p>
+                      </div>
+                    </div>
                   </div>
 
                   <div className="flex flex-col gap-3 lg:items-end">
@@ -323,18 +423,35 @@ export const ContractAdmin: React.FC = () => {
                     )}
                   </div>
 
-                  {row.contrato_link ? (
-                    <a
-                      href={row.contrato_link}
-                      target="_blank"
-                      rel="noreferrer"
-                      className="inline-flex items-center justify-center rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white hover:bg-white/10 transition-colors"
-                    >
-                      Abrir contrato
-                    </a>
-                  ) : (
-                    <span className="text-xs text-gray-500">Contrato ainda nao gerado</span>
-                  )}
+                  <div className="flex flex-wrap items-center gap-2">
+                    {row.contrato_link ? (
+                      <a
+                        href={row.contrato_link}
+                        target="_blank"
+                        rel="noreferrer"
+                        className="inline-flex items-center justify-center rounded-lg border border-white/10 bg-white/5 px-4 py-2 text-xs font-bold uppercase tracking-widest text-white hover:bg-white/10 transition-colors"
+                      >
+                        Abrir contrato
+                      </a>
+                    ) : (
+                      <span className="text-xs text-gray-500">Contrato ainda nao gerado</span>
+                    )}
+
+                    {missingFields.length === 0 && (
+                      <button
+                        type="button"
+                        onClick={() => void handleGenerateContract(row)}
+                        disabled={busyClient === (row.cliente?.trim() || '')}
+                        className="inline-flex items-center justify-center rounded-lg border border-red-500/30 bg-red-500/15 px-4 py-2 text-xs font-bold uppercase tracking-widest text-red-100 hover:bg-red-500/20 transition-colors disabled:opacity-50"
+                      >
+                        {busyClient === (row.cliente?.trim() || '')
+                          ? 'Gerando...'
+                          : row.contrato_link
+                            ? 'Gerar novamente'
+                            : 'Gerar contrato'}
+                      </button>
+                    )}
+                  </div>
                 </div>
               </article>
             );
