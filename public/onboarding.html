@@ -896,7 +896,7 @@ footer {
   <div class="nav-tag">Onboarding · Confidencial</div>
   <div class="nav-counter">
     <span class="n" id="nav-n">0</span>
-    <span>/ 12 itens</span>
+    <span>/ 16 itens</span>
   </div>
 </nav>
 
@@ -998,51 +998,70 @@ footer {
           <div class="card-desc">Faça o download do modelo de contrato em PDF clicando abaixo, assine digitalmente (DocuSign, gov.br, ou similar) e me envie. Após assinado por ambas as partes, o projeto está formalmente estabelecido.</div>
         </div>
       </div>
-      <div class="guide-btn" onclick="toggleGuide(this)">
-        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-        Baixar Modelo de Contrato
-      </div>
-      <div class="guide-panel">
-        <div class="guide-inner">
-          <div class="g-bar"></div>
-          <div class="g-text">
-            <a href="/Contrato_Fabio.pdf" download style="display: inline-flex; align-items: center; gap: 0.5rem; color: var(--gold-lt); text-decoration: underline; font-weight: bold; margin-top: 0.2rem;">
-              <svg width="16" height="16" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2" viewBox="0 0 24 24"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" x2="12" y1="15" y2="3"></line></svg>
-              Fazer Download do Contrato (.PDF)
-            </a>
-          </div>
-        </div>
-      </div>
       <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column;">
-          <label class="form-label">Arquivo do contrato assinado</label>
-          <div class="upload-zone" id="zone_contrato" onclick="document.getElementById('file_contrato').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleDrop(event,'contrato')">
-            <div class="upload-icon">
-              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+
+          <!-- Estado: pendente (padrão) -->
+          <div id="contrato-estado-pendente">
+            <div class="callout amber" style="margin-bottom:0.75rem;">
+              <div class="c-icon">✍</div>
+              <div class="c-body">
+                <strong>Assinatura Digital — Autentique</strong>
+                <p>O contrato será enviado para o seu e-mail. Você assina digitalmente com validade jurídica — sem imprimir nada.</p>
+              </div>
             </div>
-            <span class="upload-label">Enviar contrato assinado</span>
-            <span class="upload-sublabel">Clique ou arraste o arquivo aqui</span>
-            <span class="upload-hint">PDF, JPG, PNG — máx. 10MB</span>
+            <div class="form-group">
+              <label class="form-label" for="contrato_email">Seu e-mail para receber o contrato</label>
+              <input type="email" id="contrato_email" class="form-input" placeholder="seu@email.com.br" />
+            </div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.75rem;margin-top:0.75rem;">
+              <div class="form-group" style="margin:0">
+                <label class="form-label" for="contrato_estado_civil">Estado Civil</label>
+                <select id="contrato_estado_civil" class="form-input">
+                  <option value="" disabled selected>Selecione</option>
+                  <option value="Solteiro">Solteiro</option>
+                  <option value="Casado">Casado</option>
+                  <option value="Divorciado">Divorciado</option>
+                  <option value="Viúvo">Viúvo</option>
+                  <option value="União Estável">União Estável</option>
+                </select>
+              </div>
+              <div class="form-group" style="margin:0">
+                <label class="form-label" for="contrato_cpf">CPF</label>
+                <input type="text" id="contrato_cpf" class="form-input" placeholder="000.000.000-00" />
+              </div>
+            </div>
           </div>
-          <div class="upload-preview" id="preview_contrato">
-            <div class="upload-preview-icon">
-              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+
+          <!-- Estado: aguardando assinatura -->
+          <div id="contrato-estado-aguardando" style="display:none;">
+            <div class="callout amber">
+              <div class="c-icon">📧</div>
+              <div class="c-body">
+                <strong>Contrato enviado para assinatura</strong>
+                <p>Verifique seu e-mail e clique no link da Autentique para assinar digitalmente. Este item será marcado automaticamente assim que ambas as partes assinarem.</p>
+              </div>
             </div>
-            <div class="upload-file-info">
-              <span class="upload-filename" id="filename_contrato"></span>
-              <span class="upload-filesize" id="filesize_contrato"></span>
-            </div>
-            <span class="upload-check">&#10003; Pronto</span>
-            <button type="button" class="upload-remove" onclick="removeUpload('contrato')">Remover</button>
           </div>
-          <input type="file" id="file_contrato" accept=".pdf,image/jpeg,image/png,image/webp" style="display:none" onchange="handleUpload(this,'contrato')">
+
+          <!-- Estado: assinado -->
+          <div id="contrato-estado-assinado" style="display:none;">
+            <div class="callout green">
+              <div class="c-icon">✓</div>
+              <div class="c-body">
+                <strong>Contrato assinado digitalmente</strong>
+                <p>Ambas as partes assinaram. O projeto está formalmente estabelecido e o cronograma pode iniciar.</p>
+              </div>
+            </div>
+          </div>
+
         </div>
       </div>
       <div class="item-save-row">
         <span class="item-status" id="istatus-1"></span>
         <button class="btn-item-save" id="ibtn-1" onclick="saveItem1()">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-          Enviar Contrato
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M16.5 12L12 16.5m0 0L7.5 12m4.5 4.5V3"/></svg>
+          Confirmar Dados
         </button>
       </div>
     </div>
@@ -1151,18 +1170,18 @@ footer {
         <div class="cb"></div>
         <div class="card-body">
           <div class="card-title">Integração de Imóveis</div>
-          <div class="card-desc">Como encontrar: No painel VISTA → Configurações → Integrações → API Keys → Gerar Nova Chave.</div>
+          <div class="card-desc">Informe o usuário e senha de acesso ao painel VISTA. Utilizamos para sincronizar os imóveis automaticamente.</div>
         </div>
       </div>
       <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column;">
           <div class="form-group">
             <label class="form-label" for="vista_user">Usuário VISTA</label>
-            <input type="text" id="vista_user" class="form-input" placeholder="usuário@email.com" />
+            <input type="text" id="vista_user" class="form-input" placeholder="usuário@email.com" autocomplete="username" />
           </div>
           <div class="form-group">
-            <label class="form-label" for="vista_key">API Key VISTA</label>
-            <input type="text" id="vista_key" class="form-input" placeholder="Ex: vst_xxxxxxxxxxxxxxxx" />
+            <label class="form-label" for="vista_pass">Senha VISTA</label>
+            <input type="password" id="vista_pass" class="form-input" placeholder="••••••••" autocomplete="new-password" />
           </div>
         </div>
       </div>
@@ -1459,6 +1478,182 @@ footer {
     </div>
   </div>
 
+  <!-- ─── SEÇÃO 05 — DADOS DO NEGÓCIO ─────────────── -->
+  <div class="section">
+    <div class="sec-header reveal">
+      <div class="sec-num">05</div>
+      <div>
+        <div class="sec-title">Dados do Negócio</div>
+        <div class="sec-sub">Informações legais e de contato que serão publicadas no site.</div>
+      </div>
+    </div>
+    <div class="sec-rule"></div>
+
+    <div class="sub-lbl">Empresa</div>
+    <div class="card reveal" data-id="13">
+      <div class="card-row" onclick="toggle(this)">
+        <div class="cb"></div>
+        <div class="card-body">
+          <div class="card-title">Dados da Empresa</div>
+          <div class="card-desc">CNPJ, razão social e número do CRECI — obrigatórios por lei em sites de imobiliária.</div>
+        </div>
+      </div>
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="cnpj">CNPJ</label>
+            <input type="text" id="cnpj" class="form-input" placeholder="00.000.000/0001-00" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="razao_social">Razão Social</label>
+            <input type="text" id="razao_social" class="form-input" placeholder="UNUS Imóveis de Alto Padrão LTDA" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="creci">CRECI</label>
+            <input type="text" id="creci" class="form-input" placeholder="Ex: CRECI-SP 123456-J" />
+          </div>
+        </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-13"></span>
+        <button class="btn-item-save" id="ibtn-13" onclick="saveItem13()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
+      </div>
+    </div>
+
+    <div class="sub-lbl">Contato & Redes</div>
+    <div class="card reveal" data-id="14">
+      <div class="card-row" onclick="toggle(this)">
+        <div class="cb"></div>
+        <div class="card-body">
+          <div class="card-title">Contato & Redes Sociais</div>
+          <div class="card-desc">Endereço, telefone e links das redes sociais para o header e rodapé do site.</div>
+        </div>
+      </div>
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="endereco">Endereço do Escritório</label>
+            <input type="text" id="endereco" class="form-input" placeholder="Rua Exemplo, 123 — Bairro, Cidade - SP" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="telefone">Telefone de Contato</label>
+            <input type="tel" id="telefone" class="form-input" placeholder="(11) 99999-9999" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="instagram">Instagram</label>
+            <input type="url" id="instagram" class="form-input" placeholder="https://instagram.com/unusimoveis" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="facebook">Facebook</label>
+            <input type="url" id="facebook" class="form-input" placeholder="https://facebook.com/unusimoveis" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="youtube">YouTube</label>
+            <input type="url" id="youtube" class="form-input" placeholder="https://youtube.com/@unusimoveis" />
+          </div>
+        </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-14"></span>
+        <button class="btn-item-save" id="ibtn-14" onclick="saveItem14()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
+      </div>
+    </div>
+
+    <div class="sub-lbl">Hospedagem Atual</div>
+    <div class="card reveal" data-id="16">
+      <div class="card-row" onclick="toggle(this)">
+        <div class="cb"></div>
+        <div class="card-body">
+          <div class="card-title">Acesso à Hospedagem</div>
+          <div class="card-desc">Credenciais do painel de hospedagem atual (cPanel, Plesk ou similar) e acesso FTP — necessários para exportar o site durante a migração.</div>
+        </div>
+      </div>
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="hosting_provider">Provedor de Hospedagem</label>
+            <input type="text" id="hosting_provider" class="form-input" placeholder="Ex: HostGator, Locaweb, UOL Host…" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="hosting_url">URL do Painel</label>
+            <input type="url" id="hosting_url" class="form-input" placeholder="https://cpanel.seudominio.com.br" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="hosting_user">Usuário</label>
+            <input type="text" id="hosting_user" class="form-input" placeholder="Usuário de acesso ao painel" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="hosting_pass">Senha</label>
+            <input type="password" id="hosting_pass" class="form-input" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ftp_host">FTP — Host <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--subtle)">(opcional)</span></label>
+            <input type="text" id="ftp_host" class="form-input" placeholder="ftp.seudominio.com.br" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ftp_user">FTP — Usuário <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--subtle)">(opcional)</span></label>
+            <input type="text" id="ftp_user" class="form-input" placeholder="ftp@seudominio.com.br" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="ftp_pass">FTP — Senha <span style="font-weight:400;text-transform:none;letter-spacing:0;color:var(--subtle)">(opcional)</span></label>
+            <input type="password" id="ftp_pass" class="form-input" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+        </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-16"></span>
+        <button class="btn-item-save" id="ibtn-16" onclick="saveItem16()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
+      </div>
+    </div>
+
+    <div class="sub-lbl">DNS — Migração</div>
+    <div class="card reveal" data-id="15">
+      <div class="card-row" onclick="toggle(this)">
+        <div class="cb"></div>
+        <div class="card-body">
+          <div class="card-title">Acesso Registro.br</div>
+          <div class="card-desc">Necessário apenas no dia da migração final para atualizar os nameservers. Suas credenciais são armazenadas com segurança e descartadas após o uso.</div>
+        </div>
+      </div>
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="callout amber" style="margin-bottom:0.25rem;">
+            <div class="c-icon">⏳</div>
+            <div class="c-body">
+              <strong>Preencha somente próximo ao dia da migração</strong>
+              <p>Você pode completar todos os outros itens agora e deixar este para depois. Avisaremos quando for o momento certo.</p>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="registrobr_login">Login (CPF/CNPJ ou e-mail)</label>
+            <input type="text" id="registrobr_login" class="form-input" placeholder="CPF, CNPJ ou e-mail cadastrado" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="registrobr_pass">Senha</label>
+            <input type="password" id="registrobr_pass" class="form-input" placeholder="••••••••" autocomplete="new-password" />
+          </div>
+        </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-15"></span>
+        <button class="btn-item-save" id="ibtn-15" onclick="saveItem15()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
+      </div>
+    </div>
+
+  </div>
+
 </main>
 
 <!-- FOOTER -->
@@ -1471,7 +1666,7 @@ footer {
 </footer>
 
 <script>
-const TOTAL = 12;
+const TOTAL = 16;
 const done  = new Set();
 
 // toggle check
@@ -1642,10 +1837,9 @@ async function saveItem(btnId, statusId, itemKey, dataFn) {
     const sb  = getSupabase();
     var payload = await dataFn(sb);
     payload.cliente    = CLIENT_ID;
-    payload.secao      = itemKey;
     payload.updated_at = new Date().toISOString();
 
-    const { error } = await sb.from('onboarding_dados').insert([payload]);
+    const { error } = await sb.rpc('upsert_onboarding_dados', { p_payload: payload });
     if (error) throw error;
 
     status.style.display = 'block';
@@ -1653,6 +1847,15 @@ async function saveItem(btnId, statusId, itemKey, dataFn) {
     status.textContent   = '✓ Salvo com sucesso';
     btn.classList.add('saved');
     btn.innerHTML = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg> Enviado';
+
+    // Mark the corresponding checklist card as done
+    const cardNum = btnId.replace('ibtn-', '');
+    const card = document.querySelector('.card[data-id="' + cardNum + '"]');
+    if (card && !done.has(cardNum)) {
+      done.add(cardNum);
+      card.classList.add('done');
+      refresh();
+    }
   } catch (err) {
     console.error(err);
     status.style.display = 'block';
@@ -1664,14 +1867,90 @@ async function saveItem(btnId, statusId, itemKey, dataFn) {
   }
 }
 
-// Card 01 — Contrato assinado
+// Card 01 — Dados do contrato
 async function saveItem1() {
-  await saveItem('ibtn-1', 'istatus-1', 'contrato', async function(sb) {
-    document.getElementById('ibtn-1').innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">ENVIANDO…</span>';
-    var url = await uploadFileToStorage(sb, 'file_contrato', 'onboarding', 'contrato');
-    return { contrato_link: url };
-  });
+  const email       = (document.getElementById('contrato_email').value || '').trim();
+  const estadoCivil = (document.getElementById('contrato_estado_civil').value || '').trim();
+  const cpf         = (document.getElementById('contrato_cpf').value || '').trim();
+  const btn         = document.getElementById('ibtn-1');
+  const status      = document.getElementById('istatus-1');
+
+  if (!email) {
+    status.style.display = 'block';
+    status.style.color   = 'var(--gold-lt)';
+    status.textContent   = 'Informe seu e-mail.';
+    return;
+  }
+  if (!estadoCivil || !cpf) {
+    status.style.display = 'block';
+    status.style.color   = 'var(--gold-lt)';
+    status.textContent   = 'Preencha o estado civil e o CPF.';
+    return;
+  }
+
+  const origHTML = btn.innerHTML;
+  btn.disabled   = true;
+  btn.innerHTML  = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">SALVANDO…</span>';
+  status.style.display = 'none';
+
+  try {
+    const sb = getSupabase();
+    const { error } = await sb.rpc('upsert_onboarding_dados', {
+      p_payload: {
+        cliente:           CLIENT_ID,
+        email_relatorios:  email,
+        estado_civil:      estadoCivil,
+        cpf_representante: cpf,
+        updated_at:        new Date().toISOString(),
+      }
+    });
+    if (error) throw error;
+
+    document.getElementById('contrato-estado-pendente').style.display   = 'none';
+    document.getElementById('contrato-estado-aguardando').style.display = 'block';
+    status.style.display = 'block';
+    status.style.color   = 'var(--green)';
+    status.textContent   = '✓ Dados salvos. O contrato será enviado em breve.';
+    btn.classList.add('saved');
+    btn.innerHTML = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg> Enviado';
+    if (!done.has('1')) { done.add('1'); document.querySelector('.card[data-id="1"]').classList.add('done'); refresh(); }
+  } catch (err) {
+    status.style.display = 'block';
+    status.style.color   = 'var(--gold-lt)';
+    status.textContent   = traduzirErro(err);
+    btn.innerHTML = origHTML;
+  } finally {
+    btn.disabled = false;
+  }
 }
+
+// Verifica status do contrato ao carregar a página
+async function checkContratoStatus() {
+  try {
+    const sb = getSupabase();
+    const { data } = await sb.from('onboarding_dados')
+      .select('contrato_status')
+      .eq('cliente', CLIENT_ID)
+      .maybeSingle();
+    const st = data?.contrato_status;
+    if (st === 'aguardando_assinatura') {
+      document.getElementById('contrato-estado-pendente').style.display   = 'none';
+      document.getElementById('contrato-estado-aguardando').style.display = 'block';
+      const btn = document.getElementById('ibtn-1');
+      btn.classList.add('saved');
+      btn.innerHTML = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg> Enviado';
+    } else if (st === 'assinado') {
+      document.getElementById('contrato-estado-pendente').style.display  = 'none';
+      document.getElementById('contrato-estado-assinado').style.display  = 'block';
+      const btn = document.getElementById('ibtn-1');
+      btn.classList.add('saved');
+      btn.disabled  = true;
+      btn.innerHTML = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg> Assinado';
+      if (!done.has('1')) { done.add('1'); document.querySelector('.card[data-id="1"]').classList.add('done'); refresh(); }
+    }
+  } catch (_) { /* silencioso */ }
+}
+checkContratoStatus();
 
 // Card 02 — Comprovante PIX
 async function saveItem2() {
@@ -1694,7 +1973,7 @@ async function saveItem4() {
   await saveItem('ibtn-4', 'istatus-4', 'vista_api', async function() {
     return {
       vista_user: document.getElementById('vista_user').value,
-      vista_key:  document.getElementById('vista_key').value
+      vista_pass: document.getElementById('vista_pass').value
     };
   });
 }
@@ -1759,6 +2038,55 @@ async function saveItem11() {
 async function saveItem12() {
   await saveItem('ibtn-12', 'istatus-12', 'email_relatorios', async function() {
     return { email_relatorios: document.getElementById('email_relatorios').value };
+  });
+}
+
+// Card 13 — Dados da empresa
+async function saveItem13() {
+  await saveItem('ibtn-13', 'istatus-13', 'dados_empresa', async function() {
+    return {
+      cnpj:         document.getElementById('cnpj').value,
+      razao_social: document.getElementById('razao_social').value,
+      creci:        document.getElementById('creci').value,
+    };
+  });
+}
+
+// Card 14 — Contato & Redes Sociais
+async function saveItem14() {
+  await saveItem('ibtn-14', 'istatus-14', 'contato_redes', async function() {
+    return {
+      endereco:  document.getElementById('endereco').value,
+      telefone:  document.getElementById('telefone').value,
+      instagram: document.getElementById('instagram').value,
+      facebook:  document.getElementById('facebook').value,
+      youtube:   document.getElementById('youtube').value,
+    };
+  });
+}
+
+// Card 16 — Hospedagem
+async function saveItem16() {
+  await saveItem('ibtn-16', 'istatus-16', 'hospedagem', async function() {
+    return {
+      hosting_provider: document.getElementById('hosting_provider').value,
+      hosting_url:      document.getElementById('hosting_url').value,
+      hosting_user:     document.getElementById('hosting_user').value,
+      hosting_pass:     document.getElementById('hosting_pass').value,
+      ftp_host:         document.getElementById('ftp_host').value,
+      ftp_user:         document.getElementById('ftp_user').value,
+      ftp_pass:         document.getElementById('ftp_pass').value,
+    };
+  });
+}
+
+// Card 15 — Registro.br
+async function saveItem15() {
+  await saveItem('ibtn-15', 'istatus-15', 'registro_br', async function() {
+    return {
+      registrobr_login: document.getElementById('registrobr_login').value,
+      registrobr_pass:  document.getElementById('registrobr_pass').value,
+    };
   });
 }
 </script>

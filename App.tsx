@@ -11,8 +11,15 @@ import About from './components/About';
 import Contact from './components/Contact';
 import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
+import ContractAdmin from './components/ContractAdmin';
+
+const isAdmin = window.location.pathname === '/admin';
 
 function App() {
+  if (isAdmin) {
+    return <ContractAdmin />;
+  }
+
   return (
     <div className="bg-brand-black min-h-screen text-white font-sans selection:bg-brand-red selection:text-white overflow-x-hidden">
       <CustomCursor />
