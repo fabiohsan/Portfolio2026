@@ -896,7 +896,7 @@ footer {
   <div class="nav-tag">Onboarding · Confidencial</div>
   <div class="nav-counter">
     <span class="n" id="nav-n">0</span>
-    <span>/ 16 itens</span>
+      <span>/ 14 itens</span>
   </div>
 </nav>
 
@@ -927,7 +927,7 @@ footer {
 
     <div class="hero-stats">
       <div class="stat">
-        <div class="stat-num">16<span>.</span></div>
+        <div class="stat-num">14<span>.</span></div>
         <div class="stat-label">Itens no checklist</div>
       </div>
       <div class="stat">
@@ -1301,65 +1301,6 @@ footer {
       </div>
     </div>
 
-    <div class="sub-lbl">Banco de Imagens</div>
-    <div class="card reveal" data-id="8">
-      <div class="card-row" onclick="toggle(this)">
-        <div class="cb"></div>
-        <div class="card-body">
-          <div class="card-title">Fotos da Equipe — Mín. 2 MP</div>
-          <div class="card-desc">Fotografias profissionais para as páginas institucionais.</div>
-        </div>
-      </div>
-      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column;">
-          <div class="form-group">
-            <label class="form-label" for="photos_link">Link da pasta com as fotos</label>
-            <input type="text" id="photos_link" class="form-input" placeholder="WeTransfer, Google Drive ou Dropbox" />
-          </div>
-        </div>
-      </div>
-      <div class="item-save-row">
-        <span class="item-status" id="istatus-8"></span>
-        <button class="btn-item-save" id="ibtn-8" onclick="saveItem8()">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-          Confirmar
-        </button>
-      </div>
-    </div>
-
-    <div class="card reveal" data-id="9">
-      <div class="card-row" onclick="toggle(this)">
-        <div class="cb"></div>
-        <div class="card-body">
-          <div class="card-title">Vídeos Institucionais</div>
-          <div class="card-desc">Para o player do site (Bunny.net) ou YouTube. Formatos: MP4 (H.264), MOV ou link do YouTube/Vimeo. Qualidade mínima: 1080p Full HD.</div>
-        </div>
-      </div>
-      <div class="guide-btn" onclick="toggleGuide(this)">
-        <svg width="12" height="12" viewBox="0 0 12 12"><path d="M2 4l4 4 4-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" fill="none"/></svg>
-        Como enviar
-      </div>
-      <div class="guide-panel">
-        <div class="guide-inner"><div class="g-bar"></div><div class="g-text">Acima de 500 MB: <b>Google Drive</b> + compartilhe o link. Para vídeos publicados, envie apenas a URL do YouTube/Vimeo.</div></div>
-      </div>
-      <div class="card-alert">⚠ Não envie vídeos pelo WhatsApp — o app comprime e reduz resolução abaixo do mínimo necessário.</div>
-      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column;">
-          <div class="form-group">
-            <label class="form-label" for="videos_link">Link do(s) vídeo(s)</label>
-            <input type="text" id="videos_link" class="form-input" placeholder="YouTube, Vimeo, Google Drive ou WeTransfer" />
-          </div>
-        </div>
-      </div>
-      <div class="item-save-row">
-        <span class="item-status" id="istatus-9"></span>
-        <button class="btn-item-save" id="ibtn-9" onclick="saveItem9()">
-          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
-          Confirmar
-        </button>
-      </div>
-    </div>
-
     <div class="sub-lbl">Referências Visuais</div>
     <div class="card reveal" data-id="10">
       <div class="card-row" onclick="toggle(this)">
@@ -1666,13 +1607,15 @@ footer {
 </footer>
 
 <script>
-const TOTAL = 16;
+const TOTAL = 14;
 const done  = new Set();
 let onboardingCache = null;
 const SAVED_ICON = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>';
 const KNOWN_CLIENT_DATA = {
   cnpj: '27.451.245/0001-91',
-  endereco: 'K Platz Corporate - R. Elizeu di Bernardi, 34 - sala 601 - Campinas, Sao Jose - SC, 88101-050'
+  endereco: 'K Platz Corporate - R. Elizeu di Bernardi, 34 - sala 601 - Campinas, Sao Jose - SC, 88101-050',
+  razao_social: 'UNUS Nucleo Imobiliario',
+  creci: '5.067 J'
 };
 
 // toggle check
@@ -1852,6 +1795,8 @@ function lockPrefilledField(id, value) {
 function applyKnownClientData() {
   lockPrefilledField('cnpj', KNOWN_CLIENT_DATA.cnpj);
   lockPrefilledField('endereco', KNOWN_CLIENT_DATA.endereco);
+  lockPrefilledField('razao_social', KNOWN_CLIENT_DATA.razao_social);
+  lockPrefilledField('creci', KNOWN_CLIENT_DATA.creci);
 }
 
 function applyStaticCopy() {
@@ -1881,11 +1826,17 @@ function applyStaticCopy() {
 
   var companyDesc = document.querySelector('.card[data-id="13"] .card-desc');
   if (companyDesc) {
-    companyDesc.textContent = 'O CNPJ ja foi carregado a partir do contrato. Aqui falta apenas confirmar a razao social e informar o numero do CRECI.';
+    companyDesc.textContent = 'CNPJ, razao social e CRECI ja foram carregados a partir do contrato.';
   }
 
   var cnpjLabel = document.querySelector('label[for="cnpj"]');
   if (cnpjLabel) cnpjLabel.textContent = 'CNPJ (carregado do contrato)';
+
+  var razaoSocialLabel = document.querySelector('label[for="razao_social"]');
+  if (razaoSocialLabel) razaoSocialLabel.textContent = 'Razao social (carregada do contrato)';
+
+  var creciLabel = document.querySelector('label[for="creci"]');
+  if (creciLabel) creciLabel.textContent = 'CRECI (carregado do contrato)';
 
   var contactDesc = document.querySelector('.card[data-id="14"] .card-desc');
   if (contactDesc) {
@@ -2198,20 +2149,6 @@ async function saveItem7() {
   });
 }
 
-// Card 08 — Fotos da Equipe
-async function saveItem8() {
-  await saveItem('ibtn-8', 'istatus-8', 'fotos', async function() {
-    return { photos_link: document.getElementById('photos_link').value };
-  });
-}
-
-// Card 09 — Vídeos
-async function saveItem9() {
-  await saveItem('ibtn-9', 'istatus-9', 'videos', async function() {
-    return { videos_link: document.getElementById('videos_link').value };
-  });
-}
-
 // Card 10 — Benchmark
 async function saveItem10() {
   await saveItem('ibtn-10', 'istatus-10', 'benchmark', async function() {
@@ -2312,15 +2249,13 @@ function hydrateOnboarding(data) {
   setValue('wp_user', data.wp_user);
   setValue('wp_pass', data.wp_pass);
   setValue('brand_link', data.brand_link);
-  setValue('photos_link', data.photos_link);
-  setValue('videos_link', data.videos_link);
   setValue('benchmark_1', data.benchmark_1);
   setValue('benchmark_2', data.benchmark_2);
   setValue('benchmark_3', data.benchmark_3);
   setValue('whatsapp_numero', data.whatsapp_numero);
   setValue('cnpj', KNOWN_CLIENT_DATA.cnpj);
-  setValue('razao_social', data.razao_social);
-  setValue('creci', data.creci);
+  setValue('razao_social', data.razao_social || KNOWN_CLIENT_DATA.razao_social);
+  setValue('creci', data.creci || KNOWN_CLIENT_DATA.creci);
   setValue('endereco', KNOWN_CLIENT_DATA.endereco);
   setValue('telefone', data.telefone);
   setValue('instagram', data.instagram);
@@ -2342,12 +2277,10 @@ function hydrateOnboarding(data) {
   syncDoneState('5', isFilled(data.c2s_token), 'Enviado', false);
   syncDoneState('6', isFilled(data.wp_user) && isFilled(data.wp_pass), 'Enviado', false);
   syncDoneState('7', isFilled(data.brand_link), 'Enviado', false);
-  syncDoneState('8', isFilled(data.photos_link), 'Enviado', false);
-  syncDoneState('9', isFilled(data.videos_link), 'Enviado', false);
   syncDoneState('10', isFilled(data.benchmark_1) && isFilled(data.benchmark_2), 'Enviado', false);
   syncDoneState('11', isFilled(data.whatsapp_numero), 'Enviado', false);
   syncDoneState('12', isFilled(data.email_relatorios), 'Enviado', false);
-  syncDoneState('13', isFilled(data.cnpj || KNOWN_CLIENT_DATA.cnpj) && isFilled(data.razao_social) && isFilled(data.creci), 'Enviado', false);
+  syncDoneState('13', isFilled(data.cnpj || KNOWN_CLIENT_DATA.cnpj) && isFilled(data.razao_social || KNOWN_CLIENT_DATA.razao_social) && isFilled(data.creci || KNOWN_CLIENT_DATA.creci), 'Enviado', false);
   syncDoneState('14', isFilled(data.endereco || KNOWN_CLIENT_DATA.endereco) && isFilled(data.telefone), 'Enviado', false);
   syncDoneState('15', isFilled(data.registrobr_login) && isFilled(data.registrobr_pass), 'Enviado', false);
   syncDoneState('16', isFilled(data.hosting_provider) && isFilled(data.hosting_url) && isFilled(data.hosting_user) && isFilled(data.hosting_pass), 'Enviado', false);
@@ -2374,7 +2307,7 @@ async function loadSavedData() {
   try {
     const sb = getSupabase();
     const { data, error } = await sb.from('onboarding_dados')
-      .select('contrato_status,email_relatorios,estado_civil,cpf_representante,comprovante_nota,registro_id,vista_user,vista_pass,c2s_token,wp_user,wp_pass,brand_link,photos_link,videos_link,benchmark_1,benchmark_2,benchmark_3,whatsapp_numero,cnpj,razao_social,creci,endereco,telefone,instagram,facebook,youtube,hosting_provider,hosting_url,hosting_user,hosting_pass,ftp_host,ftp_user,ftp_pass,registrobr_login,registrobr_pass')
+      .select('contrato_status,email_relatorios,estado_civil,cpf_representante,comprovante_nota,registro_id,vista_user,vista_pass,c2s_token,wp_user,wp_pass,brand_link,benchmark_1,benchmark_2,benchmark_3,whatsapp_numero,cnpj,razao_social,creci,endereco,telefone,instagram,facebook,youtube,hosting_provider,hosting_url,hosting_user,hosting_pass,ftp_host,ftp_user,ftp_pass,registrobr_login,registrobr_pass')
       .eq('cliente', CLIENT_ID)
       .maybeSingle();
 
@@ -2493,22 +2426,6 @@ async function saveItem7() {
   if (!ensureFields('istatus-7', [{ value: brandLink, message: 'Envie o link da pasta com os arquivos da marca.' }])) return;
   await saveItem('ibtn-7', 'istatus-7', 'marca', async function() {
     return { brand_link: brandLink };
-  });
-}
-
-async function saveItem8() {
-  var photosLink = getValue('photos_link');
-  if (!ensureFields('istatus-8', [{ value: photosLink, message: 'Envie o link da pasta com as fotos.' }])) return;
-  await saveItem('ibtn-8', 'istatus-8', 'fotos', async function() {
-    return { photos_link: photosLink };
-  });
-}
-
-async function saveItem9() {
-  var videosLink = getValue('videos_link');
-  if (!ensureFields('istatus-9', [{ value: videosLink, message: 'Envie o link dos videos institucionais.' }])) return;
-  await saveItem('ibtn-9', 'istatus-9', 'videos', async function() {
-    return { videos_link: videosLink };
   });
 }
 
