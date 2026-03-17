@@ -651,44 +651,239 @@ footer {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  gap: 0.5rem;
-  padding: 1.4rem 1rem;
-  border: 1.5px dashed var(--div-lt);
+  gap: 0.75rem;
+  padding: 2rem 1.5rem;
+  border: 2px dashed var(--gold-dim);
   border-radius: var(--r);
-  background: var(--bg2);
+  background: linear-gradient(135deg, rgba(212,170,82,0.03) 0%, rgba(212,170,82,0.07) 100%);
   cursor: pointer;
-  transition: border-color .2s, background .2s;
+  transition: border-color .25s, background .25s, box-shadow .25s, transform .15s;
   text-align: center;
+  position: relative;
 }
-.upload-zone:hover { border-color: var(--gold-dim); background: var(--bg3); }
-.upload-zone svg { color: var(--muted); transition: color .2s; }
-.upload-zone:hover svg { color: var(--gold); }
-.upload-label { font-size: .8rem; color: var(--muted); font-weight: 500; }
-.upload-hint   { font-size: .7rem; color: var(--subtle); }
+.upload-zone:hover {
+  border-color: var(--gold);
+  background: linear-gradient(135deg, rgba(212,170,82,0.06) 0%, rgba(212,170,82,0.12) 100%);
+  box-shadow: 0 0 24px rgba(212,170,82,0.12), inset 0 0 20px rgba(212,170,82,0.04);
+  transform: translateY(-1px);
+}
+.upload-zone.dragover {
+  border-color: var(--gold-lt);
+  background: rgba(212,170,82,0.14);
+  box-shadow: 0 0 32px rgba(212,170,82,0.2);
+}
+.upload-icon {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: rgba(212,170,82,0.1);
+  border: 1.5px solid rgba(212,170,82,0.25);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background .25s, border-color .25s;
+}
+.upload-zone:hover .upload-icon {
+  background: rgba(212,170,82,0.18);
+  border-color: var(--gold);
+}
+.upload-icon svg { color: var(--gold); }
+.upload-label {
+  font-size: 0.9rem;
+  color: var(--text-hi);
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+.upload-sublabel {
+  font-size: 0.78rem;
+  color: var(--gold-dim);
+  font-weight: 500;
+}
+.upload-hint {
+  font-size: 0.7rem;
+  color: var(--muted);
+  margin-top: 0.1rem;
+}
+
+/* preview após selecionar arquivo */
 .upload-preview {
   display: none;
   align-items: center;
-  gap: 0.75rem;
-  padding: 0.75rem 1rem;
-  border: 1px solid var(--div-lt);
+  gap: 0.85rem;
+  padding: 0.85rem 1.1rem;
+  border: 1.5px solid rgba(212,170,82,0.3);
   border-radius: var(--r);
-  background: var(--bg3);
+  background: linear-gradient(135deg, rgba(212,170,82,0.04) 0%, rgba(212,170,82,0.08) 100%);
 }
-.upload-preview svg { color: var(--gold); flex-shrink: 0; }
-.upload-filename { flex: 1; font-size: .8rem; color: var(--text-hi); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.upload-preview-icon {
+  width: 36px; height: 36px;
+  border-radius: 8px;
+  background: rgba(212,170,82,0.12);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+.upload-preview-icon svg { color: var(--gold); }
+.upload-file-info { flex: 1; min-width: 0; }
+.upload-filename {
+  font-size: 0.82rem;
+  color: var(--text-hi);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+.upload-filesize {
+  font-size: 0.72rem;
+  color: var(--gold-dim);
+  margin-top: 0.15rem;
+  display: block;
+}
+.upload-check {
+  color: var(--green);
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  flex-shrink: 0;
+}
 .upload-remove {
-  background: none; border: none; cursor: pointer;
-  color: var(--muted); font-size: .9rem; padding: 0.1rem 0.3rem;
-  border-radius: 4px; transition: color .2s, background .2s; flex-shrink: 0;
+  background: var(--bg4);
+  border: 1px solid var(--div-lt);
+  cursor: pointer;
+  color: var(--muted);
+  font-size: 0.75rem;
+  padding: 0.3rem 0.55rem;
+  border-radius: 6px;
+  transition: color .2s, background .2s, border-color .2s;
+  flex-shrink: 0;
+  font-weight: 600;
 }
-.upload-remove:hover { color: var(--white); background: var(--bg4); }
+.upload-remove:hover {
+  color: var(--white);
+  background: rgba(255,80,80,0.15);
+  border-color: rgba(255,80,80,0.3);
+}
+
+/* ─── SECTION SAVE BUTTON ──────────────────────── */
+.section-save {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  margin-top: 1.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid var(--div);
+}
+.btn-section-save {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  width: 100%;
+  padding: 0.9rem 1.5rem;
+  background: var(--bg3);
+  border: 1.5px solid var(--gold-dim);
+  border-radius: 8px;
+  color: var(--gold-lt);
+  font-size: 0.85rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+}
+.btn-section-save:hover {
+  background: rgba(212,170,82,0.1);
+  border-color: var(--gold);
+  color: var(--white);
+  box-shadow: 0 0 16px rgba(212,170,82,0.1);
+}
+.btn-section-save:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+.btn-section-save.saved {
+  background: var(--green-bg);
+  border-color: rgba(110,192,110,0.3);
+  color: var(--green);
+}
+.section-status {
+  font-size: 0.78rem;
+  text-align: center;
+  display: none;
+}
 
 .guide-btn:focus-visible {
   outline: 2px solid var(--gold-dim);
   outline-offset: -2px;
 }
 
+/* ─── PER-ITEM SAVE ─────────────────────────────── */
+.item-save-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.85rem 1.4rem;
+  border-top: 1px solid var(--div);
+  background: var(--bg2);
+}
+.item-status {
+  font-size: 0.75rem;
+  font-weight: 600;
+  flex: 1;
+  display: none;
+}
+.btn-item-save {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  padding: 0.55rem 1.2rem;
+  background: transparent;
+  border: 1.5px solid var(--gold-dim);
+  border-radius: 6px;
+  color: var(--gold-lt);
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 0.07em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background .2s, border-color .2s, color .2s, box-shadow .2s;
+  white-space: nowrap;
+  flex-shrink: 0;
+  font-family: inherit;
+}
+.btn-item-save:hover {
+  background: rgba(212,170,82,0.1);
+  border-color: var(--gold);
+  color: var(--white);
+  box-shadow: 0 0 12px rgba(212,170,82,0.06);
+}
+.btn-item-save:disabled { opacity: 0.5; cursor: not-allowed; }
+.btn-item-save.saved {
+  background: var(--green-bg);
+  border-color: rgba(110,192,110,0.3);
+  color: var(--green);
+}
+
+/* ─── FORM GROUPS ───────────────────────────────── */
+.form-group { display: flex; flex-direction: column; gap: 0.45rem; margin-bottom: 0.1rem; }
+.form-label {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  padding-left: 2px;
+}
+.guide-panel.form-panel .guide-inner {
+  padding: 1.25rem 1.4rem;
+  gap: 0.9rem;
+}
+
 </style>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </head>
 <body>
 
@@ -724,7 +919,7 @@ footer {
     <p class="hero-tagline">Imóveis de Alto Padrão — Luiz Henrique Filho</p>
 
     <div class="hero-chips">
-      <div class="chip"><b>unus.com.br</b></div>
+      <div class="chip"><b>unusnucleoimobiliario.com.br</b></div>
       <div class="chip">600 imóveis · <b>VISTA API</b></div>
       <div class="chip">CRM · <b>C2S</b></div>
       <div class="chip">Novo servidor · <b>Brasil</b></div>
@@ -771,7 +966,7 @@ footer {
 
     <div class="project-table">
       <div class="pt-row"><div class="pt-label">Cliente</div><div class="pt-val">Luiz Henrique Filho</div></div>
-      <div class="pt-row"><div class="pt-label">Site atual</div><div class="pt-val">unus.com.br — servidor Europa (migração inclusa)</div></div>
+      <div class="pt-row"><div class="pt-label">Site atual</div><div class="pt-val">unusnucleoimobiliario.com.br — servidor Europa (migração inclusa)</div></div>
       <div class="pt-row"><div class="pt-label">Novo servidor</div><div class="pt-val">Brasil — ambiente paralelo, risco zero</div></div>
       <div class="pt-row"><div class="pt-label">Portfólio</div><div class="pt-val">600 imóveis via VISTA API — integração automatizada</div></div>
       <div class="pt-row"><div class="pt-label">CRM de leads</div><div class="pt-val">C2S — funil de vendas automático</div></div>
@@ -818,21 +1013,37 @@ footer {
           </div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Após assinar, envie o arquivo do contrato</b></div>
-          <div class="upload-zone" id="zone_contrato" onclick="document.getElementById('file_contrato').click()">
-            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-            <span class="upload-label">Clique para enviar o contrato</span>
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <label class="form-label">Arquivo do contrato assinado</label>
+          <div class="upload-zone" id="zone_contrato" onclick="document.getElementById('file_contrato').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleDrop(event,'contrato')">
+            <div class="upload-icon">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+            </div>
+            <span class="upload-label">Enviar contrato assinado</span>
+            <span class="upload-sublabel">Clique ou arraste o arquivo aqui</span>
             <span class="upload-hint">PDF, JPG, PNG — máx. 10MB</span>
           </div>
           <div class="upload-preview" id="preview_contrato">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            <span class="upload-filename" id="filename_contrato"></span>
-            <button type="button" class="upload-remove" onclick="removeUpload('contrato')">✕</button>
+            <div class="upload-preview-icon">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            </div>
+            <div class="upload-file-info">
+              <span class="upload-filename" id="filename_contrato"></span>
+              <span class="upload-filesize" id="filesize_contrato"></span>
+            </div>
+            <span class="upload-check">&#10003; Pronto</span>
+            <button type="button" class="upload-remove" onclick="removeUpload('contrato')">Remover</button>
           </div>
           <input type="file" id="file_contrato" accept=".pdf,image/jpeg,image/png,image/webp" style="display:none" onchange="handleUpload(this,'contrato')">
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-1"></span>
+        <button class="btn-item-save" id="ibtn-1" onclick="saveItem1()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+          Enviar Contrato
+        </button>
       </div>
     </div>
 
@@ -842,7 +1053,7 @@ footer {
         <div class="cb"></div>
         <div class="card-body">
           <div class="card-title">Comprovante do Sinal — 50%</div>
-          <div class="card-desc">Confirmação do pagamento da primeira parcela. Cole o link do comprovante no campo abaixo ou, se preferir, envie diretamente pelo WhatsApp do projeto e escreva "Enviado via WhatsApp" no campo.</div>
+          <div class="card-desc">Confirmação do pagamento da primeira parcela. Envie a imagem ou PDF do comprovante no campo abaixo.</div>
         </div>
       </div>
       <div class="guide-btn" onclick="toggleGuide(this)">
@@ -858,22 +1069,46 @@ footer {
           </div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Envie a imagem ou PDF do comprovante</b></div>
-          <div class="upload-zone" id="zone_comprovante" onclick="document.getElementById('file_comprovante').click()">
-            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
-            <span class="upload-label">Clique para enviar o comprovante PIX</span>
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <label class="form-label">Comprovante de pagamento</label>
+          <div class="upload-zone" id="zone_comprovante" onclick="document.getElementById('file_comprovante').click()" ondragover="event.preventDefault();this.classList.add('dragover')" ondragleave="this.classList.remove('dragover')" ondrop="event.preventDefault();this.classList.remove('dragover');handleDrop(event,'comprovante')">
+            <div class="upload-icon">
+              <svg width="20" height="20" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg>
+            </div>
+            <span class="upload-label">Enviar comprovante PIX</span>
+            <span class="upload-sublabel">Clique ou arraste a imagem aqui</span>
             <span class="upload-hint">JPG, PNG, PDF — máx. 10MB</span>
           </div>
           <div class="upload-preview" id="preview_comprovante">
-            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
-            <span class="upload-filename" id="filename_comprovante"></span>
-            <button type="button" class="upload-remove" onclick="removeUpload('comprovante')">✕</button>
+            <div class="upload-preview-icon" id="thumb_comprovante">
+              <svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg>
+            </div>
+            <div class="upload-file-info">
+              <span class="upload-filename" id="filename_comprovante"></span>
+              <span class="upload-filesize" id="filesize_comprovante"></span>
+            </div>
+            <span class="upload-check">&#10003; Pronto</span>
+            <button type="button" class="upload-remove" onclick="removeUpload('comprovante')">Remover</button>
           </div>
           <input type="file" id="file_comprovante" accept="image/jpeg,image/png,image/webp,.pdf" style="display:none" onchange="handleUpload(this,'comprovante')">
         </div>
       </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-2"></span>
+        <button class="btn-item-save" id="ibtn-2" onclick="saveItem2()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+          Enviar Comprovante
+        </button>
+      </div>
+    </div>
+
+    <div class="section-save" style="display:none">
+      <button class="btn-section-save" id="btn-s1" onclick="saveSection1()">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+        Salvar Seção 01
+      </button>
+      <div class="section-status" id="status-s1"></div>
     </div>
   </div>
 
@@ -890,14 +1125,23 @@ footer {
         <div class="cb"></div>
         <div class="card-body">
           <div class="card-title">Domínio</div>
-          <div class="card-desc">Como fazer: Registro.br → Meu Registro → unus.com.br → Contatos → Adicionar Contato Técnico.</div>
+          <div class="card-desc">Como fazer: Registro.br → Meu Registro → unusnucleoimobiliario.com.br → Contatos → Adicionar Contato Técnico.</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Seu ID ou E-mail no Registro.br</b></div>
-          <input type="text" id="registro_id" class="form-input" placeholder="Ex: FABIO123" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="registro_id">Seu ID ou E-mail no Registro.br</label>
+            <input type="text" id="registro_id" class="form-input" placeholder="Ex: FABIO123" />
+          </div>
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-3"></span>
+        <button class="btn-item-save" id="ibtn-3" onclick="saveItem3()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
       </div>
     </div>
 
@@ -910,13 +1154,24 @@ footer {
           <div class="card-desc">Como encontrar: No painel VISTA → Configurações → Integrações → API Keys → Gerar Nova Chave.</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Usuário VISTA</b></div>
-          <input type="text" id="vista_user" class="form-input" placeholder="Usuário VISTA" />
-          <div class="g-text"><b>API Key VISTA</b></div>
-          <input type="text" id="vista_key" class="form-input" placeholder="API Key VISTA" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="vista_user">Usuário VISTA</label>
+            <input type="text" id="vista_user" class="form-input" placeholder="usuário@email.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="vista_key">API Key VISTA</label>
+            <input type="text" id="vista_key" class="form-input" placeholder="Ex: vst_xxxxxxxxxxxxxxxx" />
+          </div>
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-4"></span>
+        <button class="btn-item-save" id="ibtn-4" onclick="saveItem4()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
       </div>
     </div>
 
@@ -929,11 +1184,20 @@ footer {
           <div class="card-desc">Como encontrar: No painel C2S → Perfil / Configurações → API → Token de Acesso → Copiar.</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Cole aqui o Token C2S</b></div>
-          <input type="text" id="c2s_token" class="form-input" placeholder="Token C2S" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="c2s_token">Token de Acesso C2S</label>
+            <input type="text" id="c2s_token" class="form-input" placeholder="Cole o token aqui" />
+          </div>
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-5"></span>
+        <button class="btn-item-save" id="ibtn-5" onclick="saveItem5()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
       </div>
     </div>
 
@@ -946,13 +1210,24 @@ footer {
           <div class="card-desc">Credenciais WordPress para gestão de conteúdo.</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Usuário WordPress</b></div>
-          <input type="text" id="wp_user" class="form-input" placeholder="Admin ou editor" />
-          <div class="g-text"><b>Senha Temporária WordPress</b></div>
-          <input type="password" id="wp_pass" class="form-input" placeholder="Senha Temporária WordPress" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="wp_user">Usuário WordPress</label>
+            <input type="text" id="wp_user" class="form-input" placeholder="admin ou editor" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="wp_pass">Senha Temporária</label>
+            <input type="password" id="wp_pass" class="form-input" placeholder="••••••••" autocomplete="new-password" />
+          </div>
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-6"></span>
+        <button class="btn-item-save" id="ibtn-6" onclick="saveItem6()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
       </div>
     </div>
 
@@ -960,8 +1235,16 @@ footer {
       <div class="c-icon">✓</div>
       <div class="c-body">
         <strong>Risco Zero para o Site Atual</strong>
-        <p>O site unus.com.br permanece 100% ativo e intocado durante todo o desenvolvimento. Trabalhamos em ambiente paralelo. A migração final ocorre em minutos, com rollback imediato disponível. Nenhum visitante, lead ou conteúdo é perdido.</p>
+        <p>O site unusnucleoimobiliario.com.br permanece 100% ativo e intocado durante todo o desenvolvimento. Trabalhamos em ambiente paralelo. A migração final ocorre em minutos, com rollback imediato disponível. Nenhum visitante, lead ou conteúdo é perdido.</p>
       </div>
+    </div>
+
+    <div class="section-save" style="display:none">
+      <button class="btn-section-save" id="btn-s2" onclick="saveSection2()">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+        Salvar Seção 02
+      </button>
+      <div class="section-status" id="status-s2"></div>
     </div>
 
   </div>
@@ -982,10 +1265,20 @@ footer {
           <div class="card-desc">SVG, AI ou EPS — todas as versões (positivo, negativo, monocromático).</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <input type="text" id="brand_link" class="form-input" placeholder="Link WeTransfer / Google Drive (Logos)" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="brand_link">Link da pasta com os arquivos</label>
+            <input type="text" id="brand_link" class="form-input" placeholder="WeTransfer, Google Drive ou Dropbox" />
+          </div>
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-7"></span>
+        <button class="btn-item-save" id="ibtn-7" onclick="saveItem7()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
       </div>
     </div>
 
@@ -998,10 +1291,20 @@ footer {
           <div class="card-desc">Fotografias profissionais para as páginas institucionais.</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; margin-top: 1rem; padding-top: 1rem; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <input type="text" id="photos_link" class="form-input" placeholder="Link WeTransfer / Google Drive (Fotos)" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="photos_link">Link da pasta com as fotos</label>
+            <input type="text" id="photos_link" class="form-input" placeholder="WeTransfer, Google Drive ou Dropbox" />
+          </div>
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-8"></span>
+        <button class="btn-item-save" id="ibtn-8" onclick="saveItem8()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
       </div>
     </div>
 
@@ -1021,11 +1324,20 @@ footer {
         <div class="guide-inner"><div class="g-bar"></div><div class="g-text">Acima de 500 MB: <b>Google Drive</b> + compartilhe o link. Para vídeos publicados, envie apenas a URL do YouTube/Vimeo.</div></div>
       </div>
       <div class="card-alert">⚠ Não envie vídeos pelo WhatsApp — o app comprime e reduz resolução abaixo do mínimo necessário.</div>
-      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Link do(s) vídeo(s)</b></div>
-          <input type="text" id="videos_link" class="form-input" placeholder="YouTube, Vimeo, Google Drive ou WeTransfer" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="videos_link">Link do(s) vídeo(s)</label>
+            <input type="text" id="videos_link" class="form-input" placeholder="YouTube, Vimeo, Google Drive ou WeTransfer" />
+          </div>
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-9"></span>
+        <button class="btn-item-save" id="ibtn-9" onclick="saveItem9()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
       </div>
     </div>
 
@@ -1045,14 +1357,37 @@ footer {
       <div class="guide-panel">
         <div class="guide-inner"><div class="g-bar"></div><div class="g-text">Referências internacionais: sothebysrealty.com · christiesrealestate.com · compass.com. Qualquer portal que você admire — nacional ou internacional — serve como referência válida.</div></div>
       </div>
-      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Cole os links dos sites de referência</b></div>
-          <input type="text" id="benchmark_1" class="form-input" placeholder="Site de referência 1 (ex: sothebysrealty.com)" />
-          <input type="text" id="benchmark_2" class="form-input" placeholder="Site de referência 2" />
-          <input type="text" id="benchmark_3" class="form-input" placeholder="Site de referência 3 (opcional)" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="benchmark_1">Site de referência 1</label>
+            <input type="text" id="benchmark_1" class="form-input" placeholder="ex: sothebysrealty.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="benchmark_2">Site de referência 2</label>
+            <input type="text" id="benchmark_2" class="form-input" placeholder="ex: christiesrealestate.com" />
+          </div>
+          <div class="form-group">
+            <label class="form-label" for="benchmark_3">Site de referência 3 <span style="font-weight:400;opacity:.6">(opcional)</span></label>
+            <input type="text" id="benchmark_3" class="form-input" placeholder="ex: compass.com" />
+          </div>
         </div>
       </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-10"></span>
+        <button class="btn-item-save" id="ibtn-10" onclick="saveItem10()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
+      </div>
+    </div>
+
+    <div class="section-save" style="display:none">
+      <button class="btn-section-save" id="btn-s3" onclick="saveSection3()">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+        Salvar Seção 03
+      </button>
+      <div class="section-status" id="status-s3"></div>
     </div>
   </div>
 
@@ -1072,11 +1407,20 @@ footer {
           <div class="card-desc">Para alinhar entregas, revisar protótipos e aprovar etapas. Reuniões curtas, objetivas — por Google Meet ou WhatsApp Video. Informe seus dias e horários preferenciais.</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Dias e horários de preferência</b></div>
-          <input type="text" id="whatsapp_numero" class="form-input" placeholder="Ex: Terças e quintas, após 18h" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="whatsapp_numero">Dias e horários de preferência</label>
+            <input type="text" id="whatsapp_numero" class="form-input" placeholder="Ex: Terças e quintas, após 18h" />
+          </div>
         </div>
+      </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-11"></span>
+        <button class="btn-item-save" id="ibtn-11" onclick="saveItem11()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
       </div>
     </div>
 
@@ -1089,24 +1433,29 @@ footer {
           <div class="card-desc">Enviaremos atualizações semanais de progresso, links de preview e solicitações de aprovação para este e-mail.</div>
         </div>
       </div>
-      <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
-        <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>E-mail para receber os relatórios</b></div>
-          <input type="email" id="email_relatorios" class="form-input" placeholder="seu@email.com.br" />
+      <div class="guide-panel form-panel" style="display:block; border-top: 1px solid var(--div-lt);">
+        <div class="guide-inner" style="flex-direction: column;">
+          <div class="form-group">
+            <label class="form-label" for="email_relatorios">E-mail para receber os relatórios</label>
+            <input type="email" id="email_relatorios" class="form-input" placeholder="seu@email.com.br" />
+          </div>
         </div>
       </div>
+      <div class="item-save-row">
+        <span class="item-status" id="istatus-12"></span>
+        <button class="btn-item-save" id="ibtn-12" onclick="saveItem12()">
+          <svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+          Confirmar
+        </button>
+      </div>
     </div>
-  </div>
 
-  <!-- ═══ ENVIAR TUDO ═══ -->
-  <div class="section-block reveal" style="padding-top: 3rem;">
-    <div class="sec-rule"></div>
-    <div style="display: flex; flex-direction: column; gap: 1rem;">
-      <button id="btn-save-supabase" onclick="saveToSupabase()" style="background: var(--gold); color: #000; font-weight: bold; border: none; padding: 1.2rem 2rem; font-size: 1rem; border-radius: 4px; cursor: pointer; transition: 0.2s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 0.5rem;">
-        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-        Enviar Todos os Dados com Segurança
+    <div class="section-save" style="display:none">
+      <button class="btn-section-save" id="btn-s4" onclick="saveSection4()">
+        <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>
+        Salvar Seção 04
       </button>
-      <div id="save-status" style="font-size: 0.9rem; text-align: center; color: var(--gold-lt); display: none;">Dados salvos com sucesso!</div>
+      <div class="section-status" id="status-s4"></div>
     </div>
   </div>
 
@@ -1173,18 +1522,68 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 refresh();
 
 // Upload helpers
-function handleUpload(input, key) {
-  const file = input.files[0];
-  if (!file) return;
+const ALLOWED_TYPES = ['image/jpeg','image/png','image/webp','application/pdf'];
+const MAX_SIZE = 10 * 1024 * 1024; // 10MB
+
+function formatSize(bytes) {
+  if (bytes < 1024) return bytes + ' B';
+  if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(0) + ' KB';
+  return (bytes / 1024 / 1024).toFixed(1) + ' MB';
+}
+
+function processFile(file, key) {
+  if (!ALLOWED_TYPES.includes(file.type)) {
+    alert('Formato não aceito. Envie JPG, PNG, WebP ou PDF.');
+    return false;
+  }
+  if (file.size > MAX_SIZE) {
+    alert('Arquivo muito grande. O limite é 10MB.');
+    return false;
+  }
   document.getElementById('zone_' + key).style.display = 'none';
   document.getElementById('preview_' + key).style.display = 'flex';
   document.getElementById('filename_' + key).textContent = file.name;
+  document.getElementById('filesize_' + key).textContent = formatSize(file.size);
+
+  // thumbnail para imagens no comprovante
+  var thumb = document.getElementById('thumb_' + key);
+  if (thumb && file.type.startsWith('image/')) {
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      thumb.innerHTML = '<img src="' + e.target.result + '" style="width:36px;height:36px;object-fit:cover;border-radius:6px;">';
+    };
+    reader.readAsDataURL(file);
+  }
+  return true;
+}
+
+function handleUpload(input, key) {
+  var file = input.files[0];
+  if (!file) return;
+  if (!processFile(file, key)) {
+    input.value = '';
+  }
+}
+
+function handleDrop(event, key) {
+  var file = event.dataTransfer.files[0];
+  if (!file) return;
+  if (processFile(file, key)) {
+    // copiar o file para o input hidden
+    var dt = new DataTransfer();
+    dt.items.add(file);
+    document.getElementById('file_' + key).files = dt.files;
+  }
 }
 
 function removeUpload(key) {
   document.getElementById('file_' + key).value = '';
   document.getElementById('preview_' + key).style.display = 'none';
   document.getElementById('zone_' + key).style.display = 'flex';
+  var thumb = document.getElementById('thumb_' + key);
+  if (thumb) {
+    thumb.innerHTML = '<svg width="18" height="18" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M2.25 15.75l5.159-5.159a2.25 2.25 0 013.182 0l5.159 5.159m-1.5-1.5l1.409-1.409a2.25 2.25 0 013.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0022.5 18.75V5.25A2.25 2.25 0 0020.25 3H3.75A2.25 2.25 0 001.5 5.25v13.5A2.25 2.25 0 003.75 21z"/></svg>';
+  }
 }
 
 async function uploadFileToStorage(supabase, inputId, bucket, prefix) {
@@ -1198,81 +1597,147 @@ async function uploadFileToStorage(supabase, inputId, bucket, prefix) {
   return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
 }
 
-// Supabase Logic
-async function saveToSupabase() {
-  const btn = document.getElementById('btn-save-supabase');
-  const status = document.getElementById('save-status');
-  btn.innerText = "Salvando...";
-  btn.style.opacity = "0.7";
-  btn.style.pointerEvents = "none";
-  const registroId      = document.getElementById('registro_id').value;
-  const vistaUser       = document.getElementById('vista_user').value;
-  const vistaKey        = document.getElementById('vista_key').value;
-  const c2sToken        = document.getElementById('c2s_token').value;
-  const wpUser          = document.getElementById('wp_user').value;
-  const wpPass          = document.getElementById('wp_pass').value;
-  const brandLink       = document.getElementById('brand_link').value;
-  const photosLink      = document.getElementById('photos_link').value;
-  const videosLink      = document.getElementById('videos_link').value;
-  const benchmark1      = document.getElementById('benchmark_1').value;
-  const benchmark2      = document.getElementById('benchmark_2').value;
-  const benchmark3      = document.getElementById('benchmark_3').value;
-  const whatsappNumero  = document.getElementById('whatsapp_numero').value;
-  const emailRelatorios = document.getElementById('email_relatorios').value;
+// ─── Supabase config ────────────────────────────────
+const SUPABASE_URL     = 'https://koodphmrnnyngpdzqvah.supabase.co';
+const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtvb2RwaG1ybm55bmdwZHpxdmFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxOTI2NTMsImV4cCI6MjA4MDc2ODY1M30.kEDecgxP2lEnchXDBOBz7aYlgYUBY65qI5O5NUs2VF4';
+const CLIENT_ID        = 'Luiz - UNUS';
 
-  const SUPABASE_URL = 'https://koodphmrnnyngpdzqvah.supabase.co';
-  const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Imtvb2RwaG1ybm55bmdwZHpxdmFoIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NjUxOTI2NTMsImV4cCI6MjA4MDc2ODY1M30.kEDecgxP2lEnchXDBOBz7aYlgYUBY65qI5O5NUs2VF4';
+function getSupabase() {
+  return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+}
+
+// ─── Generic per-item save ───────────────────────────
+async function saveItem(btnId, statusId, itemKey, dataFn) {
+  const btn    = document.getElementById(btnId);
+  const status = document.getElementById(statusId);
+  const origHTML = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">SALVANDO…</span>';
+  status.style.display = 'none';
 
   try {
-    const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+    const sb  = getSupabase();
+    var payload = await dataFn(sb);
+    payload.cliente    = CLIENT_ID;
+    payload.item       = itemKey;
+    payload.updated_at = new Date().toISOString();
 
-    const contratoLink    = await uploadFileToStorage(supabase, 'file_contrato',    'onboarding', 'contrato');
-    const comprovanteNota = await uploadFileToStorage(supabase, 'file_comprovante', 'onboarding', 'comprovante');
-
-    const { data, error } = await supabase
-      .from('onboarding_dados')
-      .insert([
-        {
-          cliente:          'Luiz - UNUS',
-          contrato_link:    contratoLink,
-          comprovante_nota: comprovanteNota,
-          registro_id:      registroId,
-          vista_user:       vistaUser,
-          vista_key:        vistaKey,
-          c2s_token:        c2sToken,
-          wp_user:          wpUser,
-          wp_pass:          wpPass,
-          brand_link:       brandLink,
-          photos_link:      photosLink,
-          videos_link:      videosLink,
-          benchmark_1:      benchmark1,
-          benchmark_2:      benchmark2,
-          benchmark_3:      benchmark3,
-          whatsapp_numero:  whatsappNumero,
-          email_relatorios: emailRelatorios
-        }
-      ]);
-
+    const { error } = await sb.from('onboarding_dados').insert([payload]);
     if (error) throw error;
-    
-    status.style.display = "block";
-    status.style.color = "var(--green)";
-    status.innerText = "✓ Dados salvos e enviados com sucesso!";
-    
+
+    status.style.display = 'block';
+    status.style.color   = 'var(--green)';
+    status.textContent   = '✓ Salvo com sucesso';
+    btn.classList.add('saved');
+    btn.innerHTML = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg> Enviado';
   } catch (err) {
     console.error(err);
-    status.style.display = "block";
-    status.style.color = 'var(--gold-lt)';
-    status.innerText = "Conexão de segurança aguardando configuração do banco de dados.";
+    status.style.display = 'block';
+    status.style.color   = 'var(--gold-lt)';
+    status.textContent   = (err && err.message) ? err.message : 'Erro ao salvar. Tente novamente.';
+    btn.innerHTML = origHTML;
   } finally {
-    btn.innerHTML = `
-      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11l5 5v11a2 2 0 0 1-2 2z"></path><polyline points="17 21 17 13 7 13 7 21"></polyline><polyline points="7 3 7 8 15 8"></polyline></svg>
-      Salvar Acessos de Forma Segura`;
-    btn.style.opacity = "1";
-    btn.style.pointerEvents = "auto";
+    btn.disabled = false;
   }
 }
+
+// Card 01 — Contrato assinado
+async function saveItem1() {
+  await saveItem('ibtn-1', 'istatus-1', 'contrato', async function(sb) {
+    document.getElementById('ibtn-1').innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">ENVIANDO…</span>';
+    var url = await uploadFileToStorage(sb, 'file_contrato', 'onboarding', 'contrato');
+    return { contrato_link: url };
+  });
+}
+
+// Card 02 — Comprovante PIX
+async function saveItem2() {
+  await saveItem('ibtn-2', 'istatus-2', 'comprovante', async function(sb) {
+    document.getElementById('ibtn-2').innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">ENVIANDO…</span>';
+    var url = await uploadFileToStorage(sb, 'file_comprovante', 'onboarding', 'comprovante');
+    return { comprovante_nota: url };
+  });
+}
+
+// Card 03 — Domínio / Registro.br
+async function saveItem3() {
+  await saveItem('ibtn-3', 'istatus-3', 'dominio', async function() {
+    return { registro_id: document.getElementById('registro_id').value };
+  });
+}
+
+// Card 04 — VISTA API
+async function saveItem4() {
+  await saveItem('ibtn-4', 'istatus-4', 'vista_api', async function() {
+    return {
+      vista_user: document.getElementById('vista_user').value,
+      vista_key:  document.getElementById('vista_key').value
+    };
+  });
+}
+
+// Card 05 — C2S Token
+async function saveItem5() {
+  await saveItem('ibtn-5', 'istatus-5', 'c2s_crm', async function() {
+    return { c2s_token: document.getElementById('c2s_token').value };
+  });
+}
+
+// Card 06 — WordPress
+async function saveItem6() {
+  await saveItem('ibtn-6', 'istatus-6', 'wordpress', async function() {
+    return {
+      wp_user: document.getElementById('wp_user').value,
+      wp_pass: document.getElementById('wp_pass').value
+    };
+  });
+}
+
+// Card 07 — Manual da Marca
+async function saveItem7() {
+  await saveItem('ibtn-7', 'istatus-7', 'marca', async function() {
+    return { brand_link: document.getElementById('brand_link').value };
+  });
+}
+
+// Card 08 — Fotos da Equipe
+async function saveItem8() {
+  await saveItem('ibtn-8', 'istatus-8', 'fotos', async function() {
+    return { photos_link: document.getElementById('photos_link').value };
+  });
+}
+
+// Card 09 — Vídeos
+async function saveItem9() {
+  await saveItem('ibtn-9', 'istatus-9', 'videos', async function() {
+    return { videos_link: document.getElementById('videos_link').value };
+  });
+}
+
+// Card 10 — Benchmark
+async function saveItem10() {
+  await saveItem('ibtn-10', 'istatus-10', 'benchmark', async function() {
+    return {
+      benchmark_1: document.getElementById('benchmark_1').value,
+      benchmark_2: document.getElementById('benchmark_2').value,
+      benchmark_3: document.getElementById('benchmark_3').value
+    };
+  });
+}
+
+// Card 11 — Disponibilidade
+async function saveItem11() {
+  await saveItem('ibtn-11', 'istatus-11', 'disponibilidade', async function() {
+    return { whatsapp_numero: document.getElementById('whatsapp_numero').value };
+  });
+}
+
+// Card 12 — E-mail relatórios
+async function saveItem12() {
+  await saveItem('ibtn-12', 'istatus-12', 'email_relatorios', async function() {
+    return { email_relatorios: document.getElementById('email_relatorios').value };
+  });
+}
 </script>
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 </body>
 </html>
