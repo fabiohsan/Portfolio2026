@@ -645,6 +645,44 @@ footer {
   outline: 2px solid var(--gold);
   outline-offset: -2px;
 }
+/* ─── FILE UPLOAD ZONE ──────────────────────────── */
+.upload-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.4rem 1rem;
+  border: 1.5px dashed var(--div-lt);
+  border-radius: var(--r);
+  background: var(--bg2);
+  cursor: pointer;
+  transition: border-color .2s, background .2s;
+  text-align: center;
+}
+.upload-zone:hover { border-color: var(--gold-dim); background: var(--bg3); }
+.upload-zone svg { color: var(--muted); transition: color .2s; }
+.upload-zone:hover svg { color: var(--gold); }
+.upload-label { font-size: .8rem; color: var(--muted); font-weight: 500; }
+.upload-hint   { font-size: .7rem; color: var(--subtle); }
+.upload-preview {
+  display: none;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid var(--div-lt);
+  border-radius: var(--r);
+  background: var(--bg3);
+}
+.upload-preview svg { color: var(--gold); flex-shrink: 0; }
+.upload-filename { flex: 1; font-size: .8rem; color: var(--text-hi); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.upload-remove {
+  background: none; border: none; cursor: pointer;
+  color: var(--muted); font-size: .9rem; padding: 0.1rem 0.3rem;
+  border-radius: 4px; transition: color .2s, background .2s; flex-shrink: 0;
+}
+.upload-remove:hover { color: var(--white); background: var(--bg4); }
+
 .guide-btn:focus-visible {
   outline: 2px solid var(--gold-dim);
   outline-offset: -2px;
@@ -782,8 +820,18 @@ footer {
       </div>
       <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Após assinar, cole aqui o link do contrato</b></div>
-          <input type="text" id="contrato_link" class="form-input" placeholder="Google Drive / DocuSign / Dropbox" />
+          <div class="g-text"><b>Após assinar, envie o arquivo do contrato</b></div>
+          <div class="upload-zone" id="zone_contrato" onclick="document.getElementById('file_contrato').click()">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+            <span class="upload-label">Clique para enviar o contrato</span>
+            <span class="upload-hint">PDF, JPG, PNG — máx. 10MB</span>
+          </div>
+          <div class="upload-preview" id="preview_contrato">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="upload-filename" id="filename_contrato"></span>
+            <button type="button" class="upload-remove" onclick="removeUpload('contrato')">✕</button>
+          </div>
+          <input type="file" id="file_contrato" accept=".pdf,image/jpeg,image/png,image/webp" style="display:none" onchange="handleUpload(this,'contrato')">
         </div>
       </div>
     </div>
@@ -812,8 +860,18 @@ footer {
       </div>
       <div class="guide-panel" style="display:block; border-top: 1px solid var(--div-lt);">
         <div class="guide-inner" style="flex-direction: column; gap: 0.8rem;">
-          <div class="g-text"><b>Confirmação do pagamento</b></div>
-          <input type="text" id="comprovante_nota" class="form-input" placeholder="Cole o link do comprovante ou escreva 'Enviado via WhatsApp'" />
+          <div class="g-text"><b>Envie a imagem ou PDF do comprovante</b></div>
+          <div class="upload-zone" id="zone_comprovante" onclick="document.getElementById('file_comprovante').click()">
+            <svg width="22" height="22" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5"><path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"/></svg>
+            <span class="upload-label">Clique para enviar o comprovante PIX</span>
+            <span class="upload-hint">JPG, PNG, PDF — máx. 10MB</span>
+          </div>
+          <div class="upload-preview" id="preview_comprovante">
+            <svg width="16" height="16" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/></svg>
+            <span class="upload-filename" id="filename_comprovante"></span>
+            <button type="button" class="upload-remove" onclick="removeUpload('comprovante')">✕</button>
+          </div>
+          <input type="file" id="file_comprovante" accept="image/jpeg,image/png,image/webp,.pdf" style="display:none" onchange="handleUpload(this,'comprovante')">
         </div>
       </div>
     </div>
@@ -1114,6 +1172,32 @@ document.querySelectorAll('.reveal').forEach(el => io.observe(el));
 
 refresh();
 
+// Upload helpers
+function handleUpload(input, key) {
+  const file = input.files[0];
+  if (!file) return;
+  document.getElementById('zone_' + key).style.display = 'none';
+  document.getElementById('preview_' + key).style.display = 'flex';
+  document.getElementById('filename_' + key).textContent = file.name;
+}
+
+function removeUpload(key) {
+  document.getElementById('file_' + key).value = '';
+  document.getElementById('preview_' + key).style.display = 'none';
+  document.getElementById('zone_' + key).style.display = 'flex';
+}
+
+async function uploadFileToStorage(supabase, inputId, bucket, prefix) {
+  const input = document.getElementById(inputId);
+  const file = input && input.files && input.files[0];
+  if (!file) return null;
+  const ext = file.name.split('.').pop();
+  const path = prefix + '_' + Date.now() + '.' + ext;
+  const { error } = await supabase.storage.from(bucket).upload(path, file, { upsert: false });
+  if (error) throw new Error('Upload ' + prefix + ' falhou: ' + error.message);
+  return supabase.storage.from(bucket).getPublicUrl(path).data.publicUrl;
+}
+
 // Supabase Logic
 async function saveToSupabase() {
   const btn = document.getElementById('btn-save-supabase');
@@ -1121,9 +1205,6 @@ async function saveToSupabase() {
   btn.innerText = "Salvando...";
   btn.style.opacity = "0.7";
   btn.style.pointerEvents = "none";
-  
-  const contratoLink    = document.getElementById('contrato_link').value;
-  const comprovanteNota = document.getElementById('comprovante_nota').value;
   const registroId      = document.getElementById('registro_id').value;
   const vistaUser       = document.getElementById('vista_user').value;
   const vistaKey        = document.getElementById('vista_key').value;
@@ -1144,7 +1225,10 @@ async function saveToSupabase() {
 
   try {
     const supabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
-    
+
+    const contratoLink    = await uploadFileToStorage(supabase, 'file_contrato',    'onboarding', 'contrato');
+    const comprovanteNota = await uploadFileToStorage(supabase, 'file_comprovante', 'onboarding', 'comprovante');
+
     const { data, error } = await supabase
       .from('onboarding_dados')
       .insert([
