@@ -1606,6 +1606,29 @@ function getSupabase() {
   return window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 }
 
+// ─── Tradução de erros do Supabase para PT-BR ────────
+function traduzirErro(err) {
+  if (!err || !err.message) return 'Erro desconhecido. Tente novamente.';
+  var m = err.message;
+  if (m.includes('column') && m.includes('schema cache'))
+    return 'Coluna não encontrada na tabela. Contate o suporte.';
+  if (m.includes('relation') && m.includes('does not exist'))
+    return 'Tabela não encontrada no banco de dados.';
+  if (m.includes('JWT') || m.includes('expired'))
+    return 'Sessão expirada. Recarregue a página e tente novamente.';
+  if (m.includes('row-level security') || m.includes('permission denied'))
+    return 'Permissão negada. Verifique as configurações de acesso.';
+  if (m.includes('duplicate key') || m.includes('unique constraint'))
+    return 'Este registro já foi enviado anteriormente.';
+  if (m.includes('network') || m.includes('fetch') || m.includes('Failed to fetch'))
+    return 'Erro de conexão. Verifique sua internet e tente novamente.';
+  if (m.includes('timeout'))
+    return 'Tempo de resposta esgotado. Tente novamente.';
+  if (m.includes('Upload') && m.includes('falhou'))
+    return m; // já está em PT-BR
+  return 'Erro ao salvar: ' + m;
+}
+
 // ─── Generic per-item save ───────────────────────────
 async function saveItem(btnId, statusId, itemKey, dataFn) {
   const btn    = document.getElementById(btnId);
@@ -1619,7 +1642,7 @@ async function saveItem(btnId, statusId, itemKey, dataFn) {
     const sb  = getSupabase();
     var payload = await dataFn(sb);
     payload.cliente    = CLIENT_ID;
-    payload.item       = itemKey;
+    payload.secao      = itemKey;
     payload.updated_at = new Date().toISOString();
 
     const { error } = await sb.from('onboarding_dados').insert([payload]);
@@ -1634,7 +1657,7 @@ async function saveItem(btnId, statusId, itemKey, dataFn) {
     console.error(err);
     status.style.display = 'block';
     status.style.color   = 'var(--gold-lt)';
-    status.textContent   = (err && err.message) ? err.message : 'Erro ao salvar. Tente novamente.';
+    status.textContent   = traduzirErro(err);
     btn.innerHTML = origHTML;
   } finally {
     btn.disabled = false;
