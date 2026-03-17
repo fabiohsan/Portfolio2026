@@ -13,9 +13,14 @@ import Footer from './components/Footer';
 import CustomCursor from './components/CustomCursor';
 import ContractAdmin from './components/ContractAdmin';
 
-const isAdmin = window.location.pathname === '/admin';
+const normalizePathname = (pathname: string) => {
+  if (pathname === '/') return pathname;
+  return pathname.replace(/\/+$/, '');
+};
 
 function App() {
+  const isAdmin = normalizePathname(window.location.pathname) === '/admin';
+
   if (isAdmin) {
     return <ContractAdmin />;
   }

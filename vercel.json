@@ -1,8 +1,10 @@
 {
+    "$schema": "https://openapi.vercel.sh/vercel.json",
     "cleanUrls": true,
-    "routes": [
-        { "src": "/onboarding", "dest": "/onboarding.html" },
-        { "handle": "filesystem" },
-        { "src": "/(.*)", "dest": "/index.html" }
+    "rewrites": [
+        {
+            "source": "/(.*)",
+            "destination": "/index"
+        }
     ]
 }
