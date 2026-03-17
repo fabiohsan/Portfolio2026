@@ -1,13 +1,8 @@
 {
     "cleanUrls": true,
-    "rewrites": [
-        {
-            "source": "/onboarding",
-            "destination": "/onboarding.html"
-        },
-        {
-            "source": "/(.*)",
-            "destination": "/index.html"
-        }
+    "routes": [
+        { "src": "/onboarding", "dest": "/onboarding.html" },
+        { "handle": "filesystem" },
+        { "src": "/(.*)", "dest": "/index.html" }
     ]
 }
