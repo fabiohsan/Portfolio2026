@@ -2366,7 +2366,7 @@ async function saveItem1() {
   const status = document.getElementById('istatus-1');
   const origHTML = btn.innerHTML;
   btn.disabled = true;
-  btn.innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">SALVANDOâ€¦</span>';
+  btn.innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">SALVANDO...</span>';
   status.style.display = 'none';
 
   try {
@@ -2403,7 +2403,7 @@ async function saveItem2() {
   }
 
   await saveItem('ibtn-2', 'istatus-2', 'comprovante', async function(sb) {
-    document.getElementById('ibtn-2').innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">ENVIANDOâ€¦</span>';
+    document.getElementById('ibtn-2').innerHTML = '<span style="opacity:.55;font-size:.75rem;letter-spacing:.06em">ENVIANDO...</span>';
     var url = await uploadFileToStorage(sb, 'file_comprovante', 'onboarding', 'comprovante');
     return { comprovante_nota: url };
   });
