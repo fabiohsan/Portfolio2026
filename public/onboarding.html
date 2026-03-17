@@ -1670,6 +1670,10 @@ const TOTAL = 16;
 const done  = new Set();
 let onboardingCache = null;
 const SAVED_ICON = '<svg width="14" height="14" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M4.5 12.75l6 6 9-13.5"/></svg>';
+const KNOWN_CLIENT_DATA = {
+  cnpj: '27.451.245/0001-91',
+  endereco: 'K Platz Corporate - R. Elizeu di Bernardi, 34 - sala 601 - Campinas, Sao Jose - SC, 88101-050'
+};
 
 // toggle check
 function toggle(row) {
@@ -1833,6 +1837,23 @@ function mirrorPrimaryEmail() {
   primaryEmail.addEventListener('input', function() { sync(primaryEmail, contractEmail); });
 }
 
+function lockPrefilledField(id, value) {
+  var input = document.getElementById(id);
+  if (!input) return;
+
+  if (!isFilled(input.value)) input.value = value;
+  input.readOnly = true;
+  input.dataset.prefilled = 'true';
+  input.style.background = 'rgba(255,255,255,.04)';
+  input.style.borderColor = 'rgba(255,255,255,.08)';
+  input.style.color = 'var(--text)';
+}
+
+function applyKnownClientData() {
+  lockPrefilledField('cnpj', KNOWN_CLIENT_DATA.cnpj);
+  lockPrefilledField('endereco', KNOWN_CLIENT_DATA.endereco);
+}
+
 function applyStaticCopy() {
   var introTexts = document.querySelectorAll('.intro-text');
   if (introTexts[1]) {
@@ -1857,6 +1878,22 @@ function applyStaticCopy() {
 
   var reportLabel = document.querySelector('label[for="email_relatorios"]');
   if (reportLabel) reportLabel.textContent = 'E-mail principal';
+
+  var companyDesc = document.querySelector('.card[data-id="13"] .card-desc');
+  if (companyDesc) {
+    companyDesc.textContent = 'O CNPJ ja foi carregado a partir do contrato. Aqui falta apenas confirmar a razao social e informar o numero do CRECI.';
+  }
+
+  var cnpjLabel = document.querySelector('label[for="cnpj"]');
+  if (cnpjLabel) cnpjLabel.textContent = 'CNPJ (carregado do contrato)';
+
+  var contactDesc = document.querySelector('.card[data-id="14"] .card-desc');
+  if (contactDesc) {
+    contactDesc.textContent = 'O endereco do escritorio ja foi carregado a partir do contrato. Aqui voce so precisa complementar telefone e redes sociais.';
+  }
+
+  var addressLabel = document.querySelector('label[for="endereco"]');
+  if (addressLabel) addressLabel.textContent = 'Endereco do escritorio (carregado do contrato)';
 }
 
 // scroll progress bar
@@ -2253,11 +2290,13 @@ primeButtons();
 applyStaticCopy();
 ensureContractReceivedState();
 mirrorPrimaryEmail();
+applyKnownClientData();
 
 function hydrateOnboarding(data) {
   onboardingCache = data || null;
 
   if (!data) {
+    applyKnownClientData();
     setContractState('pendente');
     return;
   }
@@ -2279,10 +2318,10 @@ function hydrateOnboarding(data) {
   setValue('benchmark_2', data.benchmark_2);
   setValue('benchmark_3', data.benchmark_3);
   setValue('whatsapp_numero', data.whatsapp_numero);
-  setValue('cnpj', data.cnpj);
+  setValue('cnpj', KNOWN_CLIENT_DATA.cnpj);
   setValue('razao_social', data.razao_social);
   setValue('creci', data.creci);
-  setValue('endereco', data.endereco);
+  setValue('endereco', KNOWN_CLIENT_DATA.endereco);
   setValue('telefone', data.telefone);
   setValue('instagram', data.instagram);
   setValue('facebook', data.facebook);
@@ -2308,8 +2347,8 @@ function hydrateOnboarding(data) {
   syncDoneState('10', isFilled(data.benchmark_1) && isFilled(data.benchmark_2), 'Enviado', false);
   syncDoneState('11', isFilled(data.whatsapp_numero), 'Enviado', false);
   syncDoneState('12', isFilled(data.email_relatorios), 'Enviado', false);
-  syncDoneState('13', isFilled(data.cnpj) && isFilled(data.razao_social) && isFilled(data.creci), 'Enviado', false);
-  syncDoneState('14', isFilled(data.endereco) && isFilled(data.telefone), 'Enviado', false);
+  syncDoneState('13', isFilled(data.cnpj || KNOWN_CLIENT_DATA.cnpj) && isFilled(data.razao_social) && isFilled(data.creci), 'Enviado', false);
+  syncDoneState('14', isFilled(data.endereco || KNOWN_CLIENT_DATA.endereco) && isFilled(data.telefone), 'Enviado', false);
   syncDoneState('15', isFilled(data.registrobr_login) && isFilled(data.registrobr_pass), 'Enviado', false);
   syncDoneState('16', isFilled(data.hosting_provider) && isFilled(data.hosting_url) && isFilled(data.hosting_user) && isFilled(data.hosting_pass), 'Enviado', false);
 
@@ -2385,7 +2424,7 @@ async function saveItem1() {
     onboardingCache = Object.assign({}, onboardingCache || {}, payload);
     syncDoneState('12', true, 'Enviado', false);
     setContractState('recebido');
-    setStatus('istatus-1', '✓ Dados salvos. O contrato sera enviado em breve.', 'success');
+    setStatus('istatus-1', 'Dados salvos com sucesso. O contrato sera enviado em breve.', 'success');
   } catch (err) {
     setStatus('istatus-1', traduzirErro(err), 'warn');
     btn.innerHTML = origHTML;
@@ -2508,11 +2547,10 @@ async function saveItem12() {
 }
 
 async function saveItem13() {
-  var cnpj = getValue('cnpj');
+  var cnpj = KNOWN_CLIENT_DATA.cnpj;
   var razaoSocial = getValue('razao_social');
   var creci = getValue('creci');
   if (!ensureFields('istatus-13', [
-    { value: cnpj, message: 'Informe o CNPJ da empresa.' },
     { value: razaoSocial, message: 'Informe a razao social.' },
     { value: creci, message: 'Informe o numero do CRECI.' }
   ])) return;
@@ -2522,13 +2560,12 @@ async function saveItem13() {
 }
 
 async function saveItem14() {
-  var endereco = getValue('endereco');
+  var endereco = KNOWN_CLIENT_DATA.endereco;
   var telefone = getValue('telefone');
   var instagram = getValue('instagram');
   var facebook = getValue('facebook');
   var youtube = getValue('youtube');
   if (!ensureFields('istatus-14', [
-    { value: endereco, message: 'Informe o endereco do escritorio.' },
     { value: telefone, message: 'Informe o telefone de contato.' }
   ])) return;
   await saveItem('ibtn-14', 'istatus-14', 'contato_redes', async function() {
