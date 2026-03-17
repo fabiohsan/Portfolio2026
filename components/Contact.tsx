@@ -1,9 +1,13 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { IconArrowRight, IconCheck } from './Icons';
+import { supabase } from '../src/lib/supabase';
+
+const BUCKET = 'comprovantes';
 
 const Contact: React.FC = () => {
-  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success'>('idle');
+  const [formState, setFormState] = useState<'idle' | 'submitting' | 'success' | 'error'>('idle');
+  const [errorMsg, setErrorMsg] = useState('');
   const [formData, setFormData] = useState({
     name: '',
     company: '',
@@ -11,14 +15,70 @@ const Contact: React.FC = () => {
     budget: '',
     message: ''
   });
+  const [comprovante, setComprovante] = useState<File | null>(null);
+  const [comprovantePreview, setComprovantePreview] = useState<string>('');
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    if (!file.type.startsWith('image/')) {
+      setErrorMsg('Apenas imagens são aceitas (JPG, PNG, WebP).');
+      return;
+    }
+    if (file.size > 5 * 1024 * 1024) {
+      setErrorMsg('Imagem deve ter menos de 5MB.');
+      return;
+    }
+    setErrorMsg('');
+    setComprovante(file);
+    setComprovantePreview(URL.createObjectURL(file));
+  };
+
+  const removeComprovante = () => {
+    setComprovante(null);
+    setComprovantePreview('');
+    if (fileInputRef.current) fileInputRef.current.value = '';
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setFormState('submitting');
-    // Simulate API call
-    setTimeout(() => {
-        setFormState('success');
-    }, 1500);
+    setErrorMsg('');
+
+    try {
+      let comprovanteUrl = '';
+
+      if (comprovante) {
+        const ext = comprovante.name.split('.').pop();
+        const path = `${Date.now()}_${formData.name.replace(/\s+/g, '_')}.${ext}`;
+        const { error: uploadError } = await supabase.storage
+          .from(BUCKET)
+          .upload(path, comprovante, { upsert: false });
+
+        if (uploadError) throw new Error(`Upload falhou: ${uploadError.message}`);
+
+        const { data: urlData } = supabase.storage.from(BUCKET).getPublicUrl(path);
+        comprovanteUrl = urlData.publicUrl;
+      }
+
+      const { error: dbError } = await supabase.from('contatos').insert([{
+        name: formData.name,
+        company: formData.company,
+        email: formData.email,
+        budget: formData.budget,
+        message: formData.message,
+        comprovante_url: comprovanteUrl || null,
+        created_at: new Date().toISOString()
+      }]);
+
+      if (dbError) throw new Error(`Erro ao salvar: ${dbError.message}`);
+
+      setFormState('success');
+    } catch (err: unknown) {
+      setErrorMsg(err instanceof Error ? err.message : 'Erro inesperado. Tente novamente.');
+      setFormState('error');
+    }
   };
 
   return (
@@ -154,7 +214,7 @@ const Contact: React.FC = () => {
 
                         <div className="space-y-2">
                             <label className="text-xs font-bold uppercase tracking-widest text-gray-500">Detalhes do Projeto</label>
-                            <textarea 
+                            <textarea
                                 required
                                 rows={4}
                                 className="w-full bg-brand-black border border-white/10 p-4 text-white text-base focus:border-brand-red focus:outline-none transition-colors rounded-lg resize-none appearance-none"
@@ -164,13 +224,69 @@ const Contact: React.FC = () => {
                             ></textarea>
                         </div>
 
-                        <button 
+                        {/* Comprovante PIX */}
+                        <div className="space-y-2">
+                            <label className="text-xs font-bold uppercase tracking-widest text-gray-500">
+                                Comprovante PIX <span className="text-gray-600 normal-case font-normal">(opcional)</span>
+                            </label>
+
+                            {comprovantePreview ? (
+                                <div className="relative rounded-lg overflow-hidden border border-white/10">
+                                    <img
+                                        src={comprovantePreview}
+                                        alt="Preview comprovante"
+                                        className="w-full max-h-48 object-contain bg-brand-dark"
+                                    />
+                                    <button
+                                        type="button"
+                                        onClick={removeComprovante}
+                                        className="absolute top-2 right-2 bg-brand-black/80 hover:bg-brand-red text-white rounded-full w-7 h-7 flex items-center justify-center transition-colors text-xs font-bold"
+                                        aria-label="Remover imagem"
+                                    >
+                                        ✕
+                                    </button>
+                                    <p className="text-xs text-gray-500 px-3 py-2 truncate">{comprovante?.name}</p>
+                                </div>
+                            ) : (
+                                <button
+                                    type="button"
+                                    onClick={() => fileInputRef.current?.click()}
+                                    className="w-full border border-dashed border-white/20 hover:border-brand-red/60 bg-brand-black hover:bg-brand-red/5 transition-all rounded-lg p-6 flex flex-col items-center gap-2 cursor-pointer group"
+                                >
+                                    <svg className="w-7 h-7 text-gray-600 group-hover:text-brand-red transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                                        <path strokeLinecap="round" strokeLinejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                                    </svg>
+                                    <span className="text-xs text-gray-500 group-hover:text-gray-300 transition-colors">
+                                        Clique para enviar imagem
+                                    </span>
+                                    <span className="text-[10px] text-gray-700">JPG, PNG, WebP — máx. 5MB</span>
+                                </button>
+                            )}
+
+                            <input
+                                ref={fileInputRef}
+                                type="file"
+                                accept="image/jpeg,image/png,image/webp"
+                                className="hidden"
+                                onChange={handleFileChange}
+                            />
+                        </div>
+
+                        {/* Erro */}
+                        {errorMsg && (
+                            <p className="text-xs text-red-400 bg-red-400/10 border border-red-400/20 rounded-lg px-4 py-3">
+                                {errorMsg}
+                            </p>
+                        )}
+
+                        <button
                             disabled={formState === 'submitting'}
-                            type="submit" 
+                            type="submit"
+                            onClick={() => { if (formState === 'error') setFormState('idle'); }}
                             className="w-full bg-brand-red text-white font-bold uppercase tracking-widest py-4 md:py-5 rounded-lg hover:bg-red-600 transition-all flex items-center justify-center gap-2 disabled:opacity-50 disabled:cursor-not-allowed text-sm"
                         >
                             {formState === 'submitting' ? 'Enviando...' : 'Iniciar Aplicação'}
-                            {!formState && <IconArrowRight />}
+                            {formState === 'idle' && <IconArrowRight />}
                         </button>
                     </motion.form>
                 )}
