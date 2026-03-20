@@ -4,7 +4,7 @@ import { getContractMissingFields } from '../../../lib/contractModel.js';
 import {
   getContractTemplateMeta,
   getGeneratedContractPath,
-  renderContractHtml,
+  renderContractPdf,
 } from '../../../lib/contractTemplate.js';
 
 const json = (res, status, payload) => {
@@ -68,15 +68,14 @@ export default async function handler(req, res) {
     }
 
     const now = new Date();
-    const html = renderContractHtml(row, now);
     const path = getGeneratedContractPath(row, now);
-    const uploadPayload = Buffer.from(html, 'utf8');
+    const uploadPayload = await renderContractPdf(row, now);
 
     const { error: uploadError } = await supabase.storage
       .from(STORAGE_BUCKET)
       .upload(path, uploadPayload, {
         upsert: false,
-        contentType: 'text/html; charset=utf-8',
+        contentType: 'application/pdf',
       });
 
     if (uploadError) throw uploadError;
