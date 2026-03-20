@@ -24,7 +24,7 @@ export default async function handler(req, res) {
     const { data, error } = await supabase
       .from('onboarding_dados')
       .select(
-        'cliente,email_relatorios,estado_civil,cpf_representante,cnpj,razao_social,creci,endereco,telefone,instagram,facebook,youtube,contrato_status,contrato_link,updated_at'
+        'cliente,email_relatorios,estado_civil,cpf_representante,comprovante_nota,registro_id,vista_user,vista_pass,c2s_token,wp_user,wp_pass,brand_link,benchmark_1,benchmark_2,benchmark_3,whatsapp_numero,cnpj,razao_social,creci,endereco,telefone,instagram,facebook,youtube,hosting_provider,hosting_url,hosting_user,hosting_pass,ftp_host,ftp_user,ftp_pass,registrobr_login,registrobr_pass,contrato_status,contrato_link,updated_at'
       )
       .order('updated_at', { ascending: false })
       .limit(100);
