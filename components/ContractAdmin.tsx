@@ -9,6 +9,18 @@ type OnboardingRow = {
   email_relatorios: string | null;
   estado_civil: string | null;
   cpf_representante: string | null;
+  comprovante_nota: string | null;
+  registro_id: string | null;
+  vista_user: string | null;
+  vista_pass: string | null;
+  c2s_token: string | null;
+  wp_user: string | null;
+  wp_pass: string | null;
+  brand_link: string | null;
+  benchmark_1: string | null;
+  benchmark_2: string | null;
+  benchmark_3: string | null;
+  whatsapp_numero: string | null;
   cnpj: string | null;
   razao_social: string | null;
   creci: string | null;
@@ -20,6 +32,20 @@ type OnboardingRow = {
   contrato_status: string | null;
   contrato_link: string | null;
   updated_at: string | null;
+};
+
+type OnboardingFieldKey = keyof OnboardingRow;
+type FieldKind = 'link' | 'secret';
+
+type DetailField = {
+  key: OnboardingFieldKey;
+  label: string;
+  kind?: FieldKind;
+};
+
+type DetailSection = {
+  title: string;
+  fields: DetailField[];
 };
 
 type ContractTemplateMeta = {
@@ -79,6 +105,63 @@ const getStatusClasses = (status: string | null) => {
     default:
       return 'bg-white/5 text-gray-300 border-white/10';
   }
+};
+
+const isFilled = (value: string | null | undefined) => String(value ?? '').trim().length > 0;
+
+const detailSections: DetailSection[] = [
+  {
+    title: 'Contato e canais',
+    fields: [
+      { key: 'endereco', label: 'Endereco do escritorio' },
+      { key: 'telefone', label: 'Telefone' },
+      { key: 'instagram', label: 'Instagram', kind: 'link' },
+      { key: 'facebook', label: 'Facebook', kind: 'link' },
+      { key: 'youtube', label: 'YouTube', kind: 'link' },
+      { key: 'whatsapp_numero', label: 'WhatsApp / disponibilidade' },
+    ],
+  },
+  {
+    title: 'Documentos e referencias',
+    fields: [
+      { key: 'comprovante_nota', label: 'Comprovante do sinal', kind: 'link' },
+      { key: 'brand_link', label: 'Manual / pasta da marca', kind: 'link' },
+      { key: 'benchmark_1', label: 'Benchmark 1', kind: 'link' },
+      { key: 'benchmark_2', label: 'Benchmark 2', kind: 'link' },
+      { key: 'benchmark_3', label: 'Benchmark 3', kind: 'link' },
+    ],
+  },
+  {
+    title: 'Acessos tecnicos',
+    fields: [
+      { key: 'registro_id', label: 'ID ou e-mail no Registro.br' },
+      { key: 'vista_user', label: 'Usuario VISTA' },
+      { key: 'vista_pass', label: 'Senha VISTA', kind: 'secret' },
+      { key: 'c2s_token', label: 'Token C2S', kind: 'secret' },
+      { key: 'wp_user', label: 'Usuario WordPress' },
+      { key: 'wp_pass', label: 'Senha WordPress', kind: 'secret' },
+      { key: 'registrobr_login', label: 'Login Registro.br' },
+      { key: 'registrobr_pass', label: 'Senha Registro.br', kind: 'secret' },
+    ],
+  },
+  {
+    title: 'Hospedagem e FTP',
+    fields: [
+      { key: 'hosting_provider', label: 'Provedor' },
+      { key: 'hosting_url', label: 'URL do painel', kind: 'link' },
+      { key: 'hosting_user', label: 'Usuario do painel' },
+      { key: 'hosting_pass', label: 'Senha do painel', kind: 'secret' },
+      { key: 'ftp_host', label: 'FTP host' },
+      { key: 'ftp_user', label: 'FTP usuario' },
+      { key: 'ftp_pass', label: 'FTP senha', kind: 'secret' },
+    ],
+  },
+];
+
+const getFieldHref = (value: string) => {
+  const trimmed = value.trim();
+  if (/^https?:\/\//i.test(trimmed)) return trimmed;
+  return null;
 };
 
 const canExposeContractLink = (row: OnboardingRow, missingFields: string[]) => {
@@ -351,6 +434,12 @@ export const ContractAdmin: React.FC = () => {
             const missingFields = getMissingFields(row);
             const rowKey = `${row.cliente ?? 'sem-cliente'}-${row.updated_at ?? index}`;
             const showContractLink = canExposeContractLink(row, missingFields);
+            const populatedSections = detailSections
+              .map((section) => ({
+                ...section,
+                fields: section.fields.filter((field) => isFilled(row[field.key])),
+              }))
+              .filter((section) => section.fields.length > 0);
 
             return (
               <article
@@ -466,6 +555,65 @@ export const ContractAdmin: React.FC = () => {
                     )}
                   </div>
                 </div>
+
+                {populatedSections.length > 0 && (
+                  <div className="mt-5 grid gap-4 xl:grid-cols-2">
+                    {populatedSections.map((section) => (
+                      <section
+                        key={`${rowKey}-${section.title}`}
+                        className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
+                      >
+                        <div className="flex items-center justify-between gap-3 mb-4">
+                          <p className="text-[10px] font-bold uppercase tracking-widest text-gray-500">
+                            {section.title}
+                          </p>
+                          <span className="text-[10px] uppercase tracking-widest text-gray-600">
+                            {section.fields.length} enviado{section.fields.length > 1 ? 's' : ''}
+                          </span>
+                        </div>
+
+                        <div className="grid gap-3 sm:grid-cols-2">
+                          {section.fields.map((field) => {
+                            const rawValue = row[field.key];
+                            const value = String(rawValue ?? '').trim();
+                            const href = field.kind === 'link' ? getFieldHref(value) : null;
+                            const mono = field.kind === 'secret';
+
+                            return (
+                              <div
+                                key={`${rowKey}-${String(field.key)}`}
+                                className="rounded-xl border border-white/10 bg-black/20 p-3"
+                              >
+                                <p className="text-[10px] uppercase tracking-widest text-gray-500 mb-2">
+                                  {field.label}
+                                </p>
+
+                                {href ? (
+                                  <a
+                                    href={href}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="text-sm text-red-200 underline decoration-white/15 underline-offset-4 break-all hover:text-white transition-colors"
+                                  >
+                                    {value}
+                                  </a>
+                                ) : (
+                                  <p
+                                    className={`text-sm text-white break-all whitespace-pre-wrap ${
+                                      mono ? 'font-mono text-[13px]' : ''
+                                    }`}
+                                  >
+                                    {value}
+                                  </p>
+                                )}
+                              </div>
+                            );
+                          })}
+                        </div>
+                      </section>
+                    ))}
+                  </div>
+                )}
               </article>
             );
           })}
