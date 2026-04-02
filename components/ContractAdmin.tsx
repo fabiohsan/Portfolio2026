@@ -29,6 +29,15 @@ type OnboardingRow = {
   instagram: string | null;
   facebook: string | null;
   youtube: string | null;
+  hosting_provider: string | null;
+  hosting_url: string | null;
+  hosting_user: string | null;
+  hosting_pass: string | null;
+  ftp_host: string | null;
+  ftp_user: string | null;
+  ftp_pass: string | null;
+  registrobr_login: string | null;
+  registrobr_pass: string | null;
   contrato_status: string | null;
   contrato_link: string | null;
   updated_at: string | null;
@@ -57,6 +66,7 @@ type ContractTemplateMeta = {
 type AdminResponse = {
   rows?: OnboardingRow[];
   contractTemplate?: ContractTemplateMeta;
+  warning?: string;
   error?: string;
 };
 
@@ -181,6 +191,7 @@ export const ContractAdmin: React.FC = () => {
   const [loading, setLoading] = useState(false);
   const [checkingSession, setCheckingSession] = useState(true);
   const [errorMsg, setErrorMsg] = useState('');
+  const [warningMsg, setWarningMsg] = useState('');
   const [actionMsg, setActionMsg] = useState('');
   const [lastSync, setLastSync] = useState<string | null>(null);
   const [busyClient, setBusyClient] = useState<string | null>(null);
@@ -188,6 +199,7 @@ export const ContractAdmin: React.FC = () => {
   const loadRows = async (options?: { silentAuth?: boolean }) => {
     setLoading(true);
     if (!options?.silentAuth) setErrorMsg('');
+    if (!options?.silentAuth) setWarningMsg('');
 
     try {
       const response = await fetch('/api/admin/onboarding', {
@@ -196,6 +208,7 @@ export const ContractAdmin: React.FC = () => {
 
       if (response.status === 401) {
         setUnlocked(false);
+        setWarningMsg('');
         if (!options?.silentAuth) {
           setErrorMsg('Sessao expirada. Entre novamente.');
         }
@@ -207,6 +220,7 @@ export const ContractAdmin: React.FC = () => {
 
       setRows(payload.rows ?? []);
       setContractTemplate(payload.contractTemplate ?? null);
+      setWarningMsg(payload.warning ?? '');
       setUnlocked(true);
       setLastSync(new Date().toISOString());
     } catch (err: unknown) {
@@ -246,6 +260,7 @@ export const ContractAdmin: React.FC = () => {
         setRows([]);
         setLastSync(null);
         setContractTemplate(null);
+        setWarningMsg('');
         throw new Error('Sessao expirada. Entre novamente.');
       }
 
@@ -314,6 +329,7 @@ export const ContractAdmin: React.FC = () => {
       setPin('');
       setActionMsg('');
       setErrorMsg('');
+      setWarningMsg('');
     }
   };
 
@@ -412,8 +428,14 @@ export const ContractAdmin: React.FC = () => {
         </div>
 
         {errorMsg && (
-          <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
-            Erro ao carregar o painel: {errorMsg}
+        <div className="rounded-2xl border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-200">
+          Erro ao carregar o painel: {errorMsg}
+        </div>
+      )}
+
+        {!errorMsg && warningMsg && (
+          <div className="rounded-2xl border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-100">
+            {warningMsg}
           </div>
         )}
 
