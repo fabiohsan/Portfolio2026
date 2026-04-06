@@ -118,6 +118,8 @@ const getStatusClasses = (status: string | null) => {
 };
 
 const isFilled = (value: string | null | undefined) => String(value ?? '').trim().length > 0;
+const getFilledFieldCount = (row: OnboardingRow, fields: DetailField[]) =>
+  fields.filter((field) => isFilled(row[field.key])).length;
 
 const detailSections: DetailSection[] = [
   {
@@ -456,12 +458,6 @@ export const ContractAdmin: React.FC = () => {
             const missingFields = getMissingFields(row);
             const rowKey = `${row.cliente ?? 'sem-cliente'}-${row.updated_at ?? index}`;
             const showContractLink = canExposeContractLink(row, missingFields);
-            const populatedSections = detailSections
-              .map((section) => ({
-                ...section,
-                fields: section.fields.filter((field) => isFilled(row[field.key])),
-              }))
-              .filter((section) => section.fields.length > 0);
 
             return (
               <article
@@ -578,9 +574,12 @@ export const ContractAdmin: React.FC = () => {
                   </div>
                 </div>
 
-                {populatedSections.length > 0 && (
+                {detailSections.length > 0 && (
                   <div className="mt-5 grid gap-4 xl:grid-cols-2">
-                    {populatedSections.map((section) => (
+                    {detailSections.map((section) => {
+                      const filledCount = getFilledFieldCount(row, section.fields);
+
+                      return (
                       <section
                         key={`${rowKey}-${section.title}`}
                         className="rounded-2xl border border-white/10 bg-white/[0.03] p-4"
@@ -590,7 +589,7 @@ export const ContractAdmin: React.FC = () => {
                             {section.title}
                           </p>
                           <span className="text-[10px] uppercase tracking-widest text-gray-600">
-                            {section.fields.length} enviado{section.fields.length > 1 ? 's' : ''}
+                            {filledCount}/{section.fields.length} preenchidos
                           </span>
                         </div>
 
@@ -600,6 +599,7 @@ export const ContractAdmin: React.FC = () => {
                             const value = String(rawValue ?? '').trim();
                             const href = field.kind === 'link' ? getFieldHref(value) : null;
                             const mono = field.kind === 'secret';
+                            const empty = value.length === 0;
 
                             return (
                               <div
@@ -621,11 +621,13 @@ export const ContractAdmin: React.FC = () => {
                                   </a>
                                 ) : (
                                   <p
-                                    className={`text-sm text-white break-all whitespace-pre-wrap ${
+                                    className={`text-sm break-all whitespace-pre-wrap ${
+                                      empty ? 'text-gray-500 italic' : 'text-white'
+                                    } ${
                                       mono ? 'font-mono text-[13px]' : ''
                                     }`}
                                   >
-                                    {value}
+                                    {empty ? 'Nao enviado' : value}
                                   </p>
                                 )}
                               </div>
@@ -633,7 +635,8 @@ export const ContractAdmin: React.FC = () => {
                           })}
                         </div>
                       </section>
-                    ))}
+                    );
+                    })}
                   </div>
                 )}
               </article>
